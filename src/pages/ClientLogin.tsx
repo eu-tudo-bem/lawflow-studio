@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Scale, Mail, Lock, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { Scale, Mail, Lock, ArrowLeft, Eye, EyeOff, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-const Login = () => {
+const ClientLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -26,24 +26,24 @@ const Login = () => {
 
       if (authError) throw authError;
 
-      // Check if user is admin or staff (not a client)
+      // Check if user is a client
       const { data: roleData } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", authData.user.id)
         .single();
 
-      if (roleData?.role === "client") {
+      if (roleData?.role !== "client") {
         await supabase.auth.signOut();
-        throw new Error("Esta área é exclusiva para advogados. Se você é cliente, use o Portal do Cliente.");
+        throw new Error("Esta área é exclusiva para clientes. Se você é advogado, use o login da área restrita.");
       }
 
       toast({
-        title: "Login realizado!",
-        description: "Bem-vindo de volta.",
+        title: "Bem-vindo!",
+        description: "Acesso ao portal do cliente realizado com sucesso.",
       });
 
-      navigate("/dashboard");
+      navigate("/client-portal");
     } catch (error: any) {
       toast({
         title: "Erro ao fazer login",
@@ -70,20 +70,20 @@ const Login = () => {
 
           <div className="bg-card rounded-2xl p-8 shadow-card">
             <div className="flex items-center gap-3 mb-8">
-              <Scale className="h-8 w-8 text-accent" />
+              <User className="h-8 w-8 text-primary" />
               <div>
                 <span className="font-serif text-xl font-semibold text-foreground">
-                  Silva & Associados
+                  Portal do Cliente
                 </span>
-                <p className="text-xs text-muted-foreground">Área Restrita</p>
+                <p className="text-xs text-muted-foreground">Silva & Associados</p>
               </div>
             </div>
 
             <h1 className="font-serif text-2xl font-bold text-foreground mb-2">
-              Bem-vindo de volta
+              Acesse seu portal
             </h1>
             <p className="text-muted-foreground mb-6">
-              Acesse sua conta para gerenciar clientes e processos.
+              Acompanhe seus casos, agendamentos e converse com seu advogado.
             </p>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -121,25 +121,21 @@ const Login = () => {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? "Entrando..." : "Entrar"}
+                {isLoading ? "Entrando..." : "Entrar no Portal"}
               </Button>
             </form>
 
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              Não tem conta?{" "}
-              <Link to="/signup" className="text-accent hover:underline">
-                Criar conta
-              </Link>
-            </p>
-            <p className="text-center text-sm text-muted-foreground mt-2">
-              É cliente?{" "}
-              <Link to="/client-login" className="text-accent hover:underline">
-                Acesse o Portal do Cliente
-              </Link>
-            </p>
+            <div className="mt-6 pt-6 border-t border-border">
+              <p className="text-center text-sm text-muted-foreground">
+                É advogado?{" "}
+                <Link to="/login" className="text-accent hover:underline">
+                  Acesse a área restrita
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -147,13 +143,13 @@ const Login = () => {
       {/* Right Side - Decorative */}
       <div className="hidden lg:flex flex-1 bg-primary items-center justify-center p-12">
         <div className="max-w-md text-center">
-          <Scale className="h-16 w-16 text-gold mx-auto mb-6" />
+          <User className="h-16 w-16 text-gold mx-auto mb-6" />
           <h2 className="font-serif text-3xl font-bold text-primary-foreground mb-4">
-            Sistema de Gestão Jurídica
+            Portal do Cliente
           </h2>
           <p className="text-primary-foreground/70">
-            Gerencie seus clientes, casos e agendamentos em um só lugar. 
-            Tenha controle total sobre suas atividades jurídicas.
+            Acompanhe o andamento dos seus processos, agende consultas e 
+            comunique-se diretamente com seu advogado.
           </p>
         </div>
       </div>
@@ -161,4 +157,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ClientLogin;

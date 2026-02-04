@@ -12,6 +12,11 @@ import Cases from "./pages/Cases";
 import Appointments from "./pages/Appointments";
 import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
+import ClientLogin from "./pages/ClientLogin";
+import ClientPortal from "./pages/ClientPortal";
+import ClientCases from "./pages/client/ClientCases";
+import ClientAppointments from "./pages/client/ClientAppointments";
+import ClientMessages from "./pages/client/ClientMessages";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +28,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          {/* Lawyer/Admin Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -30,6 +36,13 @@ const App = () => (
           <Route path="/dashboard/cases" element={<Cases />} />
           <Route path="/dashboard/appointments" element={<Appointments />} />
           <Route path="/dashboard/messages" element={<Messages />} />
+          {/* Client Portal Routes */}
+          <Route path="/client-login" element={<ClientLogin />} />
+          <Route path="/client-portal" element={<ClientPortal />}>
+            <Route index element={<ClientCases />} />
+            <Route path="appointments" element={<ClientAppointments />} />
+            <Route path="messages" element={<ClientMessages />} />
+          </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

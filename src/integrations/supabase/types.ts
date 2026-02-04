@@ -121,6 +121,7 @@ export type Database = {
           notes: string | null
           phone: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           address?: string | null
@@ -133,6 +134,7 @@ export type Database = {
           notes?: string | null
           phone: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           address?: string | null
@@ -145,6 +147,7 @@ export type Database = {
           notes?: string | null
           phone?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -177,6 +180,54 @@ export type Database = {
           read?: boolean | null
         }
         Relationships: []
+      }
+      messages: {
+        Row: {
+          case_id: string | null
+          client_id: string | null
+          content: string
+          created_at: string
+          id: string
+          read: boolean | null
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          case_id?: string | null
+          client_id?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          read?: boolean | null
+          receiver_id: string
+          sender_id: string
+        }
+        Update: {
+          case_id?: string | null
+          client_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          read?: boolean | null
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -246,7 +297,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "staff"
+      app_role: "admin" | "staff" | "client"
       appointment_status: "scheduled" | "confirmed" | "completed" | "cancelled"
       case_status: "pending" | "in_progress" | "completed" | "cancelled"
     }
@@ -376,7 +427,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "staff"],
+      app_role: ["admin", "staff", "client"],
       appointment_status: ["scheduled", "confirmed", "completed", "cancelled"],
       case_status: ["pending", "in_progress", "completed", "cancelled"],
     },

@@ -2,18 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Scale, Users, Briefcase, Calendar, Mail, LogOut, 
-  Menu, X, Plus, Search, Edit, Trash2, ArrowLeft
+  Menu, X, Plus, Search, Edit, Trash2, ArrowLeft, UserPlus, Key
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { 
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger 
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 interface Client {
   id: string;
@@ -23,6 +26,7 @@ interface Client {
   cpf: string | null;
   address: string | null;
   notes: string | null;
+  user_id: string | null;
   created_at: string;
 }
 
@@ -35,6 +39,7 @@ const Clients = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [createWithAccess, setCreateWithAccess] = useState(false);
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -42,6 +47,7 @@ const Clients = () => {
     cpf: "",
     address: "",
     notes: "",
+    password: "",
   });
 
   useEffect(() => {
@@ -82,7 +88,38 @@ const Clients = () => {
 
         if (error) throw error;
         toast({ title: "Cliente atualizado!" });
+      } else if (createWithAccess) {
+        // Create client with portal access via edge function
+        const { data: { session } } = await supabase.auth.getSession();
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-client-account`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${session?.access_token}`,
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+              full_name: formData.full_name,
+              phone: formData.phone,
+              cpf: formData.cpf || undefined,
+              address: formData.address || undefined,
+              notes: formData.notes || undefined,
+            }),
+          }
+        );
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error);
+        
+        toast({ 
+          title: "Cliente cadastrado com acesso ao portal!", 
+          description: `Email: ${formData.email} | Senha: ${formData.password}` 
+        });
       } else {
+        // Create client without portal access
         const { error } = await supabase
           .from("clients")
           .insert({
@@ -109,6 +146,7 @@ const Clients = () => {
 
   const handleEdit = (client: Client) => {
     setEditingClient(client);
+    setCreateWithAccess(false);
     setFormData({
       full_name: client.full_name,
       email: client.email,
@@ -116,6 +154,7 @@ const Clients = () => {
       cpf: client.cpf || "",
       address: client.address || "",
       notes: client.notes || "",
+      password: "",
     });
     setIsDialogOpen(true);
   };
@@ -135,7 +174,8 @@ const Clients = () => {
 
   const resetForm = () => {
     setEditingClient(null);
-    setFormData({ full_name: "", email: "", phone: "", cpf: "", address: "", notes: "" });
+    setCreateWithAccess(false);
+    setFormData({ full_name: "", email: "", phone: "", cpf: "", address: "", notes: "", password: "" });
   };
 
   const filteredClients = clients.filter(
@@ -240,6 +280,11 @@ const Clients = () => {
                   <DialogTitle className="font-serif">
                     {editingClient ? "Editar Cliente" : "Novo Cliente"}
                   </DialogTitle>
+                  {!editingClient && (
+                    <DialogDescription>
+                      Cadastre um novo cliente. Opcionalmente, crie acesso ao portal.
+                    </DialogDescription>
+                  )}
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
@@ -279,8 +324,42 @@ const Clients = () => {
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     rows={3}
                   />
+                  
+                  {/* Portal Access Option */}
+                  {!editingClient && (
+                    <div className="space-y-3 pt-2 border-t border-border">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="createWithAccess"
+                          checked={createWithAccess}
+                          onCheckedChange={(checked) => setCreateWithAccess(checked === true)}
+                        />
+                        <Label htmlFor="createWithAccess" className="flex items-center gap-2 cursor-pointer">
+                          <Key className="h-4 w-4" />
+                          Criar acesso ao Portal do Cliente
+                        </Label>
+                      </div>
+                      
+                      {createWithAccess && (
+                        <div className="pl-6">
+                          <Input
+                            type="password"
+                            placeholder="Senha para o cliente *"
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            required={createWithAccess}
+                            minLength={6}
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Mínimo 6 caracteres. Compartilhe esta senha com o cliente.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
                   <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                    {editingClient ? "Salvar Alterações" : "Cadastrar Cliente"}
+                    {editingClient ? "Salvar Alterações" : createWithAccess ? "Cadastrar com Acesso" : "Cadastrar Cliente"}
                   </Button>
                 </form>
               </DialogContent>
@@ -318,7 +397,15 @@ const Clients = () => {
                           </span>
                         </div>
                         <div>
-                          <p className="font-medium text-foreground">{client.full_name}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium text-foreground">{client.full_name}</p>
+                            {client.user_id && (
+                              <Badge variant="outline" className="text-xs">
+                                <Key className="h-3 w-3 mr-1" />
+                                Portal
+                              </Badge>
+                            )}
+                          </div>
                           <p className="text-sm text-muted-foreground">{client.email} • {client.phone}</p>
                         </div>
                       </div>
