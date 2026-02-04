@@ -51,14 +51,21 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => navigate("/login")}
             >
-              Área do Cliente
+              Área Restrita
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/client-login")}
+            >
+              Portal do Cliente
             </Button>
             <Button
               size="sm"
@@ -97,10 +104,16 @@ const Header = () => {
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => navigate("/login")}
                 >
-                  Área do Cliente
+                  Área Restrita
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/client-login")}
+                >
+                  Portal do Cliente
                 </Button>
                 <Button
                   className="bg-accent text-accent-foreground hover:bg-accent/90"
