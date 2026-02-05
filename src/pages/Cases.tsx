@@ -185,7 +185,7 @@ const Cases = () => {
           <div className="flex items-center gap-3">
             <Scale className="h-8 w-8 text-sidebar-primary" />
             <div>
-              <span className="font-serif text-lg font-semibold text-sidebar-foreground">Silva & Associados</span>
+              <span className="font-serif text-lg font-semibold text-sidebar-foreground">Fernandez & Fernandes</span>
               <p className="text-xs text-sidebar-foreground/60">Sistema de Gestão</p>
             </div>
           </div>

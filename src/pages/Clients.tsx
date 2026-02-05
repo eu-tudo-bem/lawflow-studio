@@ -213,7 +213,7 @@ const Clients = () => {
             <Scale className="h-8 w-8 text-sidebar-primary" />
             <div>
               <span className="font-serif text-lg font-semibold text-sidebar-foreground">
-                Silva & Associados
+                Fernandez & Fernandes
               </span>
               <p className="text-xs text-sidebar-foreground/60">Sistema de Gestão</p>
             </div>

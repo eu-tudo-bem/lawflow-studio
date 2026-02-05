@@ -5,7 +5,7 @@ const testimonials = [
   {
     name: "Maria Fernanda Costa",
     role: "Empresária",
-    content: "O escritório Silva & Associados foi fundamental para a reestruturação da minha empresa. Profissionais competentes e atenciosos que realmente se importam com seus clientes.",
+    content: "O escritório Fernandez & Fernandes foi fundamental para a reestruturação da minha empresa. Profissionais competentes e atenciosos que realmente se importam com seus clientes.",
     rating: 5,
   },
   {
