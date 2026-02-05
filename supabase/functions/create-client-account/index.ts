@@ -81,7 +81,13 @@ Deno.serve(async (req) => {
 
     const newUserId = authData.user.id;
 
-    // Assign client role
+    // Delete auto-assigned staff role (from trigger) and assign client role
+    await supabaseAdmin
+      .from("user_roles")
+      .delete()
+      .eq("user_id", newUserId)
+      .eq("role", "staff");
+
     const { error: roleError } = await supabaseAdmin
       .from("user_roles")
       .insert({ user_id: newUserId, role: "client" });
