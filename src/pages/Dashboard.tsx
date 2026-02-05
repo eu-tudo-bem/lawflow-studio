@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Scale, Users, Briefcase, Calendar, Mail, LogOut, 
-  Menu, X, Plus, ChevronRight, Clock
+  Menu, X, Plus, ChevronRight, Clock, MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -103,7 +103,8 @@ const Dashboard = () => {
     { icon: Users, label: "Clientes", href: "/dashboard/clients" },
     { icon: Briefcase, label: "Casos", href: "/dashboard/cases" },
     { icon: Calendar, label: "Agendamentos", href: "/dashboard/appointments" },
-    { icon: Mail, label: "Mensagens", href: "/dashboard/messages", badge: stats.messages },
+    { icon: Mail, label: "Contatos do Site", href: "/dashboard/messages", badge: stats.messages },
+    { icon: MessageSquare, label: "Chat com Clientes", href: "/dashboard/chat" },
   ];
 
   return (

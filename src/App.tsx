@@ -11,6 +11,7 @@ import Clients from "./pages/Clients";
 import Cases from "./pages/Cases";
 import Appointments from "./pages/Appointments";
 import Messages from "./pages/Messages";
+import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortal from "./pages/ClientPortal";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/dashboard/cases" element={<Cases />} />
           <Route path="/dashboard/appointments" element={<Appointments />} />
           <Route path="/dashboard/messages" element={<Messages />} />
+          <Route path="/dashboard/chat" element={<Chat />} />
           {/* Client Portal Routes */}
           <Route path="/client-login" element={<ClientLogin />} />
           <Route path="/client-portal" element={<ClientPortal />}>
