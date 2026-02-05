@@ -14,7 +14,7 @@ const Footer = () => {
               <Scale className="h-8 w-8 text-gold" />
               <div>
                 <span className="font-serif text-xl font-semibold">
-                  Silva & Associados
+                  Fernandez & Fernandes
                 </span>
                 <p className="text-xs text-primary-foreground/60">Advocacia & Consultoria</p>
               </div>
@@ -47,7 +47,7 @@ const Footer = () => {
               <li>Av. Paulista, 1000 - Sala 1501</li>
               <li>São Paulo - SP</li>
               <li>(11) 3000-0000</li>
-              <li>contato@silvaassociados.adv.br</li>
+              <li>contato@fernandezfernandes.adv.br</li>
             </ul>
             <div className="flex gap-4 mt-4">
               <a href="#" className="p-2 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-colors">
@@ -66,7 +66,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-primary-foreground/50">
-            © {currentYear} Silva & Associados. Todos os direitos reservados.
+            © {currentYear} Fernandez & Fernandes. Todos os direitos reservados.
           </p>
           <div className="flex gap-6 text-sm text-primary-foreground/50">
             <Link to="/login" className="hover:text-primary-foreground transition-colors">

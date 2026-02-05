@@ -73,7 +73,7 @@ const Login = () => {
               <Scale className="h-8 w-8 text-accent" />
               <div>
                 <span className="font-serif text-xl font-semibold text-foreground">
-                  Silva & Associados
+                  Fernandez & Fernandes
                 </span>
                 <p className="text-xs text-muted-foreground">Área Restrita</p>
               </div>

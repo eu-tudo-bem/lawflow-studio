@@ -24,7 +24,7 @@ const About = () => {
               <span className="text-accent">Justiça</span>
             </h2>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Fundado em 2004, o escritório Silva & Associados nasceu com a missão 
+              Fundado em 2004, o escritório Fernandez & Fernandes nasceu com a missão 
               de oferecer serviços jurídicos de excelência, combinando a tradição 
               do Direito com soluções inovadoras para os desafios contemporâneos.
             </p>

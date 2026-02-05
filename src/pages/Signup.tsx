@@ -61,7 +61,7 @@ const Signup = () => {
           </h2>
           <p className="text-primary-foreground/70">
             Crie sua conta e tenha acesso ao sistema de gestão do escritório 
-            Silva & Associados.
+            Fernandez & Fernandes.
           </p>
         </div>
       </div>
@@ -82,7 +82,7 @@ const Signup = () => {
               <Scale className="h-8 w-8 text-accent" />
               <div>
                 <span className="font-serif text-xl font-semibold text-foreground">
-                  Silva & Associados
+                  Fernandez & Fernandes
                 </span>
                 <p className="text-xs text-muted-foreground">Criar Conta</p>
               </div>

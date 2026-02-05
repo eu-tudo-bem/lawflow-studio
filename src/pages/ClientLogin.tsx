@@ -76,7 +76,7 @@ const ClientLogin = () => {
                 <span className="font-serif text-xl font-semibold text-foreground">
                   Portal do Cliente
                 </span>
-                <p className="text-xs text-muted-foreground">Silva & Associados</p>
+                <p className="text-xs text-muted-foreground">Fernandez & Fernandes</p>
               </div>
             </div>
 

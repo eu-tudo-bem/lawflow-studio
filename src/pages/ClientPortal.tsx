@@ -73,7 +73,7 @@ const ClientPortal = () => {
                 <span className="font-serif text-lg font-semibold text-foreground">
                   Portal do Cliente
                 </span>
-                <p className="text-xs text-muted-foreground hidden sm:block">Silva & Associados</p>
+                <p className="text-xs text-muted-foreground hidden sm:block">Fernandez & Fernandes</p>
               </div>
             </div>
 
