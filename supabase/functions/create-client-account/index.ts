@@ -54,9 +54,9 @@ Deno.serve(async (req) => {
       .from("user_roles")
       .select("role")
       .eq("user_id", requestingUser.id)
-      .single();
+      .in("role", ["admin", "staff"]);
 
-    if (!roleData || (roleData.role !== "admin" && roleData.role !== "staff")) {
+    if (!roleData || roleData.length === 0) {
       throw new Error("Only admin or staff can create client accounts");
     }
 
