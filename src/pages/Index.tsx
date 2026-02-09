@@ -5,7 +5,6 @@ import About from "@/components/landing/About";
 import Testimonials from "@/components/landing/Testimonials";
 import Contact from "@/components/landing/Contact";
 import Footer from "@/components/landing/Footer";
-import TerminationCalculator from "@/components/landing/TerminationCalculator";
 
 const Index = () => {
   return (
@@ -13,7 +12,6 @@ const Index = () => {
       <Header />
       <Hero />
       <Services />
-      <TerminationCalculator />
       <About />
       <Testimonials />
       <Contact />

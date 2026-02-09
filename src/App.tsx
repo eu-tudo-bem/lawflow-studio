@@ -13,6 +13,7 @@ import Appointments from "./pages/Appointments";
 import Messages from "./pages/Messages";
 import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
+import Calculadora from "./pages/Calculadora";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortal from "./pages/ClientPortal";
 import ClientCases from "./pages/client/ClientCases";
@@ -29,6 +30,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/calculadora" element={<Calculadora />} />
           {/* Lawyer/Admin Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
