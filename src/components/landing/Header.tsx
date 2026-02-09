@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navLinks = [
     { label: "Início", href: "#home" },
@@ -17,15 +18,18 @@ const Header = () => {
   ] as const;
 
   const handleNavClick = (href: string, isRoute?: boolean) => {
+    setIsMenuOpen(false);
     if (isRoute) {
       navigate(href);
+    } else if (location.pathname !== "/") {
+      // Navigate to home first, then scroll after page loads
+      navigate("/" + href);
     } else {
       const element = document.querySelector(href);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
-    setIsMenuOpen(false);
   };
 
   return (
