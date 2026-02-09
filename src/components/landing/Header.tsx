@@ -11,15 +11,19 @@ const Header = () => {
     { label: "Início", href: "#home" },
     { label: "Sobre", href: "#about" },
     { label: "Áreas de Atuação", href: "#services" },
-    { label: "Calculadora", href: "#calculadora" },
+    { label: "Calculadora", href: "/calculadora", isRoute: true },
     { label: "Depoimentos", href: "#testimonials" },
     { label: "Contato", href: "#contact" },
-  ];
+  ] as const;
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+  const handleNavClick = (href: string, isRoute?: boolean) => {
+    if (isRoute) {
+      navigate(href);
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
     setIsMenuOpen(false);
   };
@@ -44,7 +48,7 @@ const Header = () => {
             {navLinks.map((link) => (
               <button
                 key={link.href}
-                onClick={() => scrollToSection(link.href)}
+                onClick={() => handleNavClick(link.href, 'isRoute' in link ? link.isRoute : false)}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
@@ -71,7 +75,7 @@ const Header = () => {
             <Button
               size="sm"
               className="bg-accent text-accent-foreground hover:bg-accent/90"
-              onClick={() => scrollToSection("#contact")}
+              onClick={() => handleNavClick("#contact")}
             >
               Agendar Consulta
             </Button>
@@ -97,7 +101,7 @@ const Header = () => {
               {navLinks.map((link) => (
                 <button
                   key={link.href}
-                  onClick={() => scrollToSection(link.href)}
+                  onClick={() => handleNavClick(link.href, 'isRoute' in link ? link.isRoute : false)}
                   className="text-left py-2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
@@ -118,7 +122,7 @@ const Header = () => {
                 </Button>
                 <Button
                   className="bg-accent text-accent-foreground hover:bg-accent/90"
-                  onClick={() => scrollToSection("#contact")}
+                  onClick={() => handleNavClick("#contact")}
                 >
                   Agendar Consulta
                 </Button>
