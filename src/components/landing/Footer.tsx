@@ -38,6 +38,14 @@ const Footer = () => {
               <li>Direito Trabalhista</li>
               <li>Direito Tributário</li>
             </ul>
+            <h4 className="font-semibold mb-4 mt-6">Ferramentas Gratuitas</h4>
+            <ul className="space-y-2 text-primary-foreground/70 text-sm">
+              <li>
+                <Link to="/calculadora" className="hover:text-primary-foreground transition-colors">
+                  Calculadora de Rescisão
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Contact */}
