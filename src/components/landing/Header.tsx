@@ -12,10 +12,9 @@ const Header = () => {
     { label: "Início", href: "#home" },
     { label: "Sobre", href: "#about" },
     { label: "Áreas de Atuação", href: "#services" },
-    { label: "Calculadora", href: "/calculadora", isRoute: true },
     { label: "Depoimentos", href: "#testimonials" },
     { label: "Contato", href: "#contact" },
-  ] as const;
+  ];
 
   const handleNavClick = (href: string, isRoute?: boolean) => {
     setIsMenuOpen(false);
@@ -52,7 +51,7 @@ const Header = () => {
             {navLinks.map((link) => (
               <button
                 key={link.href}
-                onClick={() => handleNavClick(link.href, 'isRoute' in link ? link.isRoute : false)}
+                onClick={() => handleNavClick(link.href)}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
@@ -105,7 +104,7 @@ const Header = () => {
               {navLinks.map((link) => (
                 <button
                   key={link.href}
-                  onClick={() => handleNavClick(link.href, 'isRoute' in link ? link.isRoute : false)}
+                  onClick={() => handleNavClick(link.href)}
                   className="text-left py-2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {link.label}
