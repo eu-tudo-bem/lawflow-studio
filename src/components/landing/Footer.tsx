@@ -45,6 +45,11 @@ const Footer = () => {
                   Calculadora de Rescisão
                 </Link>
               </li>
+              <li>
+                <Link to="/simulador-pensao" className="hover:text-primary-foreground transition-colors">
+                  Simulador de Pensão Alimentícia
+                </Link>
+              </li>
             </ul>
           </div>
 

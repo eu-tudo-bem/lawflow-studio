@@ -14,6 +14,7 @@ import Messages from "./pages/Messages";
 import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 import Calculadora from "./pages/Calculadora";
+import SimuladorPensao from "./pages/SimuladorPensao";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortal from "./pages/ClientPortal";
 import ClientCases from "./pages/client/ClientCases";
@@ -31,6 +32,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/calculadora" element={<Calculadora />} />
+          <Route path="/simulador-pensao" element={<SimuladorPensao />} />
           {/* Lawyer/Admin Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
