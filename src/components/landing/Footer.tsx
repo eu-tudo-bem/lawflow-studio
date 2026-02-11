@@ -50,6 +50,11 @@ const Footer = () => {
                   Simulador de Pensão Alimentícia
                 </Link>
               </li>
+              <li>
+                <Link to="/simulador-juros" className="hover:text-primary-foreground transition-colors">
+                  Simulador de Juros Abusivos
+                </Link>
+              </li>
             </ul>
           </div>
 
