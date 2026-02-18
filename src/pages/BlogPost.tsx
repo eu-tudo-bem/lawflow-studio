@@ -332,13 +332,15 @@ export default function BlogPost() {
                   )}
                 </div>
 
-                {/* Urgency notice */}
-                <div className="mt-4 bg-[hsl(0_84%_60%)]/10 border border-[hsl(0_84%_60%)]/30 rounded-xl p-4 text-sm">
-                  <p className="font-semibold text-[hsl(0_84%_60%)] mb-1">⚠ Atenção ao prazo!</p>
-                  <p className="text-[hsl(var(--muted-foreground))]">
-                    Você tem até 2 anos após sair da empresa para reclamar direitos trabalhistas.
-                  </p>
-                </div>
+                {/* Urgency notice - only for non-family law */}
+                {!isFamilyLaw && (
+                  <div className="mt-4 bg-[hsl(0_84%_60%)]/10 border border-[hsl(0_84%_60%)]/30 rounded-xl p-4 text-sm">
+                    <p className="font-semibold text-[hsl(0_84%_60%)] mb-1">⚠ Atenção ao prazo!</p>
+                    <p className="text-[hsl(var(--muted-foreground))]">
+                      Você tem até 2 anos após sair da empresa para reclamar direitos trabalhistas.
+                    </p>
+                  </div>
+                )}
 
                 {/* Family Law - Simulator & Info */}
                 {isFamilyLaw && (
