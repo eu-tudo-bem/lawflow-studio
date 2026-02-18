@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Scale } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -9,12 +10,12 @@ const Header = () => {
   const location = useLocation();
 
   const navLinks = [
-  { label: "Início", href: "#home" },
-  { label: "Sobre", href: "#about" },
-  { label: "Áreas de Atuação", href: "#services" },
-  { label: "Depoimentos", href: "#testimonials" },
-  { label: "Contato", href: "#contact" }];
-
+    { label: "Início", href: "#home" },
+    { label: "Sobre", href: "#about" },
+    { label: "Áreas de Atuação", href: "#services" },
+    { label: "Depoimentos", href: "#testimonials" },
+    { label: "Contato", href: "#contact" },
+  ];
 
   const handleNavClick = (href: string, isRoute?: boolean) => {
     setIsMenuOpen(false);
@@ -37,8 +38,8 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <Scale className="h-8 w-8 text-accent" />
-            <div className="border-0">
+            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10 rounded-lg" />
+            <div>
               <span className="font-serif text-xl font-semibold text-foreground">
                 Fernandez & Fernandes
               </span>
@@ -48,15 +49,15 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) =>
-            <button
-              key={link.href}
-              onClick={() => handleNavClick(link.href)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-
+            {navLinks.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => handleNavClick(link.href)}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
                 {link.label}
               </button>
-            )}
+            ))}
           </nav>
 
           {/* CTA Buttons */}
@@ -64,22 +65,22 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/login")}>
-
+              onClick={() => navigate("/login")}
+            >
               Área Restrita
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigate("/client-login")}>
-
+              onClick={() => navigate("/client-login")}
+            >
               Portal do Cliente
             </Button>
             <Button
               size="sm"
               className="bg-accent text-accent-foreground hover:bg-accent/90"
-              onClick={() => handleNavClick("#contact")}>
-
+              onClick={() => handleNavClick("#contact")}
+            >
               Agendar Consulta
             </Button>
           </div>
@@ -87,55 +88,55 @@ const Header = () => {
           {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}>
-
-            {isMenuOpen ?
-            <X className="h-6 w-6" /> :
-
-            <Menu className="h-6 w-6" />
-            }
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen &&
-        <div className="md:hidden py-4 border-t border-border animate-fade-in">
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-border animate-fade-in">
             <nav className="flex flex-col gap-4">
-              {navLinks.map((link) =>
-            <button
-              key={link.href}
-              onClick={() => handleNavClick(link.href)}
-              className="text-left py-2 text-muted-foreground hover:text-foreground transition-colors">
-
+              {navLinks.map((link) => (
+                <button
+                  key={link.href}
+                  onClick={() => handleNavClick(link.href)}
+                  className="text-left py-2 text-muted-foreground hover:text-foreground transition-colors"
+                >
                   {link.label}
                 </button>
-            )}
+              ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 <Button
-                variant="ghost"
-                onClick={() => navigate("/login")}>
-
+                  variant="ghost"
+                  onClick={() => navigate("/login")}
+                >
                   Área Restrita
                 </Button>
                 <Button
-                variant="outline"
-                onClick={() => navigate("/client-login")}>
-
+                  variant="outline"
+                  onClick={() => navigate("/client-login")}
+                >
                   Portal do Cliente
                 </Button>
                 <Button
-                className="bg-accent text-accent-foreground hover:bg-accent/90"
-                onClick={() => handleNavClick("#contact")}>
-
+                  className="bg-accent text-accent-foreground hover:bg-accent/90"
+                  onClick={() => handleNavClick("#contact")}
+                >
                   Agendar Consulta
                 </Button>
               </div>
             </nav>
           </div>
-        }
+        )}
       </div>
-    </header>);
-
+    </header>
+  );
 };
 
 export default Header;
