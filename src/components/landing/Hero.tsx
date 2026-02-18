@@ -55,8 +55,7 @@ const Hero = () => {
             </Button>
             <Button
               size="lg"
-              variant="outline"
-              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
               onClick={() => document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" })}
             >
               Conheça nossos Serviços

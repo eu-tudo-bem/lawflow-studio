@@ -112,8 +112,8 @@ const Header = () => {
               Área Restrita
             </Button>
             <Button
-              variant="outline"
               size="sm"
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
               onClick={() => navigate("/client-login")}
             >
               Portal do Cliente
@@ -181,7 +181,7 @@ const Header = () => {
                   Área Restrita
                 </Button>
                 <Button
-                  variant="outline"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90"
                   onClick={() => navigate("/client-login")}
                 >
                   Portal do Cliente
