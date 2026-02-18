@@ -19,7 +19,7 @@ interface Post {
   views: number;
   featured: boolean;
   tags: string[] | null;
-  blog_categories: { name: string; slug: string } | null;
+  blog_categories: {name: string;slug: string;} | null;
 }
 
 interface Category {
@@ -40,7 +40,7 @@ function formatDate(date: string | null) {
   return new Date(date).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "long",
-    year: "numeric",
+    year: "numeric"
   });
 }
 
@@ -80,12 +80,12 @@ export default function Blog() {
 
   async function fetchPosts() {
     setLoading(true);
-    let query = supabase
-      .from("blog_posts")
-      .select("id, title, slug, subtitle, excerpt, cover_image_url, published_at, views, featured, tags, blog_categories(name, slug)")
-      .eq("status", "published")
-      .order("featured", { ascending: false })
-      .order("published_at", { ascending: false });
+    let query = supabase.
+    from("blog_posts").
+    select("id, title, slug, subtitle, excerpt, cover_image_url, published_at, views, featured, tags, blog_categories(name, slug)").
+    eq("status", "published").
+    order("featured", { ascending: false }).
+    order("published_at", { ascending: false });
 
     if (activeCategory) {
       const cat = categories.find((c) => c.slug === activeCategory);
@@ -93,16 +93,16 @@ export default function Blog() {
     }
 
     const { data } = await query;
-    setPosts((data as Post[]) || []);
+    setPosts(data as Post[] || []);
     setLoading(false);
   }
 
   const filteredPosts = posts.filter(
     (p) =>
-      !search ||
-      p.title.toLowerCase().includes(search.toLowerCase()) ||
-      (p.excerpt || "").toLowerCase().includes(search.toLowerCase()) ||
-      (p.tags || []).some((t) => t.toLowerCase().includes(search.toLowerCase()))
+    !search ||
+    p.title.toLowerCase().includes(search.toLowerCase()) ||
+    (p.excerpt || "").toLowerCase().includes(search.toLowerCase()) ||
+    (p.tags || []).some((t) => t.toLowerCase().includes(search.toLowerCase()))
   );
 
   const heroPost = filteredPosts.find((p) => p.featured) || filteredPosts[0];
@@ -120,10 +120,10 @@ export default function Blog() {
             "@type": "Blog",
             name: "Guia Jurídico Atualizado",
             description: "Central de conteúdo jurídico do escritório Fernandez & Fernandes",
-            url: window.location.origin + "/blog",
-          }),
-        }}
-      />
+            url: window.location.origin + "/blog"
+          })
+        }} />
+
 
       <main className="min-h-screen bg-[hsl(var(--background))] pt-20">
         {/* Hero Header */}
@@ -136,7 +136,7 @@ export default function Blog() {
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-[hsl(45_20%_95%)] mb-4">
               Guia Jurídico Atualizado 2026
             </h1>
-            <p className="text-[hsl(45_20%_95%)]/70 text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-[hsl(45_20%_95%)]/70 text-lg max-w-2xl mx-auto mb-8 text-white">
               Conteúdo especializado em linguagem clara. Conheça seus direitos e tome decisões informadas.
             </p>
             {/* Search */}
@@ -146,8 +146,8 @@ export default function Blog() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar artigos, temas ou palavras-chave..."
-                className="pl-11 h-12 bg-[hsl(0_0%_100%)] text-[hsl(var(--foreground))] border-0 rounded-xl shadow-elevated"
-              />
+                className="pl-11 h-12 bg-[hsl(0_0%_100%)] text-[hsl(var(--foreground))] border-0 rounded-xl shadow-elevated" />
+
             </div>
           </div>
         </section>
@@ -159,59 +159,59 @@ export default function Blog() {
               variant={!activeCategory ? "default" : "outline"}
               size="sm"
               onClick={() => setSearchParams({})}
-              className={!activeCategory ? "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shrink-0" : "shrink-0"}
-            >
+              className={!activeCategory ? "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shrink-0" : "shrink-0"}>
+
               Todos
             </Button>
-            {categories.map((cat) => (
-              <Button
-                key={cat.id}
-                variant={activeCategory === cat.slug ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSearchParams({ categoria: cat.slug })}
-                className={`shrink-0 ${activeCategory === cat.slug ? "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]" : ""}`}
-              >
+            {categories.map((cat) =>
+            <Button
+              key={cat.id}
+              variant={activeCategory === cat.slug ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSearchParams({ categoria: cat.slug })}
+              className={`shrink-0 ${activeCategory === cat.slug ? "bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]" : ""}`}>
+
                 {cat.name}
               </Button>
-            ))}
+            )}
           </div>
         </section>
 
         <div id="conteudo" className="container mx-auto px-4 py-12">
-          {loading ? (
-            <div className="grid md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="animate-pulse bg-[hsl(var(--muted))] rounded-2xl h-72" />
-              ))}
-            </div>
-          ) : filteredPosts.length === 0 ? (
-            <div className="text-center py-24">
+          {loading ?
+          <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) =>
+            <div key={i} className="animate-pulse bg-[hsl(var(--muted))] rounded-2xl h-72" />
+            )}
+            </div> :
+          filteredPosts.length === 0 ?
+          <div className="text-center py-24">
               <BookOpen className="h-16 w-16 text-[hsl(var(--muted-foreground))] mx-auto mb-4 opacity-40" />
               <h2 className="font-serif text-2xl text-[hsl(var(--foreground))] mb-2">Nenhum artigo encontrado</h2>
               <p className="text-[hsl(var(--muted-foreground))]">Tente outro termo de busca ou categoria.</p>
-            </div>
-          ) : (
-            <>
+            </div> :
+
+          <>
               {/* Hero Post */}
-              {heroPost && (
-                <Link to={`/blog/${heroPost.slug}`} className="group block mb-12">
+              {heroPost &&
+            <Link to={`/blog/${heroPost.slug}`} className="group block mb-12">
                   <article className="relative overflow-hidden rounded-3xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-elevated">
-                    {heroPost.cover_image_url && (
-                      <div className="absolute inset-0">
+                    {heroPost.cover_image_url &&
+                <div className="absolute inset-0">
                         <img src={heroPost.cover_image_url} alt={heroPost.title} className="w-full h-full object-cover opacity-20 group-hover:opacity-25 transition-opacity" />
                         <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--primary))]/80 to-transparent" />
                       </div>
-                    )}
+                }
                     <div className="relative p-8 md:p-12 max-w-3xl">
                       <div className="flex items-center gap-3 mb-4">
-                        {heroPost.featured && (
-                          <span className="bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                        {heroPost.featured &&
+                    <span className="bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                             Destaque
                           </span>
-                        )}
-                        {heroPost.blog_categories && (
-                          <span className="text-[hsl(var(--primary-foreground))]/70 text-sm">{heroPost.blog_categories.name}</span>
-                        )}
+                    }
+                        {heroPost.blog_categories &&
+                    <span className="text-[hsl(var(--primary-foreground))]/70 text-sm">{heroPost.blog_categories.name}</span>
+                    }
                       </div>
                       <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3 group-hover:text-[hsl(var(--accent))] transition-colors">
                         {heroPost.title}
@@ -228,44 +228,44 @@ export default function Blog() {
                     </div>
                   </article>
                 </Link>
-              )}
+            }
 
               {/* Other Posts Grid */}
-              {otherPosts.length > 0 && (
-                <>
+              {otherPosts.length > 0 &&
+            <>
                   <h2 className="font-serif text-2xl font-bold text-[hsl(var(--foreground))] mb-6">
                     {activeCategory ? "Artigos da categoria" : "Mais artigos"}
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {otherPosts.map((post) => (
-                      <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                    {otherPosts.map((post) =>
+                <Link key={post.id} to={`/blog/${post.slug}`} className="group">
                         <article className="h-full bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 flex flex-col">
-                          {post.cover_image_url ? (
-                            <div className="aspect-video overflow-hidden bg-[hsl(var(--muted))]">
+                          {post.cover_image_url ?
+                    <div className="aspect-video overflow-hidden bg-[hsl(var(--muted))]">
                               <img src={post.cover_image_url} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                            </div>
-                          ) : (
-                            <div className="aspect-video bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--primary))]/60 flex items-center justify-center">
+                            </div> :
+
+                    <div className="aspect-video bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--primary))]/60 flex items-center justify-center">
                               <BookOpen className="h-12 w-12 text-[hsl(var(--primary-foreground))]/30" />
                             </div>
-                          )}
+                    }
                           <div className="p-6 flex flex-col flex-1">
-                            {post.blog_categories && (
-                              <Badge variant="secondary" className="w-fit mb-3 text-xs">{post.blog_categories.name}</Badge>
-                            )}
+                            {post.blog_categories &&
+                      <Badge variant="secondary" className="w-fit mb-3 text-xs">{post.blog_categories.name}</Badge>
+                      }
                             <h3 className="font-serif text-xl font-bold text-[hsl(var(--foreground))] mb-2 line-clamp-2 group-hover:text-[hsl(var(--accent))] transition-colors flex-1">
                               {post.title}
                             </h3>
                             {post.excerpt && <p className="text-[hsl(var(--muted-foreground))] text-sm mb-4 line-clamp-3">{post.excerpt}</p>}
-                            {post.tags && post.tags.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mb-4">
-                                {post.tags.slice(0, 3).map((tag) => (
-                                  <span key={tag} className="flex items-center gap-1 text-xs text-[hsl(var(--muted-foreground))] bg-[hsl(var(--muted))] px-2 py-0.5 rounded-full">
+                            {post.tags && post.tags.length > 0 &&
+                      <div className="flex flex-wrap gap-1 mb-4">
+                                {post.tags.slice(0, 3).map((tag) =>
+                        <span key={tag} className="flex items-center gap-1 text-xs text-[hsl(var(--muted-foreground))] bg-[hsl(var(--muted))] px-2 py-0.5 rounded-full">
                                     <Tag className="h-3 w-3" />{tag}
                                   </span>
-                                ))}
+                        )}
                               </div>
-                            )}
+                      }
                             <div className="flex items-center justify-between text-xs text-[hsl(var(--muted-foreground))] mt-auto pt-4 border-t border-[hsl(var(--border))]">
                               <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{formatDate(post.published_at)}</span>
                               <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{estimateReadingTime(post.excerpt)} min</span>
@@ -273,12 +273,12 @@ export default function Blog() {
                           </div>
                         </article>
                       </Link>
-                    ))}
+                )}
                   </div>
                 </>
-              )}
+            }
             </>
-          )}
+          }
 
           {/* CTA Banner */}
           <div className="mt-16 bg-hero rounded-3xl p-8 md:p-12 text-center">
@@ -291,15 +291,15 @@ export default function Blog() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold"
-                onClick={() => navigate("/#contact")}
-              >
+                onClick={() => navigate("/#contact")}>
+
                 Falar com Advogado
               </Button>
               <Button
                 variant="outline"
                 className="border-[hsl(45_20%_95%)]/30 text-[hsl(45_20%_95%)] hover:bg-[hsl(220_50%_20%)]"
-                onClick={() => navigate("/calculadora#simulador")}
-              >
+                onClick={() => navigate("/calculadora#simulador")}>
+
                 Ver Ferramentas Gratuitas
               </Button>
             </div>
@@ -307,6 +307,6 @@ export default function Blog() {
         </div>
       </main>
       <Footer />
-    </>
-  );
+    </>);
+
 }
