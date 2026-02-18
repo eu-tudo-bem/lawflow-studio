@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import logoImg from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 
@@ -9,13 +9,33 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [isMobileToolsOpen, setIsMobileToolsOpen] = useState(false);
+  const toolsRef = useRef<HTMLDivElement>(null);
+
   const navLinks = [
     { label: "Início", href: "#home" },
     { label: "Sobre", href: "#about" },
     { label: "Áreas de Atuação", href: "#services" },
     { label: "Depoimentos", href: "#testimonials" },
-    { label: "Contato", href: "#contact" },
   ];
+
+  const toolsLinks = [
+    { label: "Calculadora de Rescisão", href: "/calculadora#simulador" },
+    { label: "Simulador de Pensão Alimentícia", href: "/simulador-pensao#simulador" },
+    { label: "Simulador de Juros Abusivos", href: "/simulador-juros#simulador" },
+    { label: "Simulador de Aposentadoria", href: "/simulador-aposentadoria#simulador" },
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (toolsRef.current && !toolsRef.current.contains(event.target as Node)) {
+        setIsToolsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleNavClick = (href: string, isRoute?: boolean) => {
     setIsMenuOpen(false);
@@ -58,6 +78,28 @@ const Header = () => {
                 {link.label}
               </button>
             ))}
+            <div className="relative" ref={toolsRef}>
+              <button
+                onClick={() => setIsToolsOpen(!isToolsOpen)}
+                className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Ferramentas Gratuitas
+                <ChevronDown className={`h-4 w-4 transition-transform ${isToolsOpen ? "rotate-180" : ""}`} />
+              </button>
+              {isToolsOpen && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg py-2 animate-fade-in">
+                  {toolsLinks.map((link) => (
+                    <button
+                      key={link.href}
+                      onClick={() => { setIsToolsOpen(false); navigate(link.href); }}
+                      className="block w-full text-left px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* CTA Buttons */}
@@ -111,6 +153,26 @@ const Header = () => {
                   {link.label}
                 </button>
               ))}
+              <button
+                onClick={() => setIsMobileToolsOpen(!isMobileToolsOpen)}
+                className="flex items-center justify-between py-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Ferramentas Gratuitas
+                <ChevronDown className={`h-4 w-4 transition-transform ${isMobileToolsOpen ? "rotate-180" : ""}`} />
+              </button>
+              {isMobileToolsOpen && (
+                <div className="pl-4 flex flex-col gap-2">
+                  {toolsLinks.map((link) => (
+                    <button
+                      key={link.href}
+                      onClick={() => { setIsMenuOpen(false); setIsMobileToolsOpen(false); navigate(link.href); }}
+                      className="text-left py-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 <Button
                   variant="ghost"
