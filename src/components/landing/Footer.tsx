@@ -31,13 +31,28 @@ const Footer = () => {
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold mb-4">Áreas de Atuação</h4>
+            <h4 className="font-semibold mb-4">Conteúdo & Ferramentas</h4>
             <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
-              <li>Direito Empresarial</li>
-              <li>Direito de Família</li>
-              <li>Direito Civil</li>
-              <li>Direito Trabalhista</li>
-              <li>Direito Tributário</li>
+              <li>
+                <Link to="/blog" className="hover:text-[hsl(45_20%_95%)] transition-colors font-medium text-[hsl(45_20%_95%)]/90">
+                  📚 Blog Jurídico
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog?categoria=direito-trabalhista" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                  Direito Trabalhista
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog?categoria=direito-previdenciario" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                  Direito Previdenciário
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog?categoria=direito-de-familia" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                  Direito de Família
+                </Link>
+              </li>
             </ul>
             <h4 className="font-semibold mb-4 mt-6">Ferramentas Gratuitas</h4>
             <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
@@ -98,6 +113,9 @@ const Footer = () => {
             © {currentYear} Fernandez & Fernandes. Todos os direitos reservados.
           </p>
           <div className="flex gap-6 text-sm text-[hsl(45_20%_95%)]/50">
+            <Link to="/blog" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+              Blog Jurídico
+            </Link>
             <Link to="/login" className="hover:text-[hsl(45_20%_95%)] transition-colors">
               Área Restrita
             </Link>

@@ -43,7 +43,6 @@ const Header = () => {
     if (isRoute) {
       navigate(href);
     } else if (location.pathname !== "/") {
-      // Navigate to home first, then scroll after page loads
       navigate("/" + href);
     } else {
       const element = document.querySelector(href);
@@ -79,6 +78,12 @@ const Header = () => {
                 {link.label}
               </button>
             ))}
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
+            >
+              Blog Jurídico
+            </Link>
             <div className="relative" ref={toolsRef}>
               <button
                 onClick={() => setIsToolsOpen(!isToolsOpen)}
@@ -154,6 +159,13 @@ const Header = () => {
                   {link.label}
                 </button>
               ))}
+              <Link
+                to="/blog"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-left py-2 text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
+              >
+                Blog Jurídico
+              </Link>
               <button
                 onClick={() => setIsMobileToolsOpen(!isMobileToolsOpen)}
                 className="flex items-center justify-between py-2 text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
