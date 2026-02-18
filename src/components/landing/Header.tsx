@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, Scale } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -37,7 +38,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <Scale className="h-8 w-8 text-accent" />
+            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10 rounded-lg" />
             <div>
               <span className="font-serif text-xl font-semibold text-foreground">
                 Fernandez & Fernandes
