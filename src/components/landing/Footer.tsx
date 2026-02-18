@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Logo & About */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10 rounded-lg" />
+              <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10" />
               <div>
                 <span className="font-serif text-xl font-semibold">
                   Fernandez & Fernandes
