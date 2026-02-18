@@ -17,6 +17,7 @@ import Calculadora from "./pages/Calculadora";
 import SimuladorPensao from "./pages/SimuladorPensao";
 import SimuladorJuros from "./pages/SimuladorJuros";
 import SimuladorAposentadoria from "./pages/SimuladorAposentadoria";
+import SimuladorHorasExtras from "./pages/SimuladorHorasExtras";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortal from "./pages/ClientPortal";
 import ClientCases from "./pages/client/ClientCases";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/simulador-pensao" element={<SimuladorPensao />} />
           <Route path="/simulador-juros" element={<SimuladorJuros />} />
           <Route path="/simulador-aposentadoria" element={<SimuladorAposentadoria />} />
+          <Route path="/simulador-horas-extras" element={<SimuladorHorasExtras />} />
           {/* Lawyer/Admin Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
