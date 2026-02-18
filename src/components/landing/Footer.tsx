@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background/95 text-foreground border-t border-border">
+    <footer className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] border-t border-[hsl(220_30%_20%)]">
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-4 gap-12">
           {/* Logo & About */}
@@ -17,14 +17,14 @@ const Footer = () => {
                 <span className="font-serif text-xl font-semibold">
                   Fernandez & Fernandes
                 </span>
-                <p className="text-xs text-muted-foreground">Advocacia & Consultoria</p>
+                <p className="text-xs text-[hsl(45_20%_95%)]/60">Advocacia & Consultoria</p>
               </div>
             </div>
-            <p className="text-muted-foreground leading-relaxed max-w-md">
+            <p className="text-[hsl(45_20%_95%)]/70 leading-relaxed max-w-md">
               Há mais de 20 anos oferecendo soluções jurídicas de excelência, 
               com ética, transparência e comprometimento com nossos clientes.
             </p>
-            <p className="text-sm text-muted-foreground/70 mt-4">
+            <p className="text-sm text-[hsl(45_20%_95%)]/50 mt-4">
               OAB/SP 12.345
             </p>
           </div>
@@ -32,7 +32,7 @@ const Footer = () => {
           {/* Links */}
           <div>
             <h4 className="font-semibold mb-4">Áreas de Atuação</h4>
-            <ul className="space-y-2 text-muted-foreground text-sm">
+            <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
               <li>Direito Empresarial</li>
               <li>Direito de Família</li>
               <li>Direito Civil</li>
@@ -40,24 +40,24 @@ const Footer = () => {
               <li>Direito Tributário</li>
             </ul>
             <h4 className="font-semibold mb-4 mt-6">Ferramentas Gratuitas</h4>
-            <ul className="space-y-2 text-muted-foreground text-sm">
+            <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
               <li>
-                <Link to="/calculadora#simulador" className="hover:text-foreground transition-colors">
+                <Link to="/calculadora#simulador" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Calculadora de Rescisão
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-pensao#simulador" className="hover:text-foreground transition-colors">
+                <Link to="/simulador-pensao#simulador" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Simulador de Pensão Alimentícia
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-juros#simulador" className="hover:text-foreground transition-colors">
+                <Link to="/simulador-juros#simulador" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Simulador de Juros Abusivos
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-aposentadoria#simulador" className="hover:text-foreground transition-colors">
+                <Link to="/simulador-aposentadoria#simulador" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Simulador de Aposentadoria
                 </Link>
               </li>
@@ -67,20 +67,20 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h4 className="font-semibold mb-4">Contato</h4>
-            <ul className="space-y-2 text-muted-foreground text-sm">
+            <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
               <li>Av. Paulista, 1000 - Sala 1501</li>
               <li>São Paulo - SP</li>
               <li>(11) 3000-0000</li>
               <li>contato@fernandezfernandes.adv.br</li>
             </ul>
             <div className="flex gap-4 mt-4">
-              <a href="#" className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
+              <a href="#" className="p-2 bg-[hsl(220_50%_20%)] rounded-full hover:bg-[hsl(220_50%_25%)] transition-colors">
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href="#" className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
+              <a href="#" className="p-2 bg-[hsl(220_50%_20%)] rounded-full hover:bg-[hsl(220_50%_25%)] transition-colors">
                 <Linkedin className="h-4 w-4" />
               </a>
-              <a href="#" className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
+              <a href="#" className="p-2 bg-[hsl(220_50%_20%)] rounded-full hover:bg-[hsl(220_50%_25%)] transition-colors">
                 <Facebook className="h-4 w-4" />
               </a>
             </div>
@@ -88,12 +88,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground/70">
+        <div className="border-t border-[hsl(220_30%_20%)] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-[hsl(45_20%_95%)]/50">
             © {currentYear} Fernandez & Fernandes. Todos os direitos reservados.
           </p>
-          <div className="flex gap-6 text-sm text-muted-foreground/70">
-            <Link to="/login" className="hover:text-foreground transition-colors">
+          <div className="flex gap-6 text-sm text-[hsl(45_20%_95%)]/50">
+            <Link to="/login" className="hover:text-[hsl(45_20%_95%)] transition-colors">
               Área Restrita
             </Link>
           </div>
