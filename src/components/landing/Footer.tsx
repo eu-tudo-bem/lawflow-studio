@@ -34,22 +34,22 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Conteúdo & Ferramentas</h4>
             <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
               <li>
-                <Link to="/blog" className="hover:text-[hsl(45_20%_95%)] transition-colors font-medium text-[hsl(45_20%_95%)]/90">
+                <Link to="/blog#conteudo" className="hover:text-[hsl(45_20%_95%)] transition-colors font-medium text-[hsl(45_20%_95%)]/90">
                   📚 Blog Jurídico
                 </Link>
               </li>
               <li>
-                <Link to="/blog?categoria=direito-trabalhista" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                <Link to="/blog?categoria=direito-trabalhista#conteudo" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Direito Trabalhista
                 </Link>
               </li>
               <li>
-                <Link to="/blog?categoria=direito-previdenciario" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                <Link to="/blog?categoria=direito-previdenciario#conteudo" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Direito Previdenciário
                 </Link>
               </li>
               <li>
-                <Link to="/blog?categoria=direito-de-familia" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                <Link to="/blog?categoria=direito-de-familia#conteudo" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Direito de Família
                 </Link>
               </li>
@@ -113,7 +113,7 @@ const Footer = () => {
             © {currentYear} Fernandez & Fernandes. Todos os direitos reservados.
           </p>
           <div className="flex gap-6 text-sm text-[hsl(45_20%_95%)]/50">
-            <Link to="/blog" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+            <Link to="/blog#conteudo" className="hover:text-[hsl(45_20%_95%)] transition-colors">
               Blog Jurídico
             </Link>
             <Link to="/login" className="hover:text-[hsl(45_20%_95%)] transition-colors">
