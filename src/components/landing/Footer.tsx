@@ -41,22 +41,22 @@ const Footer = () => {
             <h4 className="font-semibold mb-4 mt-6">Ferramentas Gratuitas</h4>
             <ul className="space-y-2 text-primary-foreground/70 text-sm">
               <li>
-                <Link to="/calculadora" className="hover:text-primary-foreground transition-colors">
+                <Link to="/calculadora#simulador" className="hover:text-primary-foreground transition-colors">
                   Calculadora de Rescisão
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-pensao" className="hover:text-primary-foreground transition-colors">
+                <Link to="/simulador-pensao#simulador" className="hover:text-primary-foreground transition-colors">
                   Simulador de Pensão Alimentícia
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-juros" className="hover:text-primary-foreground transition-colors">
+                <Link to="/simulador-juros#simulador" className="hover:text-primary-foreground transition-colors">
                   Simulador de Juros Abusivos
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-aposentadoria" className="hover:text-primary-foreground transition-colors">
+                <Link to="/simulador-aposentadoria#simulador" className="hover:text-primary-foreground transition-colors">
                   Simulador de Aposentadoria
                 </Link>
               </li>
