@@ -1,29 +1,30 @@
-import { Scale, Instagram, Linkedin, Facebook } from "lucide-react";
+import { Instagram, Linkedin, Facebook } from "lucide-react";
 import { Link } from "react-router-dom";
+import logoImg from "@/assets/logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-background/95 text-foreground border-t border-border">
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-4 gap-12">
           {/* Logo & About */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <Scale className="h-8 w-8 text-gold" />
+              <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10 rounded-lg" />
               <div>
                 <span className="font-serif text-xl font-semibold">
                   Fernandez & Fernandes
                 </span>
-                <p className="text-xs text-primary-foreground/60">Advocacia & Consultoria</p>
+                <p className="text-xs text-muted-foreground">Advocacia & Consultoria</p>
               </div>
             </div>
-            <p className="text-primary-foreground/70 leading-relaxed max-w-md">
+            <p className="text-muted-foreground leading-relaxed max-w-md">
               Há mais de 20 anos oferecendo soluções jurídicas de excelência, 
               com ética, transparência e comprometimento com nossos clientes.
             </p>
-            <p className="text-sm text-primary-foreground/50 mt-4">
+            <p className="text-sm text-muted-foreground/70 mt-4">
               OAB/SP 12.345
             </p>
           </div>
@@ -31,7 +32,7 @@ const Footer = () => {
           {/* Links */}
           <div>
             <h4 className="font-semibold mb-4">Áreas de Atuação</h4>
-            <ul className="space-y-2 text-primary-foreground/70 text-sm">
+            <ul className="space-y-2 text-muted-foreground text-sm">
               <li>Direito Empresarial</li>
               <li>Direito de Família</li>
               <li>Direito Civil</li>
@@ -39,24 +40,24 @@ const Footer = () => {
               <li>Direito Tributário</li>
             </ul>
             <h4 className="font-semibold mb-4 mt-6">Ferramentas Gratuitas</h4>
-            <ul className="space-y-2 text-primary-foreground/70 text-sm">
+            <ul className="space-y-2 text-muted-foreground text-sm">
               <li>
-                <Link to="/calculadora#simulador" className="hover:text-primary-foreground transition-colors">
+                <Link to="/calculadora#simulador" className="hover:text-foreground transition-colors">
                   Calculadora de Rescisão
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-pensao#simulador" className="hover:text-primary-foreground transition-colors">
+                <Link to="/simulador-pensao#simulador" className="hover:text-foreground transition-colors">
                   Simulador de Pensão Alimentícia
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-juros#simulador" className="hover:text-primary-foreground transition-colors">
+                <Link to="/simulador-juros#simulador" className="hover:text-foreground transition-colors">
                   Simulador de Juros Abusivos
                 </Link>
               </li>
               <li>
-                <Link to="/simulador-aposentadoria#simulador" className="hover:text-primary-foreground transition-colors">
+                <Link to="/simulador-aposentadoria#simulador" className="hover:text-foreground transition-colors">
                   Simulador de Aposentadoria
                 </Link>
               </li>
@@ -66,20 +67,20 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h4 className="font-semibold mb-4">Contato</h4>
-            <ul className="space-y-2 text-primary-foreground/70 text-sm">
+            <ul className="space-y-2 text-muted-foreground text-sm">
               <li>Av. Paulista, 1000 - Sala 1501</li>
               <li>São Paulo - SP</li>
               <li>(11) 3000-0000</li>
               <li>contato@fernandezfernandes.adv.br</li>
             </ul>
             <div className="flex gap-4 mt-4">
-              <a href="#" className="p-2 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-colors">
+              <a href="#" className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href="#" className="p-2 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-colors">
+              <a href="#" className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
                 <Linkedin className="h-4 w-4" />
               </a>
-              <a href="#" className="p-2 bg-primary-foreground/10 rounded-full hover:bg-primary-foreground/20 transition-colors">
+              <a href="#" className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
                 <Facebook className="h-4 w-4" />
               </a>
             </div>
@@ -87,12 +88,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-primary-foreground/50">
+        <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-muted-foreground/70">
             © {currentYear} Fernandez & Fernandes. Todos os direitos reservados.
           </p>
-          <div className="flex gap-6 text-sm text-primary-foreground/50">
-            <Link to="/login" className="hover:text-primary-foreground transition-colors">
+          <div className="flex gap-6 text-sm text-muted-foreground/70">
+            <Link to="/login" className="hover:text-foreground transition-colors">
               Área Restrita
             </Link>
           </div>
