@@ -79,7 +79,7 @@ const Header = () => {
               </button>
             ))}
             <Link
-              to="/blog"
+              to="/blog#conteudo"
               className="text-sm font-medium text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
             >
               Blog Jurídico
@@ -160,7 +160,7 @@ const Header = () => {
                 </button>
               ))}
               <Link
-                to="/blog"
+                to="/blog#conteudo"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-left py-2 text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
               >

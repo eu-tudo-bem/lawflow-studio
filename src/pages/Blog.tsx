@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +52,15 @@ export default function Blog() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get("categoria") || "";
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === "#conteudo") {
+      setTimeout(() => {
+        document.getElementById("conteudo")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 150);
+    }
+  }, [location.hash]);
 
   useEffect(() => {
     document.title = "Guia Jurídico Atualizado 2026 | Fernandez & Fernandes";
@@ -168,7 +177,7 @@ export default function Blog() {
           </div>
         </section>
 
-        <div className="container mx-auto px-4 py-12">
+        <div id="conteudo" className="container mx-auto px-4 py-12">
           {loading ? (
             <div className="grid md:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
