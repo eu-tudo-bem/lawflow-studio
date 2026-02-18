@@ -55,6 +55,11 @@ const Footer = () => {
                   Simulador de Juros Abusivos
                 </Link>
               </li>
+              <li>
+                <Link to="/simulador-aposentadoria" className="hover:text-primary-foreground transition-colors">
+                  Simulador de Aposentadoria
+                </Link>
+              </li>
             </ul>
           </div>
 

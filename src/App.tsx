@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import Calculadora from "./pages/Calculadora";
 import SimuladorPensao from "./pages/SimuladorPensao";
 import SimuladorJuros from "./pages/SimuladorJuros";
+import SimuladorAposentadoria from "./pages/SimuladorAposentadoria";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortal from "./pages/ClientPortal";
 import ClientCases from "./pages/client/ClientCases";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/calculadora" element={<Calculadora />} />
           <Route path="/simulador-pensao" element={<SimuladorPensao />} />
           <Route path="/simulador-juros" element={<SimuladorJuros />} />
+          <Route path="/simulador-aposentadoria" element={<SimuladorAposentadoria />} />
           {/* Lawyer/Admin Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
