@@ -53,17 +53,17 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[hsl(220_50%_12%)] backdrop-blur-sm border-b border-[hsl(220_30%_20%)] text-[hsl(45_20%_95%)]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10 rounded-lg" />
             <div>
-              <span className="font-serif text-xl font-semibold text-foreground">
+              <span className="font-serif text-xl font-semibold text-[hsl(45_20%_95%)]">
                 Fernandez & Fernandes
               </span>
-              <p className="text-xs text-muted-foreground">Advocacia & Consultoria</p>
+              <p className="text-xs text-[hsl(45_20%_95%)]/60">Advocacia & Consultoria</p>
             </div>
           </Link>
 
@@ -73,7 +73,7 @@ const Header = () => {
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm font-medium text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
               >
                 {link.label}
               </button>
@@ -81,18 +81,18 @@ const Header = () => {
             <div className="relative" ref={toolsRef}>
               <button
                 onClick={() => setIsToolsOpen(!isToolsOpen)}
-                className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1 text-sm font-medium text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
               >
                 Ferramentas Gratuitas
                 <ChevronDown className={`h-4 w-4 transition-transform ${isToolsOpen ? "rotate-180" : ""}`} />
               </button>
               {isToolsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg py-2 animate-fade-in">
+                <div className="absolute top-full left-0 mt-2 w-64 bg-[hsl(220_50%_16%)] border border-[hsl(220_30%_25%)] rounded-lg shadow-lg py-2 animate-fade-in">
                   {toolsLinks.map((link) => (
                     <button
                       key={link.href}
                       onClick={() => { setIsToolsOpen(false); navigate(link.href); }}
-                      className="block w-full text-left px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      className="block w-full text-left px-4 py-2 text-sm text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] hover:bg-[hsl(220_50%_20%)] transition-colors"
                     >
                       {link.label}
                     </button>
@@ -142,20 +142,20 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in">
+          <div className="md:hidden py-4 border-t border-[hsl(220_30%_20%)] animate-fade-in">
             <nav className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-left py-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-left py-2 text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
                 >
                   {link.label}
                 </button>
               ))}
               <button
                 onClick={() => setIsMobileToolsOpen(!isMobileToolsOpen)}
-                className="flex items-center justify-between py-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center justify-between py-2 text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
               >
                 Ferramentas Gratuitas
                 <ChevronDown className={`h-4 w-4 transition-transform ${isMobileToolsOpen ? "rotate-180" : ""}`} />
@@ -166,14 +166,14 @@ const Header = () => {
                     <button
                       key={link.href}
                       onClick={() => { setIsMenuOpen(false); setIsMobileToolsOpen(false); navigate(link.href); }}
-                      className="text-left py-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-left py-1 text-sm text-[hsl(45_20%_95%)]/70 hover:text-[hsl(45_20%_95%)] transition-colors"
                     >
                       {link.label}
                     </button>
                   ))}
                 </div>
               )}
-              <div className="flex flex-col gap-2 pt-4 border-t border-border">
+              <div className="flex flex-col gap-2 pt-4 border-t border-[hsl(220_30%_20%)]">
                 <Button
                   variant="ghost"
                   onClick={() => navigate("/login")}
