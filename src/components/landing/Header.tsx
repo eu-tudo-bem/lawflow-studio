@@ -58,7 +58,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10 rounded-lg" />
+            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10" />
             <div>
               <span className="font-serif text-xl font-semibold text-[hsl(45_20%_95%)]">
                 Fernandez & Fernandes
