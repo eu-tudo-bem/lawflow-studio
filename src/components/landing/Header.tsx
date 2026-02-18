@@ -25,6 +25,7 @@ const Header = () => {
     { label: "Simulador de Pensão Alimentícia", href: "/simulador-pensao#simulador" },
     { label: "Simulador de Juros Abusivos", href: "/simulador-juros#simulador" },
     { label: "Simulador de Aposentadoria", href: "/simulador-aposentadoria#simulador" },
+    { label: "Simulador de Horas Extras", href: "/simulador-horas-extras#simulador" },
   ];
 
   useEffect(() => {

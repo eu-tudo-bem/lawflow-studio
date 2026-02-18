@@ -61,6 +61,11 @@ const Footer = () => {
                   Simulador de Aposentadoria
                 </Link>
               </li>
+              <li>
+                <Link to="/simulador-horas-extras#simulador" className="hover:text-[hsl(45_20%_95%)] transition-colors">
+                  Simulador de Horas Extras
+                </Link>
+              </li>
             </ul>
           </div>
 
