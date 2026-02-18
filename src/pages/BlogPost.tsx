@@ -161,6 +161,7 @@ export default function BlogPost() {
   if (!post) return null;
 
   const readingTime = estimateReadingTime(post.content);
+  const isFamilyLaw = post.blog_categories?.slug === "direito-da-familia" || post.blog_categories?.slug === "direito-de-familia";
 
   return (
     <>
@@ -339,6 +340,44 @@ export default function BlogPost() {
                   </p>
                 </div>
 
+                {/* Family Law - Simulator & Info */}
+                {isFamilyLaw && (
+                  <>
+                    <div className="mt-4 bg-[hsl(var(--accent))]/10 border border-[hsl(var(--accent))]/30 rounded-xl p-5">
+                      <Calculator className="h-6 w-6 text-[hsl(var(--accent))] mb-2" />
+                      <h4 className="font-serif font-bold text-[hsl(var(--foreground))] mb-1">Simulador de Pensão Alimentícia</h4>
+                      <p className="text-sm text-[hsl(var(--muted-foreground))] mb-3">
+                        Descubra uma estimativa do valor da pensão com base na sua renda e número de dependentes.
+                      </p>
+                      <Button asChild size="sm" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                        <Link to="/simulador-pensao#simulador">Simular agora</Link>
+                      </Button>
+                    </div>
+
+                    <div className="mt-4 bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-xl p-5">
+                      <h4 className="font-serif font-bold text-[hsl(var(--foreground))] mb-3">Sobre Direito da Família</h4>
+                      <ul className="space-y-3 text-sm text-[hsl(var(--muted-foreground))]">
+                        <li className="flex gap-2">
+                          <span className="text-[hsl(var(--accent))] font-bold">•</span>
+                          <span><strong className="text-[hsl(var(--foreground))]">Pensão alimentícia:</strong> Valor definido com base na necessidade do alimentando e possibilidade do alimentante.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-[hsl(var(--accent))] font-bold">•</span>
+                          <span><strong className="text-[hsl(var(--foreground))]">Guarda compartilhada:</strong> Modelo preferencial no Brasil desde 2014, priorizando o convívio equilibrado.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-[hsl(var(--accent))] font-bold">•</span>
+                          <span><strong className="text-[hsl(var(--foreground))]">Divórcio:</strong> Pode ser consensual ou litigioso, com partilha de bens conforme regime adotado.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <span className="text-[hsl(var(--accent))] font-bold">•</span>
+                          <span><strong className="text-[hsl(var(--foreground))]">Revisão de pensão:</strong> É possível pedir revisão quando há mudança na situação financeira.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                )}
+
                 {/* Simulators */}
                 <div className="mt-4 bg-[hsl(var(--muted))] rounded-xl p-4">
                   <p className="text-sm font-semibold text-[hsl(var(--foreground))] mb-3">Ferramentas gratuitas</p>
@@ -347,6 +386,7 @@ export default function BlogPost() {
                       { label: "Calculadora de Rescisão", href: "/calculadora#simulador" },
                       { label: "Simulador de Horas Extras", href: "/simulador-horas-extras#simulador" },
                       { label: "Simulador de Aposentadoria", href: "/simulador-aposentadoria#simulador" },
+                      { label: "Simulador de Pensão Alimentícia", href: "/simulador-pensao#simulador" },
                     ].map((t) => (
                       <Link key={t.href} to={t.href} className="flex items-center gap-2 text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors">
                         <Calculator className="h-3.5 w-3.5" /> {t.label}
