@@ -250,7 +250,7 @@ const TerminationCalculator = () => {
               <Button
                 onClick={calcular}
                 disabled={!camposPreenchidos || loading}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 flex-1"
                 size="lg"
               >
                 {loading ? (

@@ -98,7 +98,7 @@ const InterestSimulator = () => {
             <p className="text-muted-foreground max-w-lg mx-auto text-lg">
               Informe alguns dados do seu financiamento e receba uma análise inicial em segundos.
             </p>
-            <Button size="lg" onClick={() => setStep("type")} className="mt-4 gap-2">
+            <Button size="lg" onClick={() => setStep("type")} className="mt-4 gap-2 bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold">
               Começar simulação <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -241,7 +241,7 @@ const InterestSimulator = () => {
               <div className="flex items-start gap-2"><Shield className="h-3.5 w-3.5 mt-0.5 shrink-0" /> <span>Uma revisão contratual pode identificar cobranças indevidas</span></div>
             </div>
 
-            <Button size="lg" className="w-full gap-2" onClick={() => setStep("contact")}>
+            <Button size="lg" className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold" onClick={() => setStep("contact")}>
               Quero que um advogado analise meu contrato <ArrowRight className="h-4 w-4" />
             </Button>
             <Button variant="ghost" className="w-full gap-2" onClick={reset}>
@@ -262,7 +262,7 @@ const InterestSimulator = () => {
               <div><Label>Cidade</Label><Input placeholder="Sua cidade" value={data.city} onChange={e => setData({ ...data, city: e.target.value })} className="mt-1" /></div>
               <div><Label>Banco ou financeira</Label><Input placeholder="Ex: Bradesco, BV, Santander" value={data.bank} onChange={e => setData({ ...data, bank: e.target.value })} className="mt-1" /></div>
             </div>
-            <Button size="lg" className="w-full gap-2" disabled={!contactValid} onClick={handleContact}>
+            <Button size="lg" className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold" disabled={!contactValid} onClick={handleContact}>
               Receber orientação <ArrowRight className="h-4 w-4" />
             </Button>
             <Button variant="ghost" className="w-full gap-2" onClick={reset}>
@@ -294,7 +294,7 @@ const InterestSimulator = () => {
                 <Button variant="outline" onClick={prev} disabled={currentIndex === 0} className="gap-2">
                   <ArrowLeft className="h-4 w-4" /> Voltar
                 </Button>
-                <Button onClick={next} disabled={!canAdvance()} className="gap-2">
+                <Button onClick={next} disabled={!canAdvance()} className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
                   Avançar <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
