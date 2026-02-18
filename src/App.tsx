@@ -23,6 +23,9 @@ import ClientPortal from "./pages/ClientPortal";
 import ClientCases from "./pages/client/ClientCases";
 import ClientAppointments from "./pages/client/ClientAppointments";
 import ClientMessages from "./pages/client/ClientMessages";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import BlogAdmin from "./pages/BlogAdmin";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +42,9 @@ const App = () => (
           <Route path="/simulador-juros" element={<SimuladorJuros />} />
           <Route path="/simulador-aposentadoria" element={<SimuladorAposentadoria />} />
           <Route path="/simulador-horas-extras" element={<SimuladorHorasExtras />} />
+          {/* Blog */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           {/* Lawyer/Admin Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -48,6 +54,7 @@ const App = () => (
           <Route path="/dashboard/appointments" element={<Appointments />} />
           <Route path="/dashboard/messages" element={<Messages />} />
           <Route path="/dashboard/chat" element={<Chat />} />
+          <Route path="/dashboard/blog" element={<BlogAdmin />} />
           {/* Client Portal Routes */}
           <Route path="/client-login" element={<ClientLogin />} />
           <Route path="/client-portal" element={<ClientPortal />}>
