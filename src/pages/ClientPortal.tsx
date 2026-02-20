@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link, Outlet, useLocation } from "react-router-dom";
-import { Scale, User, Briefcase, Calendar, MessageSquare, LogOut, Menu, X } from "lucide-react";
+import { Scale, User, Briefcase, Calendar, MessageSquare, LogOut, Menu, X, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -42,6 +42,7 @@ const ClientPortal = () => {
 
   const navItems = [
     { icon: Briefcase, label: "Meus Casos", path: "/client-portal" },
+    { icon: FileText, label: "Documentos", path: "/client-portal/documents" },
     { icon: Calendar, label: "Agendamentos", path: "/client-portal/appointments" },
     { icon: MessageSquare, label: "Mensagens", path: "/client-portal/messages" },
   ];

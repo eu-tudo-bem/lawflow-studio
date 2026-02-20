@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_analyses: {
+        Row: {
+          created_at: string
+          draft_document: string | null
+          extracted_data: Json | null
+          id: string
+          notes: string | null
+          reviewed: boolean
+          reviewed_at: string | null
+          reviewed_by: string | null
+          submission_id: string
+          suggested_action_type: string | null
+          suggested_thesis: string | null
+          technical_summary: string | null
+          updated_at: string
+          viability_score: Database["public"]["Enums"]["viability_score"] | null
+        }
+        Insert: {
+          created_at?: string
+          draft_document?: string | null
+          extracted_data?: Json | null
+          id?: string
+          notes?: string | null
+          reviewed?: boolean
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          submission_id: string
+          suggested_action_type?: string | null
+          suggested_thesis?: string | null
+          technical_summary?: string | null
+          updated_at?: string
+          viability_score?:
+            | Database["public"]["Enums"]["viability_score"]
+            | null
+        }
+        Update: {
+          created_at?: string
+          draft_document?: string | null
+          extracted_data?: Json | null
+          id?: string
+          notes?: string | null
+          reviewed?: boolean
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          submission_id?: string
+          suggested_action_type?: string | null
+          suggested_thesis?: string | null
+          technical_summary?: string | null
+          updated_at?: string
+          viability_score?:
+            | Database["public"]["Enums"]["viability_score"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_analyses_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: true
+            referencedRelation: "document_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           assigned_to: string | null
@@ -317,6 +380,44 @@ export type Database = {
         }
         Relationships: []
       }
+      document_submissions: {
+        Row: {
+          client_id: string
+          created_at: string
+          description: string
+          id: string
+          legal_area: Database["public"]["Enums"]["legal_area"]
+          status: Database["public"]["Enums"]["submission_status"]
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          description: string
+          id?: string
+          legal_area: Database["public"]["Enums"]["legal_area"]
+          status?: Database["public"]["Enums"]["submission_status"]
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          legal_area?: Database["public"]["Enums"]["legal_area"]
+          status?: Database["public"]["Enums"]["submission_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_submissions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           case_id: string | null
@@ -398,6 +499,44 @@ export type Database = {
         }
         Relationships: []
       }
+      submission_documents: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id: string
+          submission_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id?: string
+          submission_id: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          submission_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "submission_documents_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "document_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -436,6 +575,17 @@ export type Database = {
       app_role: "admin" | "staff" | "client"
       appointment_status: "scheduled" | "confirmed" | "completed" | "cancelled"
       case_status: "pending" | "in_progress" | "completed" | "cancelled"
+      legal_area:
+        | "bancario"
+        | "trabalhista"
+        | "empresarial"
+        | "consumidor"
+        | "familia"
+        | "imobiliario"
+        | "tributario"
+        | "outro"
+      submission_status: "submitted" | "analyzing" | "in_review" | "completed"
+      viability_score: "low" | "medium" | "high"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -566,6 +716,18 @@ export const Constants = {
       app_role: ["admin", "staff", "client"],
       appointment_status: ["scheduled", "confirmed", "completed", "cancelled"],
       case_status: ["pending", "in_progress", "completed", "cancelled"],
+      legal_area: [
+        "bancario",
+        "trabalhista",
+        "empresarial",
+        "consumidor",
+        "familia",
+        "imobiliario",
+        "tributario",
+        "outro",
+      ],
+      submission_status: ["submitted", "analyzing", "in_review", "completed"],
+      viability_score: ["low", "medium", "high"],
     },
   },
 } as const

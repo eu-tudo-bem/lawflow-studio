@@ -2,3 +2,6 @@ project_id = "eojgjfefbjhslyeodcls"
 
 [functions.create-client-account]
 verify_jwt = false
+
+[functions.analyze-documents]
+verify_jwt = false

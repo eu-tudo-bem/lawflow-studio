@@ -23,9 +23,11 @@ import ClientPortal from "./pages/ClientPortal";
 import ClientCases from "./pages/client/ClientCases";
 import ClientAppointments from "./pages/client/ClientAppointments";
 import ClientMessages from "./pages/client/ClientMessages";
+import ClientDocuments from "./pages/client/ClientDocuments";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogAdmin from "./pages/BlogAdmin";
+import AnalysesReceived from "./pages/AnalysesReceived";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
@@ -57,10 +59,12 @@ const App = () => (
           <Route path="/dashboard/messages" element={<Messages />} />
           <Route path="/dashboard/chat" element={<Chat />} />
           <Route path="/dashboard/blog" element={<BlogAdmin />} />
+          <Route path="/dashboard/analyses" element={<AnalysesReceived />} />
           {/* Client Portal Routes */}
           <Route path="/client-login" element={<ClientLogin />} />
           <Route path="/client-portal" element={<ClientPortal />}>
             <Route index element={<ClientCases />} />
+            <Route path="documents" element={<ClientDocuments />} />
             <Route path="appointments" element={<ClientAppointments />} />
             <Route path="messages" element={<ClientMessages />} />
           </Route>
