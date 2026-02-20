@@ -74,7 +74,12 @@ const Clients = () => {
         );
         const result = await response.json();
         if (!response.ok) throw new Error(result.error);
-        toast({ title: "Cliente cadastrado com acesso ao portal!", description: `Email: ${formData.email} | Senha: ${formData.password}` });
+        try {
+          await navigator.clipboard.writeText(formData.password);
+          toast({ title: "Cliente cadastrado com acesso ao portal!", description: "Senha copiada para a área de transferência. Compartilhe com segurança." });
+        } catch {
+          toast({ title: "Cliente cadastrado com acesso ao portal!", description: "Não foi possível copiar a senha automaticamente." });
+        }
       } else {
         const { error } = await supabase.from("clients").insert({
           full_name: formData.full_name, email: formData.email, phone: formData.phone,
