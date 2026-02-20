@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.analyze-documents]
 verify_jwt = false
+
+[functions.tjpr-monitor]
+verify_jwt = false

@@ -28,6 +28,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogAdmin from "./pages/BlogAdmin";
 import AnalysesReceived from "./pages/AnalysesReceived";
+import TJPRMonitor from "./pages/TJPRMonitor";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
           <Route path="/dashboard/chat" element={<Chat />} />
           <Route path="/dashboard/blog" element={<BlogAdmin />} />
           <Route path="/dashboard/analyses" element={<AnalysesReceived />} />
+          <Route path="/dashboard/tjpr" element={<TJPRMonitor />} />
           {/* Client Portal Routes */}
           <Route path="/client-login" element={<ClientLogin />} />
           <Route path="/client-portal" element={<ClientPortal />}>

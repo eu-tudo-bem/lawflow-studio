@@ -537,6 +537,106 @@ export type Database = {
           },
         ]
       }
+      tjpr_logs_consulta: {
+        Row: {
+          comarca: string | null
+          created_at: string
+          erro: string | null
+          id: string
+          processo_id: string
+          resposta_raw: Json | null
+          status_anterior: string | null
+          status_novo: string | null
+          sucesso: boolean
+          vara: string | null
+        }
+        Insert: {
+          comarca?: string | null
+          created_at?: string
+          erro?: string | null
+          id?: string
+          processo_id: string
+          resposta_raw?: Json | null
+          status_anterior?: string | null
+          status_novo?: string | null
+          sucesso?: boolean
+          vara?: string | null
+        }
+        Update: {
+          comarca?: string | null
+          created_at?: string
+          erro?: string | null
+          id?: string
+          processo_id?: string
+          resposta_raw?: Json | null
+          status_anterior?: string | null
+          status_novo?: string | null
+          sucesso?: boolean
+          vara?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tjpr_logs_consulta_processo_id_fkey"
+            columns: ["processo_id"]
+            isOneToOne: false
+            referencedRelation: "tjpr_processos_monitorados"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tjpr_processos_monitorados: {
+        Row: {
+          area_direito: string | null
+          cliente_id: string | null
+          comarca: string | null
+          created_at: string
+          created_by: string
+          id: string
+          numero_processo: string
+          observacoes: string | null
+          status_atual: string | null
+          ultima_verificacao: string | null
+          updated_at: string
+          vara: string | null
+        }
+        Insert: {
+          area_direito?: string | null
+          cliente_id?: string | null
+          comarca?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          numero_processo: string
+          observacoes?: string | null
+          status_atual?: string | null
+          ultima_verificacao?: string | null
+          updated_at?: string
+          vara?: string | null
+        }
+        Update: {
+          area_direito?: string | null
+          cliente_id?: string | null
+          comarca?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          numero_processo?: string
+          observacoes?: string | null
+          status_atual?: string | null
+          ultima_verificacao?: string | null
+          updated_at?: string
+          vara?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tjpr_processos_monitorados_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
