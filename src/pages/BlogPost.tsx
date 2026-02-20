@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowLeft, Share2, Tag, MessageCircle, Calculator } from "lucide-react";
+import DOMPurify from "dompurify";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { useToast } from "@/hooks/use-toast";
@@ -245,7 +246,7 @@ export default function BlogPost() {
               {/* Content */}
               <div
                 className="prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(renderContent(post.content)) }}
               />
 
               {/* Tags */}
