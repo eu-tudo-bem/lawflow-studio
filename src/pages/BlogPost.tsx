@@ -6,9 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowLeft, Share2, Tag, MessageCircle, Calculator } from "lucide-react";
 import DOMPurify from "dompurify";
+import { z } from "zod";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { useToast } from "@/hooks/use-toast";
+
+const leadSchema = z.object({
+  name: z.string().trim().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
+  email: z.string().trim().email("Email inválido").max(255, "Email muito longo"),
+  whatsapp: z.string().trim().min(10, "Telefone inválido").max(20, "Telefone muito longo"),
+});
 
 interface Post {
   id: string;
@@ -96,24 +103,36 @@ export default function BlogPost() {
 
   async function handleLeadSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!leadName || !leadWpp || !leadEmail) return;
     setLeadSubmitting(true);
 
-    await supabase.from("blog_leads").insert({
-      name: leadName,
-      whatsapp: leadWpp,
-      email: leadEmail,
-      post_id: post?.id || null,
-      interest_tag: post?.blog_categories?.name || "Blog",
-    });
+    try {
+      const validatedData = leadSchema.parse({
+        name: leadName,
+        email: leadEmail,
+        whatsapp: leadWpp,
+      });
 
-    const wppMsg = encodeURIComponent(
-      `Olá! Me chamo ${leadName}, li o artigo "${post?.title}" e gostaria de uma análise gratuita do meu caso.`
-    );
-    window.open(`https://wa.me/5511300000000?text=${wppMsg}`, "_blank");
-    setLeadSent(true);
-    setLeadSubmitting(false);
-    toast({ title: "Solicitação enviada!", description: "Você será redirecionado para o WhatsApp." });
+      await supabase.from("blog_leads").insert({
+        name: validatedData.name,
+        whatsapp: validatedData.whatsapp,
+        email: validatedData.email,
+        post_id: post?.id || null,
+        interest_tag: post?.blog_categories?.name || "Blog",
+      });
+
+      const wppMsg = encodeURIComponent(
+        `Olá! Me chamo ${validatedData.name}, li o artigo "${post?.title}" e gostaria de uma análise gratuita do meu caso.`
+      );
+      window.open(`https://wa.me/5511300000000?text=${wppMsg}`, "_blank");
+      setLeadSent(true);
+      toast({ title: "Solicitação enviada!", description: "Você será redirecionado para o WhatsApp." });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({ title: "Erro de validação", description: error.errors[0].message, variant: "destructive" });
+      }
+    } finally {
+      setLeadSubmitting(false);
+    }
   }
 
   function handleShare() {
