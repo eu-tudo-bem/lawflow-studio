@@ -14,7 +14,7 @@ const LEGAL_AREAS = [
   { id: "consumidor", name: "Direito do Consumidor" },
 ];
 
-const BASE_URL = "https://lawflow-studio.lovable.app";
+const BASE_URL = "https://fernandezefernandes.adv.br";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {

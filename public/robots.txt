@@ -6,4 +6,4 @@ Disallow: /dashboard
 Disallow: /client-login
 Disallow: /client-portal
 
-Sitemap: https://lawflow-studio.lovable.app/sitemap.xml
+Sitemap: https://fernandezefernandes.adv.br/sitemap.xml

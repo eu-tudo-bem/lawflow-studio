@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const BASE_URL = "https://lawflow-studio.lovable.app";
+const BASE_URL = "https://fernandezefernandes.adv.br";
 
 const staticPages = [
   { loc: "/", changefreq: "weekly", priority: "1.0" },
