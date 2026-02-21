@@ -267,6 +267,41 @@ export type Database = {
           },
         ]
       }
+      blog_topics_used: {
+        Row: {
+          created_at: string
+          id: string
+          keyword: string
+          legal_area: string
+          post_id: string | null
+          secondary_keywords: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keyword: string
+          legal_area: string
+          post_id?: string | null
+          secondary_keywords?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keyword?: string
+          legal_area?: string
+          post_id?: string | null
+          secondary_keywords?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_topics_used_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cases: {
         Row: {
           assigned_to: string | null
