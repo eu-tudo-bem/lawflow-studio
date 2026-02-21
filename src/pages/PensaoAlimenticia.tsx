@@ -515,7 +515,13 @@ const PensaoAlimenticia = () => {
 
       {/* Footer mínimo */}
       <footer className="bg-primary py-6">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 text-center space-y-2">
+          <a
+            href="/"
+            className="text-primary-foreground/80 hover:text-primary-foreground text-sm underline underline-offset-2 transition-colors"
+          >
+            Acessar site completo
+          </a>
           <p className="text-primary-foreground/60 text-sm">
             © {new Date().getFullYear()} Fernandez & Fernandes Advocacia. Todos
             os direitos reservados.
