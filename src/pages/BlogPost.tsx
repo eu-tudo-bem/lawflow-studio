@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSEO } from "@/hooks/usePageSEO";
+import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -190,6 +191,17 @@ export default function BlogPost() {
   return (
     <>
       <Header />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildBreadcrumbSchema([
+            { name: "Blog Jurídico", path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ])),
+        }}
+      />
 
       {/* Schema Markup */}
       <script
