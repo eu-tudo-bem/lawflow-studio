@@ -228,6 +228,54 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
       post_id: post.id,
     });
 
+    // 10. Regenerate and upload sitemap.xml to storage
+    try {
+      const { data: allPosts } = await supabase
+        .from("blog_posts")
+        .select("slug, updated_at, published_at")
+        .eq("status", "published")
+        .order("published_at", { ascending: false });
+
+      const staticPages = [
+        { loc: "/", changefreq: "weekly", priority: "1.0" },
+        { loc: "/blog", changefreq: "daily", priority: "0.9" },
+        { loc: "/calculadora", changefreq: "monthly", priority: "0.7" },
+        { loc: "/simulador-pensao", changefreq: "monthly", priority: "0.7" },
+        { loc: "/simulador-juros", changefreq: "monthly", priority: "0.7" },
+        { loc: "/simulador-aposentadoria", changefreq: "monthly", priority: "0.7" },
+        { loc: "/simulador-horas-extras", changefreq: "monthly", priority: "0.7" },
+      ];
+
+      const today = new Date().toISOString().split("T")[0];
+      let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+      for (const page of staticPages) {
+        sitemapXml += `  <url>\n    <loc>${BASE_URL}${page.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${page.changefreq}</changefreq>\n    <priority>${page.priority}</priority>\n  </url>\n`;
+      }
+
+      if (allPosts) {
+        for (const p of allPosts) {
+          const lastmod = (p.updated_at || p.published_at || "").split("T")[0];
+          sitemapXml += `  <url>\n    <loc>${BASE_URL}/blog/${p.slug}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+        }
+      }
+
+      sitemapXml += `</urlset>`;
+
+      // Upload to storage bucket
+      const sitemapBlob = new Blob([sitemapXml], { type: "application/xml" });
+      await supabase.storage
+        .from("sitemap")
+        .upload("sitemap.xml", sitemapBlob, {
+          contentType: "application/xml",
+          upsert: true,
+        });
+
+      console.log("✅ Sitemap updated in storage");
+    } catch (sitemapErr) {
+      console.error("Sitemap update error (non-fatal):", sitemapErr);
+    }
+
     console.log(`✅ Published: "${topic.title_seo}" [${chosenArea.name}]`);
 
     return new Response(
