@@ -31,6 +31,7 @@ import AnalysesReceived from "./pages/AnalysesReceived";
 import TJPRMonitor from "./pages/TJPRMonitor";
 import PensaoAlimenticia from "./pages/PensaoAlimenticia";
 import DivorcioConsensual from "./pages/DivorcioConsensual";
+import CobrancaAluguel from "./pages/CobrancaAluguel";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/simulador-horas-extras" element={<SimuladorHorasExtras />} />
           <Route path="/pensao-alimenticia" element={<PensaoAlimenticia />} />
           <Route path="/divorcio-consensual" element={<DivorcioConsensual />} />
+          <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
           {/* Blog */}
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
