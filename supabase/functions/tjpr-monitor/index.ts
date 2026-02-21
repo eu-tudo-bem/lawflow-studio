@@ -185,9 +185,8 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    const msg = error instanceof Error ? error.message : "Unknown error";
-    console.error("TJPR Monitor error:", msg);
-    return new Response(JSON.stringify({ error: msg }), {
+    console.error("TJPR Monitor error:", error);
+    return new Response(JSON.stringify({ error: "Erro ao monitorar processos. Tente novamente." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

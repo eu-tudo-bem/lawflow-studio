@@ -142,16 +142,15 @@ Por favor, forneça a análise usando EXATAMENTE a ferramenta fornecida.`;
     });
 
     if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error("AI gateway error:", aiResponse.status, errorText);
+      console.error("AI gateway error:", aiResponse.status, await aiResponse.text());
       
       if (aiResponse.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again later." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ error: "Limite de requisições excedido. Tente novamente mais tarde." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
       if (aiResponse.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ error: "Créditos de IA esgotados." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
-      throw new Error(`AI gateway error: ${aiResponse.status}`);
+      throw new Error("AI processing failed");
     }
 
     const aiData = await aiResponse.json();
@@ -187,7 +186,7 @@ Por favor, forneça a análise usando EXATAMENTE a ferramenta fornecida.`;
     });
   } catch (e) {
     console.error("analyze-documents error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
+    return new Response(JSON.stringify({ error: "Não foi possível processar a análise. Tente novamente." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
