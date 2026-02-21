@@ -1,0 +1,75 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+const BASE_URL = "https://lawflow-studio.lovable.app";
+
+const staticPages = [
+  { loc: "/", changefreq: "weekly", priority: "1.0" },
+  { loc: "/blog", changefreq: "daily", priority: "0.9" },
+  { loc: "/calculadora", changefreq: "monthly", priority: "0.7" },
+  { loc: "/simulador-pensao", changefreq: "monthly", priority: "0.7" },
+  { loc: "/simulador-juros", changefreq: "monthly", priority: "0.7" },
+  { loc: "/simulador-aposentadoria", changefreq: "monthly", priority: "0.7" },
+  { loc: "/simulador-horas-extras", changefreq: "monthly", priority: "0.7" },
+];
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data: posts } = await supabase
+      .from("blog_posts")
+      .select("slug, updated_at, published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false });
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`;
+
+    for (const page of staticPages) {
+      xml += `  <url>
+    <loc>${BASE_URL}${page.loc}</loc>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>
+`;
+    }
+
+    if (posts) {
+      for (const post of posts) {
+        const lastmod = (post.updated_at || post.published_at || "").split("T")[0];
+        xml += `  <url>
+    <loc>${BASE_URL}/blog/${post.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+`;
+      }
+    }
+
+    xml += `</urlset>`;
+
+    return new Response(xml, {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/xml; charset=utf-8",
+        "Cache-Control": "public, max-age=3600",
+      },
+    });
+  } catch (error) {
+    console.error("Sitemap error:", error);
+    return new Response("Error generating sitemap", { status: 500 });
+  }
+});
