@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSEO } from "@/hooks/usePageSEO";
+import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -112,6 +113,11 @@ export default function Blog() {
     <>
       <Header />
       {/* SEO Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildBreadcrumbSchema([{ name: "Blog Jurídico", path: "/blog" }]))
+        }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

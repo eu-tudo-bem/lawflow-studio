@@ -1,9 +1,15 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { usePageSEO } from "@/hooks/usePageSEO";
+import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import TerminationCalculator from "@/components/landing/TerminationCalculator";
+
+const breadcrumb = buildBreadcrumbSchema([
+  { name: "Ferramentas Gratuitas", path: "/#ferramentas" },
+  { name: "Calculadora de Rescisão Trabalhista", path: "/calculadora" },
+]);
 
 const calculadoraFAQ = {
   "@context": "https://schema.org",
@@ -68,6 +74,7 @@ const Calculadora = () => {
   return (
     <div className="min-h-screen pt-20">
       <Header />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(calculadoraFAQ) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(calculadoraHowTo) }} />
       <div id="simulador">
