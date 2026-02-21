@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
 import Services from "@/components/landing/Services";
@@ -11,6 +12,11 @@ import Footer from "@/components/landing/Footer";
 
 const Index = () => {
   const location = useLocation();
+
+  usePageSEO({
+    title: "Fernandez & Fernandes | Advocacia Estratégica",
+    description: "Escritório de advocacia com mais de 20 anos de experiência. Atuação em direito trabalhista, família, empresarial, tributário e mais. Agende sua consulta.",
+  });
 
   useEffect(() => {
     if (location.hash) {

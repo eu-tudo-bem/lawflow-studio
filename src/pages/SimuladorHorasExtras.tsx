@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import OvertimeSimulator from "@/components/landing/OvertimeSimulator";
@@ -7,18 +8,10 @@ import OvertimeSimulator from "@/components/landing/OvertimeSimulator";
 const SimuladorHorasExtras = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    document.title = "Simulador de Horas Extras e Adicional Noturno – Cálculo Atualizado 2026";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      meta.setAttribute("content", "Calculadora de horas extras online grátis. Descubra quanto pode receber de hora extra e adicional noturno com cálculo atualizado pela CLT.");
-    } else {
-      const newMeta = document.createElement("meta");
-      newMeta.name = "description";
-      newMeta.content = "Calculadora de horas extras online grátis. Descubra quanto pode receber de hora extra e adicional noturno com cálculo atualizado pela CLT.";
-      document.head.appendChild(newMeta);
-    }
-  }, []);
+  usePageSEO({
+    title: "Simulador de Horas Extras e Adicional Noturno | Fernandez & Fernandes",
+    description: "Calculadora de horas extras online grátis. Descubra quanto pode receber de hora extra e adicional noturno com cálculo atualizado pela CLT.",
+  });
 
   useEffect(() => {
     if (location.hash === "#simulador") {

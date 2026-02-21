@@ -1,11 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import RetirementSimulator from "@/components/landing/RetirementSimulator";
 
 const SimuladorAposentadoria = () => {
   const location = useLocation();
+
+  usePageSEO({
+    title: "Simulador de Aposentadoria Online | Fernandez & Fernandes",
+    description: "Verifique se você já pode se aposentar. Simulador gratuito com regras atualizadas da Reforma da Previdência. Calcule tempo de contribuição e idade mínima.",
+  });
 
   useEffect(() => {
     if (location.hash === "#simulador") {

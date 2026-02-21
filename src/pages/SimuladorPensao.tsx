@@ -1,11 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import AlimonySimulator from "@/components/landing/AlimonySimulator";
 
 const SimuladorPensao = () => {
   const location = useLocation();
+
+  usePageSEO({
+    title: "Simulador de Pensão Alimentícia Online | Fernandez & Fernandes",
+    description: "Calcule uma estimativa de pensão alimentícia com base na renda e número de dependentes. Simulador gratuito e atualizado conforme a legislação vigente.",
+  });
 
   useEffect(() => {
     if (location.hash === "#simulador") {

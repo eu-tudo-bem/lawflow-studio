@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -62,11 +63,10 @@ export default function Blog() {
     }
   }, [location.hash]);
 
-  useEffect(() => {
-    document.title = "Guia Jurídico Atualizado 2026 | Fernandez & Fernandes";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Artigos jurídicos atualizados sobre direito trabalhista, previdenciário, empresarial e família. Linguagem clara, exemplos práticos e orientação especializada.");
-  }, []);
+  usePageSEO({
+    title: "Guia Jurídico Atualizado 2026 | Fernandez & Fernandes",
+    description: "Artigos jurídicos atualizados sobre direito trabalhista, previdenciário, empresarial e família. Linguagem clara, exemplos práticos e orientação especializada.",
+  });
 
   useEffect(() => {
     fetchCategories();
