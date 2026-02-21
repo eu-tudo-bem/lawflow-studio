@@ -1,11 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import InterestSimulator from "@/components/landing/InterestSimulator";
 
 const SimuladorJuros = () => {
   const location = useLocation();
+
+  usePageSEO({
+    title: "Simulador de Juros Abusivos Online | Fernandez & Fernandes",
+    description: "Descubra se você está pagando juros abusivos em empréstimos ou financiamentos. Simulador gratuito para revisão de contratos bancários.",
+  });
 
   useEffect(() => {
     if (location.hash === "#simulador") {

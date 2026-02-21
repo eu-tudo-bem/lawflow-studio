@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { usePageSEO } from "@/hooks/usePageSEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -75,6 +76,12 @@ export default function BlogPost() {
   const [leadSubmitting, setLeadSubmitting] = useState(false);
   const [leadSent, setLeadSent] = useState(false);
 
+  usePageSEO({
+    title: post?.meta_title || (post ? `${post.title} | Fernandez & Fernandes` : "Carregando... | Fernandez & Fernandes"),
+    description: post?.meta_description || post?.excerpt || "Artigo jurídico do escritório Fernandez & Fernandes.",
+    ogImage: post?.cover_image_url || undefined,
+  });
+
   useEffect(() => {
     if (slug) fetchPost();
   }, [slug]);
@@ -92,9 +99,6 @@ export default function BlogPost() {
       setNotFound(true);
     } else {
       setPost(data as Post);
-      document.title = data.meta_title || `${data.title} | Fernandez & Fernandes`;
-      const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", data.meta_description || data.excerpt || "");
       // Increment views
       await supabase.from("blog_posts").update({ views: data.views + 1 }).eq("id", data.id);
     }
