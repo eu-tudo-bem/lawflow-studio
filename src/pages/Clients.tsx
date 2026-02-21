@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Search, Edit, Trash2, Key, UserPlus } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Key, UserPlus, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,8 @@ const Clients = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [createWithAccess, setCreateWithAccess] = useState(false);
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [generatedPassword, setGeneratedPassword] = useState("");
   const [formData, setFormData] = useState({
     full_name: "", email: "", phone: "", cpf: "", address: "", notes: "", password: "",
   });
@@ -74,12 +76,8 @@ const Clients = () => {
         );
         const result = await response.json();
         if (!response.ok) throw new Error(result.error);
-        try {
-          await navigator.clipboard.writeText(formData.password);
-          toast({ title: "Cliente cadastrado com acesso ao portal!", description: "Senha copiada para a área de transferência. Compartilhe com segurança." });
-        } catch {
-          toast({ title: "Cliente cadastrado com acesso ao portal!", description: "Não foi possível copiar a senha automaticamente." });
-        }
+        setGeneratedPassword(formData.password);
+        setShowPasswordDialog(true);
       } else {
         const { error } = await supabase.from("clients").insert({
           full_name: formData.full_name, email: formData.email, phone: formData.phone,
@@ -122,6 +120,20 @@ const Clients = () => {
     setEditingClient(null);
     setCreateWithAccess(false);
     setFormData({ full_name: "", email: "", phone: "", cpf: "", address: "", notes: "", password: "" });
+  };
+
+  const handleCopyPassword = async () => {
+    try {
+      await navigator.clipboard.writeText(generatedPassword);
+      toast({ title: "Senha copiada para a área de transferência!" });
+    } catch {
+      toast({ title: "Erro ao copiar", description: "Copie a senha manualmente.", variant: "destructive" });
+    }
+  };
+
+  const handleClosePasswordDialog = () => {
+    setShowPasswordDialog(false);
+    setGeneratedPassword("");
   };
 
   const filteredClients = clients.filter(
@@ -215,6 +227,27 @@ const Clients = () => {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={showPasswordDialog} onOpenChange={handleClosePasswordDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-serif">Conta Criada com Sucesso</DialogTitle>
+            <DialogDescription>Compartilhe a senha abaixo com o cliente de forma segura.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
+              <code className="flex-1 text-sm font-mono break-all">{generatedPassword}</code>
+              <Button variant="outline" size="icon" onClick={handleCopyPassword}>
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Oriente o cliente a alterar a senha no primeiro acesso.
+            </p>
+            <Button className="w-full" onClick={handleClosePasswordDialog}>Fechar</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };
