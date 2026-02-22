@@ -566,7 +566,7 @@ const DivorcioConsensual = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-6"
+                className="border-accent text-accent hover:bg-accent hover:text-accent-foreground text-lg px-8 py-6"
                 onClick={handlePhoneClick}
               >
                 <Phone className="h-5 w-5 mr-2" />
