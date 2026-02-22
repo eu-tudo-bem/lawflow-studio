@@ -33,6 +33,7 @@ import PensaoAlimenticia from "./pages/PensaoAlimenticia";
 import DivorcioConsensual from "./pages/DivorcioConsensual";
 import CobrancaAluguel from "./pages/CobrancaAluguel";
 import DireitoAgrario from "./pages/DireitoAgrario";
+import TransferenciaVeiculos from "./pages/TransferenciaVeiculos";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/divorcio-consensual" element={<DivorcioConsensual />} />
           <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
           <Route path="/direito-agrario" element={<DireitoAgrario />} />
+          <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
           {/* Blog */}
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
