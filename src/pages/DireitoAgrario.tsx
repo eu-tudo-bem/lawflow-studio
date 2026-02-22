@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackConversion as trackConversionUtil } from "@/lib/trackConversion";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,16 +42,8 @@ const formSchema = z.object({
   descricao: z.string().trim().max(500).optional(),
 });
 
-const trackConversion = (event: string) => {
-  if (typeof window !== "undefined" && (window as any).gtag) {
-    (window as any).gtag("event", event, {
-      event_category: "conversao",
-      event_label: "direito_agrario",
-    });
-  }
-  if (typeof window !== "undefined" && (window as any).fbq) {
-    (window as any).fbq("track", event === "form_submit" ? "Lead" : "Contact");
-  }
+const trackConversionLocal = (event: "form_submit" | "whatsapp_click" | "phone_click") => {
+  trackConversionUtil(event, "direito_agrario");
 };
 
 const DireitoAgrario = () => {
@@ -90,7 +83,7 @@ const DireitoAgrario = () => {
         message: `[LP Direito Agrário] Cidade: ${validated.cidade}. Tipo de propriedade: ${validated.tipoPropriedade || "Não informado"}. ${validated.descricao || "Sem descrição adicional."}`,
       });
       if (error) throw error;
-      trackConversion("form_submit");
+      trackConversionLocal("form_submit");
       setIsSubmitted(true);
       toast({
         title: "Solicitação enviada!",
@@ -116,12 +109,12 @@ const DireitoAgrario = () => {
   };
 
   const handleWhatsAppClick = () => {
-    trackConversion("whatsapp_click");
+    trackConversionLocal("whatsapp_click");
     window.open(WHATSAPP_URL, "_blank");
   };
 
   const handlePhoneClick = () => {
-    trackConversion("phone_click");
+    trackConversionLocal("phone_click");
     window.location.href = PHONE_NUMBER;
   };
 

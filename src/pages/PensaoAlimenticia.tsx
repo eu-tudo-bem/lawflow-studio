@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackConversion as trackConversionUtil } from "@/lib/trackConversion";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,17 +36,8 @@ const formSchema = z.object({
   descricao: z.string().trim().max(500).optional(),
 });
 
-// Conversion tracking helper
-const trackConversion = (event: string) => {
-  if (typeof window !== "undefined" && (window as any).gtag) {
-    (window as any).gtag("event", event, {
-      event_category: "conversao",
-      event_label: "pensao_alimenticia",
-    });
-  }
-  if (typeof window !== "undefined" && (window as any).fbq) {
-    (window as any).fbq("track", event === "form_submit" ? "Lead" : "Contact");
-  }
+const trackConversionLocal = (event: "form_submit" | "whatsapp_click" | "phone_click") => {
+  trackConversionUtil(event, "pensao_alimenticia");
 };
 
 const PensaoAlimenticia = () => {
@@ -84,7 +76,7 @@ const PensaoAlimenticia = () => {
         message: `[LP Pensão Alimentícia] Cidade: ${validated.cidade}. ${validated.descricao || "Sem descrição adicional."}`,
       });
       if (error) throw error;
-      trackConversion("form_submit");
+      trackConversionLocal("form_submit");
       setIsSubmitted(true);
       toast({
         title: "Solicitação enviada!",
@@ -110,12 +102,12 @@ const PensaoAlimenticia = () => {
   };
 
   const handleWhatsAppClick = () => {
-    trackConversion("whatsapp_click");
+    trackConversionLocal("whatsapp_click");
     window.open(WHATSAPP_URL, "_blank");
   };
 
   const handlePhoneClick = () => {
-    trackConversion("phone_click");
+    trackConversionLocal("phone_click");
     window.location.href = PHONE_NUMBER;
   };
 
