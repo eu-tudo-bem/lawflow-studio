@@ -26,15 +26,12 @@ const ClientLogin = () => {
 
       if (authError) throw authError;
 
-      // Check if user has client role
-      const { data: roleData } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", authData.user.id)
-        .eq("role", "client")
-        .maybeSingle();
+      // Server-side role verification
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-role", {
+        body: { expected_role: "client" },
+      });
 
-      if (!roleData) {
+      if (verifyError || !verifyData?.authorized) {
         await supabase.auth.signOut();
         throw new Error("Esta área é exclusiva para clientes. Se você é advogado, use o login da área restrita.");
       }

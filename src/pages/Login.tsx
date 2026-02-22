@@ -26,14 +26,12 @@ const Login = () => {
 
       if (authError) throw authError;
 
-      // Check if user is admin or staff (not a client)
-      const { data: roleData } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", authData.user.id)
-        .single();
+      // Server-side role verification
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke("verify-role", {
+        body: { expected_role: "staff" },
+      });
 
-      if (roleData?.role === "client") {
+      if (verifyError || !verifyData?.authorized) {
         await supabase.auth.signOut();
         throw new Error("Esta área é exclusiva para advogados. Se você é cliente, use o Portal do Cliente.");
       }
