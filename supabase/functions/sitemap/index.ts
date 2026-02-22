@@ -66,6 +66,18 @@ Deno.serve(async (req) => {
 
     xml += `</urlset>`;
 
+    // Save to storage bucket for static access
+    const xmlBlob = new Blob([xml], { type: "application/xml" });
+    await supabase.storage
+      .from("sitemap")
+      .upload("sitemap.xml", xmlBlob, {
+        contentType: "application/xml",
+        upsert: true,
+        cacheControl: "3600",
+      });
+
+    console.log("Sitemap updated successfully with", (posts?.length || 0), "blog posts");
+
     return new Response(xml, {
       headers: {
         ...corsHeaders,
