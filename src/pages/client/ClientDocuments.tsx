@@ -76,13 +76,26 @@ const ClientDocuments = () => {
     fetchData();
   }, [user]);
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  const MAX_DESCRIPTION_LENGTH = 2000;
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       const allowed = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "image/jpeg", "image/png"];
-      const valid = newFiles.filter(f => allowed.includes(f.type));
-      if (valid.length !== newFiles.length) {
-        toast({ title: "Alguns arquivos ignorados", description: "Apenas PDF, DOCX, JPG e PNG são aceitos.", variant: "destructive" });
+      const valid = newFiles.filter(f => {
+        if (!allowed.includes(f.type)) return false;
+        if (f.size > MAX_FILE_SIZE) {
+          toast({ title: `Arquivo "${f.name}" excede 10MB`, description: "O tamanho máximo por arquivo é 10MB.", variant: "destructive" });
+          return false;
+        }
+        return true;
+      });
+      if (valid.length !== newFiles.length && valid.length < newFiles.length) {
+        const invalidType = newFiles.filter(f => !allowed.includes(f.type));
+        if (invalidType.length > 0) {
+          toast({ title: "Alguns arquivos ignorados", description: "Apenas PDF, DOCX, JPG e PNG são aceitos.", variant: "destructive" });
+        }
       }
       setFiles(prev => [...prev, ...valid]);
     }
@@ -93,6 +106,14 @@ const ClientDocuments = () => {
   const handleSubmit = async () => {
     if (!clientId || !description.trim() || !legalArea || files.length === 0) {
       toast({ title: "Preencha todos os campos", description: "Descrição, área jurídica e pelo menos um documento são obrigatórios.", variant: "destructive" });
+      return;
+    }
+    if (description.trim().length > MAX_DESCRIPTION_LENGTH) {
+      toast({ title: "Descrição muito longa", description: `Máximo de ${MAX_DESCRIPTION_LENGTH} caracteres.`, variant: "destructive" });
+      return;
+    }
+    if (files.some(f => f.size > MAX_FILE_SIZE)) {
+      toast({ title: "Arquivo excede o limite", description: "O tamanho máximo por arquivo é 10MB.", variant: "destructive" });
       return;
     }
 
