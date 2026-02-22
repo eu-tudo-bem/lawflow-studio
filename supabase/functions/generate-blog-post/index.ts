@@ -8,13 +8,35 @@ const corsHeaders = {
 };
 
 const LEGAL_AREAS = [
-  { id: "trabalhista", name: "Direito do Trabalho" },
-  { id: "familia", name: "Direito de Família" },
-  { id: "bancario", name: "Direito Bancário" },
-  { id: "consumidor", name: "Direito do Consumidor" },
+  { id: "trabalhista", name: "Direito do Trabalho", topics: ["rescisão, FGTS, horas extras, férias, assédio moral, demissão, carteira assinada, salário atrasado, acidente de trabalho, estabilidade"] },
+  { id: "familia", name: "Direito de Família", topics: ["divórcio, pensão alimentícia, guarda de filhos, inventário, testamento, união estável, partilha de bens, alienação parental"] },
+  { id: "bancario", name: "Direito Bancário", topics: ["juros abusivos, empréstimo, financiamento, negativação indevida, renegociação de dívida, cartão de crédito, consignado, superendividamento"] },
+  { id: "consumidor", name: "Direito do Consumidor", topics: ["produto defeituoso, propaganda enganosa, cobrança indevida, cancelamento de contrato, dano moral, recall, garantia, compra online"] },
 ];
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
+
+async function callAI(apiKey: string, prompt: string, model = "google/gemini-3-flash-preview") {
+  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`AI error ${response.status}: ${errText}`);
+  }
+
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || "";
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -44,62 +66,98 @@ serve(async (req) => {
         (t: any) => t.legal_area === area.id
       ).length;
     }
-    // Pick area with fewest posts
-    const sortedAreas = LEGAL_AREAS.sort(
+    const sortedAreas = [...LEGAL_AREAS].sort(
       (a, b) => (areaCounts[a.id] || 0) - (areaCounts[b.id] || 0)
     );
     const chosenArea = sortedAreas[0];
 
-    // 3. Generate topic + article via AI
-    const topicPrompt = `Você é um estrategista de conteúdo jurídico brasileiro especializado em SEO.
+    // 3. STEP 1 - Identify trending Google search topics and connect to legal themes
+    const trendingPrompt = `Você é um analista de tendências de busca do Google especializado no mercado brasileiro.
+
+TAREFA: Identifique 5 assuntos que estão em alta no Google Trends Brasil AGORA (notícias recentes, mudanças em leis, eventos atuais, virais nas redes sociais, decisões judiciais, mudanças econômicas, novas regulamentações).
+
+Pense em:
+- Notícias recentes do Brasil que geram dúvidas jurídicas
+- Mudanças em legislação ou decisões do STF/TST/STJ recentes
+- Temas virais nas redes sociais que envolvem questões legais
+- Problemas econômicos atuais (inflação, desemprego, crédito)
+- Eventos sazonais (IRPF, 13º salário, férias coletivas, volta às aulas)
+- Tendências de comportamento (trabalho remoto, apps de transporte, compras online)
+
+DATA ATUAL: ${new Date().toLocaleDateString("pt-BR")}
+
+Para cada assunto trending, conecte-o a uma questão jurídica prática na área de ${chosenArea.name}.
+Subtemas da área: ${chosenArea.topics.join(", ")}
+
+Responda APENAS com JSON válido (sem markdown, sem code blocks):
+{
+  "trending_topics": [
+    {
+      "trend": "assunto em alta no Google",
+      "legal_angle": "como isso se conecta a ${chosenArea.name}",
+      "search_query": "pergunta real que as pessoas fariam no Google sobre isso"
+    }
+  ]
+}`;
+
+    const trendingRaw = await callAI(LOVABLE_API_KEY, trendingPrompt);
+    const cleanedTrending = trendingRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    
+    let trendingData;
+    try {
+      trendingData = JSON.parse(cleanedTrending);
+    } catch {
+      console.error("Failed to parse trending data, using fallback");
+      trendingData = { trending_topics: [] };
+    }
+
+    const trendingContext = trendingData.trending_topics
+      ?.map((t: any) => `- Trend: "${t.trend}" → Ângulo jurídico: "${t.legal_angle}" → Busca: "${t.search_query}"`)
+      .join("\n") || "Sem dados de tendências disponíveis";
+
+    // 4. STEP 2 - Generate topic based on trends + legal expertise
+    const topicPrompt = `Você é um estrategista de conteúdo jurídico brasileiro que combina tendências do Google Trends com expertise em ${chosenArea.name}.
+
+TENDÊNCIAS ATUAIS IDENTIFICADAS:
+${trendingContext}
 
 ÁREA DO DIREITO: ${chosenArea.name}
+SUBTEMAS: ${chosenArea.topics.join(", ")}
 
 TEMAS JÁ USADOS (NÃO REPITA nenhum destes nem temas muito similares):
 ${usedKeywords.length > 0 ? usedKeywords.join("\n") : "(nenhum ainda)"}
 
-TAREFA: Escolha 1 tema NOVO com alta intenção de busca real (pergunta que pessoas fazem no Google) sobre ${chosenArea.name}.
+TAREFA: Com base nas tendências acima, escolha 1 tema NOVO que:
+1. Aproveite uma tendência real de busca do Google Trends
+2. Conecte essa tendência a uma questão prática de ${chosenArea.name}
+3. Use linguagem de busca real (como as pessoas pesquisam no Google)
+4. Tenha alto potencial de cliques e engajamento
+5. Seja relevante e atual
 
-Responda APENAS com um JSON válido (sem markdown, sem code blocks):
+EXEMPLO: Se "Pix" está trending e a área é Consumidor → "Golpe do Pix: Seus Direitos e Como Recuperar o Dinheiro"
+EXEMPLO: Se "demissão em massa" está trending e a área é Trabalhista → "Demissão em Massa: Quais São Seus Direitos Trabalhistas?"
+
+Responda APENAS com JSON válido (sem markdown, sem code blocks):
 {
-  "keyword": "palavra-chave principal (frase de busca real)",
+  "trend_used": "qual tendência do Google inspirou este tema",
+  "keyword": "palavra-chave principal (frase de busca real do Google)",
   "secondary_keywords": ["kw2", "kw3", "kw4"],
   "title_seo": "Título SEO até 60 caracteres com a keyword",
-  "meta_description": "Meta descrição até 160 caracteres",
+  "meta_description": "Meta descrição até 160 caracteres, persuasiva e com keyword",
   "slug": "slug-otimizado-sem-acentos"
 }`;
 
-    const topicResponse = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
-          messages: [{ role: "user", content: topicPrompt }],
-        }),
-      }
-    );
-
-    if (!topicResponse.ok) {
-      const errText = await topicResponse.text();
-      throw new Error(`AI topic error ${topicResponse.status}: ${errText}`);
-    }
-
-    const topicData = await topicResponse.json();
-    const topicRaw = topicData.choices?.[0]?.message?.content || "";
-    
-    // Clean markdown code blocks if present
+    const topicRaw = await callAI(LOVABLE_API_KEY, topicPrompt);
     const cleanedTopic = topicRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
     const topic = JSON.parse(cleanedTopic);
 
-    // 4. Generate the full article
+    console.log(`📊 Trend used: "${topic.trend_used}" → Topic: "${topic.keyword}"`);
+
+    // 5. Generate the full article
     const articlePrompt = `Você é um redator jurídico brasileiro especializado em conteúdo informativo para blog.
 
 ÁREA: ${chosenArea.name}
+TENDÊNCIA DO GOOGLE TRENDS: ${topic.trend_used}
 PALAVRA-CHAVE PRINCIPAL: ${topic.keyword}
 PALAVRAS-CHAVE SECUNDÁRIAS: ${topic.secondary_keywords.join(", ")}
 TÍTULO SEO: ${topic.title_seo}
@@ -111,12 +169,14 @@ REGRAS OBRIGATÓRIAS:
 - Linguagem clara, acessível e profissional
 - Entre 900 e 1200 palavras
 - A palavra-chave principal DEVE aparecer no primeiro parágrafo
+- Conecte o tema trending com a questão jurídica de forma natural e relevante
+- Comece o artigo contextualizando a tendência atual antes de entrar nos aspectos jurídicos
 
 ESTRUTURA OBRIGATÓRIA DO ARTIGO (use tags HTML):
 
 1. <h1>${topic.title_seo}</h1> (use exatamente este título)
 
-2. Introdução (2-3 parágrafos) - com a palavra-chave no primeiro parágrafo
+2. Introdução (2-3 parágrafos) - contextualize a tendência atual e conecte à questão jurídica. A palavra-chave deve estar no primeiro parágrafo.
 
 3. Desenvolvimento com 3-4 subtítulos <h2> estratégicos
    - Cada seção com 2-3 parágrafos
@@ -138,32 +198,10 @@ ESTRUTURA OBRIGATÓRIA DO ARTIGO (use tags HTML):
 
 IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem explicações extras. Comece direto com <h1>.`;
 
-    const articleResponse = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
-          messages: [{ role: "user", content: articlePrompt }],
-        }),
-      }
-    );
+    const content_raw = await callAI(LOVABLE_API_KEY, articlePrompt);
+    const content = content_raw.replace(/```html\s*/g, "").replace(/```\s*/g, "").trim();
 
-    if (!articleResponse.ok) {
-      const errText = await articleResponse.text();
-      throw new Error(`AI article error ${articleResponse.status}: ${errText}`);
-    }
-
-    const articleData = await articleResponse.json();
-    let content = articleData.choices?.[0]?.message?.content || "";
-    // Clean any markdown wrappers
-    content = content.replace(/```html\s*/g, "").replace(/```\s*/g, "").trim();
-
-    // 5. Get admin user for author_id
+    // 6. Get admin user for author_id
     const { data: adminRole } = await supabase
       .from("user_roles")
       .select("user_id")
@@ -173,7 +211,7 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
 
     if (!adminRole) throw new Error("No admin user found for author_id");
 
-    // 6. Get or create a category for the legal area
+    // 7. Get or create a category for the legal area
     const { data: existingCat } = await supabase
       .from("blog_categories")
       .select("id")
@@ -193,13 +231,13 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
       categoryId = newCat.id;
     }
 
-    // 7. Build excerpt from content (first paragraph text)
+    // 8. Build excerpt from content
     const excerptMatch = content.match(/<p>(.*?)<\/p>/);
     const excerpt = excerptMatch
       ? excerptMatch[1].replace(/<[^>]+>/g, "").substring(0, 250)
       : topic.meta_description;
 
-    // 8. Insert the blog post
+    // 9. Insert the blog post
     const { data: post, error: postErr } = await supabase
       .from("blog_posts")
       .insert({
@@ -220,15 +258,15 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
 
     if (postErr) throw new Error(`Post insert error: ${postErr.message}`);
 
-    // 9. Record used topic
+    // 10. Record used topic (including trend reference)
     await supabase.from("blog_topics_used").insert({
       keyword: topic.keyword,
-      secondary_keywords: topic.secondary_keywords,
+      secondary_keywords: [topic.trend_used, ...topic.secondary_keywords],
       legal_area: chosenArea.id,
       post_id: post.id,
     });
 
-    // 10. Regenerate and upload sitemap.xml to storage
+    // 11. Regenerate and upload sitemap.xml to storage
     try {
       const { data: allPosts } = await supabase
         .from("blog_posts")
@@ -262,7 +300,6 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
 
       sitemapXml += `</urlset>`;
 
-      // Upload to storage bucket
       const sitemapBlob = new Blob([sitemapXml], { type: "application/xml" });
       await supabase.storage
         .from("sitemap")
@@ -276,7 +313,7 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
       console.error("Sitemap update error (non-fatal):", sitemapErr);
     }
 
-    console.log(`✅ Published: "${topic.title_seo}" [${chosenArea.name}]`);
+    console.log(`✅ Published: "${topic.title_seo}" [${chosenArea.name}] | Trend: "${topic.trend_used}"`);
 
     return new Response(
       JSON.stringify({
@@ -284,6 +321,7 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
         post_id: post.id,
         title: topic.title_seo,
         keyword: topic.keyword,
+        trend_used: topic.trend_used,
         legal_area: chosenArea.name,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
