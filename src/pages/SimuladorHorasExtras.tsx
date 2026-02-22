@@ -5,6 +5,7 @@ import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import OvertimeSimulator from "@/components/landing/OvertimeSimulator";
+import OvertimeSEOContent from "@/components/seo/OvertimeSEOContent";
 
 const breadcrumb = buildBreadcrumbSchema([
   { name: "Ferramentas Gratuitas", path: "/#ferramentas" },
@@ -80,6 +81,7 @@ const SimuladorHorasExtras = () => {
       <div id="simulador">
         <OvertimeSimulator />
       </div>
+      <OvertimeSEOContent />
       <Footer />
     </div>
   );

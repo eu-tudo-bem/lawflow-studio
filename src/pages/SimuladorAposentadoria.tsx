@@ -5,6 +5,7 @@ import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import RetirementSimulator from "@/components/landing/RetirementSimulator";
+import RetirementSEOContent from "@/components/seo/RetirementSEOContent";
 
 const breadcrumb = buildBreadcrumbSchema([
   { name: "Ferramentas Gratuitas", path: "/#ferramentas" },
@@ -80,6 +81,7 @@ const SimuladorAposentadoria = () => {
       <main id="simulador">
         <RetirementSimulator />
       </main>
+      <RetirementSEOContent />
       <Footer />
     </div>
   );
