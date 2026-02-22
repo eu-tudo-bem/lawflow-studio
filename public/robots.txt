@@ -3,7 +3,9 @@ Allow: /
 Disallow: /login
 Disallow: /signup
 Disallow: /dashboard
+Disallow: /dashboard/*
 Disallow: /client-login
 Disallow: /client-portal
+Disallow: /client-portal/*
 
 Sitemap: https://fernandezefernandes.adv.br/sitemap.xml

@@ -15,6 +15,11 @@ const staticPages = [
   { loc: "/simulador-juros", changefreq: "monthly", priority: "0.7" },
   { loc: "/simulador-aposentadoria", changefreq: "monthly", priority: "0.7" },
   { loc: "/simulador-horas-extras", changefreq: "monthly", priority: "0.7" },
+  { loc: "/pensao-alimenticia", changefreq: "monthly", priority: "0.8" },
+  { loc: "/divorcio-consensual", changefreq: "monthly", priority: "0.8" },
+  { loc: "/cobranca-aluguel", changefreq: "monthly", priority: "0.8" },
+  { loc: "/direito-agrario", changefreq: "monthly", priority: "0.8" },
+  { loc: "/transferencia-veiculos", changefreq: "monthly", priority: "0.8" },
 ];
 
 Deno.serve(async (req) => {
