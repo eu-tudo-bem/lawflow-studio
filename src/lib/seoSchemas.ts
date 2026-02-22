@@ -1,4 +1,4 @@
-const BASE_URL = "https://lawflow-studio.lovable.app";
+const BASE_URL = "https://fernandezefernandes.adv.br";
 
 export function buildBreadcrumbSchema(items: { name: string; path: string }[]) {
   return {
