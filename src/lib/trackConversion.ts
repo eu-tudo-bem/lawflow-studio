@@ -19,11 +19,12 @@ const AW_ID = "AW-17373132555";
 // Replace the values below with the real conversion labels generated in
 // Google Ads → Tools → Conversions once you create each conversion action.
 const ADS_CONVERSION_LABELS: Record<string, string> = {
-  pensao_alimenticia: "",      // e.g. "AbCdEfGhIjK"
-  divorcio_consensual: "",
-  cobranca_aluguel: "",
-  direito_agrario: "",
-  transferencia_veiculos: "",
+  pensao_alimenticia: "TboiCNnqlP0bEIvuk9xA",
+  divorcio_consensual: "TboiCNnqlP0bEIvuk9xA",
+  cobranca_aluguel: "TboiCNnqlP0bEIvuk9xA",
+  direito_agrario: "TboiCNnqlP0bEIvuk9xA",
+  transferencia_veiculos: "TboiCNnqlP0bEIvuk9xA",
+  contato: "TboiCNnqlP0bEIvuk9xA",
 };
 
 type ConversionEvent = "form_submit" | "whatsapp_click" | "phone_click";
