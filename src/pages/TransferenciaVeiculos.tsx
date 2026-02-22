@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+import logoImg from "@/assets/logo.png";
 import {
   Shield,
   Clock,
@@ -130,9 +131,15 @@ const TransferenciaVeiculos = () => {
       {/* Header mínimo */}
       <header className="bg-primary py-3 px-4">
         <div className="container mx-auto flex items-center justify-between">
-          <span className="font-serif text-lg font-bold text-primary-foreground">
-            Fernandez & Fernandes
-          </span>
+          <div className="flex items-center gap-3">
+            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-9 w-9" />
+            <div>
+              <span className="font-serif text-lg font-bold text-primary-foreground">
+                Fernandez & Fernandes
+              </span>
+              <p className="text-xs text-primary-foreground/60">Advocacia & Consultoria</p>
+            </div>
+          </div>
           <Button
             size="sm"
             className="bg-accent text-accent-foreground hover:bg-accent/90"
