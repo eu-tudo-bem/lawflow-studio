@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import WhatsAppButton from "./components/WhatsAppButton";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Lazy-loaded pages for code splitting
 const Login = lazy(() => import("./pages/Login"));
@@ -33,6 +34,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogAdmin = lazy(() => import("./pages/BlogAdmin"));
 const AnalysesReceived = lazy(() => import("./pages/AnalysesReceived"));
 const TJPRMonitor = lazy(() => import("./pages/TJPRMonitor"));
+const Unauthorized = lazy(() => import("./pages/Unauthorized"));
 const PensaoAlimenticia = lazy(() => import("./pages/PensaoAlimenticia"));
 const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
 const CobrancaAluguel = lazy(() => import("./pages/CobrancaAluguel"));
@@ -73,18 +75,19 @@ const App = () => (
             {/* Lawyer/Admin Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/clients" element={<Clients />} />
-            <Route path="/dashboard/cases" element={<Cases />} />
-            <Route path="/dashboard/appointments" element={<Appointments />} />
-            <Route path="/dashboard/messages" element={<Messages />} />
-            <Route path="/dashboard/chat" element={<Chat />} />
-            <Route path="/dashboard/blog" element={<BlogAdmin />} />
-            <Route path="/dashboard/analyses" element={<AnalysesReceived />} />
-            <Route path="/dashboard/tjpr" element={<TJPRMonitor />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/dashboard" element={<ProtectedRoute requiredRole="staff"><Dashboard /></ProtectedRoute>} />
+            <Route path="/dashboard/clients" element={<ProtectedRoute requiredRole="staff"><Clients /></ProtectedRoute>} />
+            <Route path="/dashboard/cases" element={<ProtectedRoute requiredRole="staff"><Cases /></ProtectedRoute>} />
+            <Route path="/dashboard/appointments" element={<ProtectedRoute requiredRole="staff"><Appointments /></ProtectedRoute>} />
+            <Route path="/dashboard/messages" element={<ProtectedRoute requiredRole="staff"><Messages /></ProtectedRoute>} />
+            <Route path="/dashboard/chat" element={<ProtectedRoute requiredRole="staff"><Chat /></ProtectedRoute>} />
+            <Route path="/dashboard/blog" element={<ProtectedRoute requiredRole="staff"><BlogAdmin /></ProtectedRoute>} />
+            <Route path="/dashboard/analyses" element={<ProtectedRoute requiredRole="staff"><AnalysesReceived /></ProtectedRoute>} />
+            <Route path="/dashboard/tjpr" element={<ProtectedRoute requiredRole="staff"><TJPRMonitor /></ProtectedRoute>} />
             {/* Client Portal Routes */}
             <Route path="/client-login" element={<ClientLogin />} />
-            <Route path="/client-portal" element={<ClientPortal />}>
+            <Route path="/client-portal" element={<ProtectedRoute requiredRole="client"><ClientPortal /></ProtectedRoute>}>
               <Route index element={<ClientCases />} />
               <Route path="documents" element={<ClientDocuments />} />
               <Route path="appointments" element={<ClientAppointments />} />
