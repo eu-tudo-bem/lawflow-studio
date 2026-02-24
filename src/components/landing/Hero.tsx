@@ -21,6 +21,10 @@ const Hero = () => {
           src={heroBg}
           alt="Escritório de Advocacia"
           className="w-full h-full object-cover"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/95 via-navy-dark/85 to-navy-dark/70" />
       </div>
