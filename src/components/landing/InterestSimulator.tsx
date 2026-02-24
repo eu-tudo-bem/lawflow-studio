@@ -74,7 +74,7 @@ const InterestSimulator = () => {
   const handleContact = () => {
     const result = calculateResult();
     const msg = `Olá, fiz a simulação de juros no site e gostaria de uma análise do meu contrato.\n\nNome: ${data.name}\nCidade: ${data.city}\nBanco/Financeira: ${data.bank}\nTipo: ${MARKET_RATES[data.type]?.label || "Outro"}\nValor financiado: R$ ${Number(data.amount).toLocaleString("pt-BR")}\nParcela: R$ ${Number(data.installmentValue).toLocaleString("pt-BR")}\nQtd parcelas: ${data.installmentCount}\nTaxa estimada: ${result.effectiveMonthlyRate.toFixed(2)}% a.m.\nEconomia potencial: R$ ${result.potentialSavings.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`;
-    window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/5541995808145?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const reset = () => {
