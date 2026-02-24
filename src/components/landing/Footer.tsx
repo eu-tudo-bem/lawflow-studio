@@ -90,7 +90,7 @@ const Footer = () => {
             <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
               <li>Av. Paulista, 1000 - Sala 1501</li>
               <li>São Paulo - SP</li>
-              <li>(11) 3000-0000</li>
+              <li>(41) 99580-8145</li>
               <li>contato@fernandezfernandes.adv.br</li>
             </ul>
             <div className="flex gap-4 mt-4">

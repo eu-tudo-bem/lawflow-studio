@@ -138,7 +138,7 @@ const AlimonySimulator = () => {
       `Processo existente: ${contact.hasProcess ? "Sim" : "Não"}\n\n` +
       `Gostaria de uma análise detalhada do meu caso.`
     );
-    window.open(`https://wa.me/5511900000000?text=${message}`, "_blank");
+    window.open(`https://wa.me/5541995808145?text=${message}`, "_blank");
     setSubmitted(true);
   };
 

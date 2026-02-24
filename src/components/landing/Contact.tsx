@@ -115,8 +115,8 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Telefone</h3>
                   <p className="text-muted-foreground">
-                    (11) 3000-0000<br />
-                    (11) 99000-0000 (WhatsApp)
+                    (41) 99580-8145<br />
+                    (41) 99580-8145 (WhatsApp)
                   </p>
                 </div>
               </div>

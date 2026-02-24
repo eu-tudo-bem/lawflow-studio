@@ -175,7 +175,7 @@ const RetirementSimulator = () => {
   const handleContact = () => {
     const r = calculateRetirement(data);
     const msg = `Olá! Fiz a simulação de aposentadoria no site.\n\nNome: ${contact.name}\nE-mail: ${contact.email}\nIdade: ${data.age} anos\nTempo de contribuição: ${data.contributionYears} anos\nRegra indicada: ${r.bestRule}\nTempo restante estimado: ${r.bestYears} anos\n${r.estimatedBenefit > 0 ? `Benefício estimado: R$ ${r.estimatedBenefit.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}` : ""}\n\nGostaria de uma análise detalhada do meu caso.`;
-    window.open(`https://wa.me/5511900000000?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/5541995808145?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const contactValid = contact.name && contact.whatsapp && contact.email;
