@@ -1,42 +1,51 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import Clients from "./pages/Clients";
-import Cases from "./pages/Cases";
-import Appointments from "./pages/Appointments";
-import Messages from "./pages/Messages";
-import Chat from "./pages/Chat";
-import NotFound from "./pages/NotFound";
-import Calculadora from "./pages/Calculadora";
-import SimuladorPensao from "./pages/SimuladorPensao";
-import SimuladorJuros from "./pages/SimuladorJuros";
-import SimuladorAposentadoria from "./pages/SimuladorAposentadoria";
-import SimuladorHorasExtras from "./pages/SimuladorHorasExtras";
-import ClientLogin from "./pages/ClientLogin";
-import ClientPortal from "./pages/ClientPortal";
-import ClientCases from "./pages/client/ClientCases";
-import ClientAppointments from "./pages/client/ClientAppointments";
-import ClientMessages from "./pages/client/ClientMessages";
-import ClientDocuments from "./pages/client/ClientDocuments";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import BlogAdmin from "./pages/BlogAdmin";
-import AnalysesReceived from "./pages/AnalysesReceived";
-import TJPRMonitor from "./pages/TJPRMonitor";
-import PensaoAlimenticia from "./pages/PensaoAlimenticia";
-import DivorcioConsensual from "./pages/DivorcioConsensual";
-import CobrancaAluguel from "./pages/CobrancaAluguel";
-import DireitoAgrario from "./pages/DireitoAgrario";
-import TransferenciaVeiculos from "./pages/TransferenciaVeiculos";
 import WhatsAppButton from "./components/WhatsAppButton";
 
+// Lazy-loaded pages for code splitting
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Clients = lazy(() => import("./pages/Clients"));
+const Cases = lazy(() => import("./pages/Cases"));
+const Appointments = lazy(() => import("./pages/Appointments"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Chat = lazy(() => import("./pages/Chat"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Calculadora = lazy(() => import("./pages/Calculadora"));
+const SimuladorPensao = lazy(() => import("./pages/SimuladorPensao"));
+const SimuladorJuros = lazy(() => import("./pages/SimuladorJuros"));
+const SimuladorAposentadoria = lazy(() => import("./pages/SimuladorAposentadoria"));
+const SimuladorHorasExtras = lazy(() => import("./pages/SimuladorHorasExtras"));
+const ClientLogin = lazy(() => import("./pages/ClientLogin"));
+const ClientPortal = lazy(() => import("./pages/ClientPortal"));
+const ClientCases = lazy(() => import("./pages/client/ClientCases"));
+const ClientAppointments = lazy(() => import("./pages/client/ClientAppointments"));
+const ClientMessages = lazy(() => import("./pages/client/ClientMessages"));
+const ClientDocuments = lazy(() => import("./pages/client/ClientDocuments"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const BlogAdmin = lazy(() => import("./pages/BlogAdmin"));
+const AnalysesReceived = lazy(() => import("./pages/AnalysesReceived"));
+const TJPRMonitor = lazy(() => import("./pages/TJPRMonitor"));
+const PensaoAlimenticia = lazy(() => import("./pages/PensaoAlimenticia"));
+const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
+const CobrancaAluguel = lazy(() => import("./pages/CobrancaAluguel"));
+const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
+const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
+
 const queryClient = new QueryClient();
+
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -45,44 +54,46 @@ const App = () => (
       <Sonner />
       <WhatsAppButton />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/calculadora" element={<Calculadora />} />
-          <Route path="/simulador-pensao" element={<SimuladorPensao />} />
-          <Route path="/simulador-juros" element={<SimuladorJuros />} />
-          <Route path="/simulador-aposentadoria" element={<SimuladorAposentadoria />} />
-          <Route path="/simulador-horas-extras" element={<SimuladorHorasExtras />} />
-          <Route path="/pensao-alimenticia" element={<PensaoAlimenticia />} />
-          <Route path="/divorcio-consensual" element={<DivorcioConsensual />} />
-          <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
-          <Route path="/direito-agrario" element={<DireitoAgrario />} />
-          <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
-          {/* Blog */}
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          {/* Lawyer/Admin Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/clients" element={<Clients />} />
-          <Route path="/dashboard/cases" element={<Cases />} />
-          <Route path="/dashboard/appointments" element={<Appointments />} />
-          <Route path="/dashboard/messages" element={<Messages />} />
-          <Route path="/dashboard/chat" element={<Chat />} />
-          <Route path="/dashboard/blog" element={<BlogAdmin />} />
-          <Route path="/dashboard/analyses" element={<AnalysesReceived />} />
-          <Route path="/dashboard/tjpr" element={<TJPRMonitor />} />
-          {/* Client Portal Routes */}
-          <Route path="/client-login" element={<ClientLogin />} />
-          <Route path="/client-portal" element={<ClientPortal />}>
-            <Route index element={<ClientCases />} />
-            <Route path="documents" element={<ClientDocuments />} />
-            <Route path="appointments" element={<ClientAppointments />} />
-            <Route path="messages" element={<ClientMessages />} />
-          </Route>
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/calculadora" element={<Calculadora />} />
+            <Route path="/simulador-pensao" element={<SimuladorPensao />} />
+            <Route path="/simulador-juros" element={<SimuladorJuros />} />
+            <Route path="/simulador-aposentadoria" element={<SimuladorAposentadoria />} />
+            <Route path="/simulador-horas-extras" element={<SimuladorHorasExtras />} />
+            <Route path="/pensao-alimenticia" element={<PensaoAlimenticia />} />
+            <Route path="/divorcio-consensual" element={<DivorcioConsensual />} />
+            <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
+            <Route path="/direito-agrario" element={<DireitoAgrario />} />
+            <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
+            {/* Blog */}
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            {/* Lawyer/Admin Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/clients" element={<Clients />} />
+            <Route path="/dashboard/cases" element={<Cases />} />
+            <Route path="/dashboard/appointments" element={<Appointments />} />
+            <Route path="/dashboard/messages" element={<Messages />} />
+            <Route path="/dashboard/chat" element={<Chat />} />
+            <Route path="/dashboard/blog" element={<BlogAdmin />} />
+            <Route path="/dashboard/analyses" element={<AnalysesReceived />} />
+            <Route path="/dashboard/tjpr" element={<TJPRMonitor />} />
+            {/* Client Portal Routes */}
+            <Route path="/client-login" element={<ClientLogin />} />
+            <Route path="/client-portal" element={<ClientPortal />}>
+              <Route index element={<ClientCases />} />
+              <Route path="documents" element={<ClientDocuments />} />
+              <Route path="appointments" element={<ClientAppointments />} />
+              <Route path="messages" element={<ClientMessages />} />
+            </Route>
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
