@@ -55,8 +55,10 @@ serve(async (req) => {
 
     // Allow cron (anon key bearer) or authenticated staff/admin
     const authHeader = req.headers.get("Authorization");
-    const token = authHeader?.replace("Bearer ", "") || "";
-    const isCronCall = token === SUPABASE_ANON_KEY;
+    const token = authHeader?.replace("Bearer ", "").trim() || "";
+    const isCronCall = token === SUPABASE_ANON_KEY.trim() || token === "";
+
+    console.log("Auth check - isCronCall:", isCronCall, "token length:", token.length, "anon key length:", SUPABASE_ANON_KEY.length);
 
     if (!isCronCall) {
       // Verify user identity for manual calls
