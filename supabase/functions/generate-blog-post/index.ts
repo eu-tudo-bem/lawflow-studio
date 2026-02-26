@@ -44,39 +44,38 @@ serve(async (req) => {
   }
 
   try {
-    // Authenticate and authorize
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Verify user identity
-    const supabaseAuth = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData, error: userError } = await supabaseAuth.auth.getUser();
-    if (userError || !userData?.user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+    // Allow cron (anon key bearer) or authenticated staff/admin
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.replace("Bearer ", "") || "";
+    const isCronCall = token === SUPABASE_ANON_KEY;
 
-    // Check admin/staff role
-    const { data: roleData } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userData.user.id)
-      .in("role", ["admin", "staff"])
-      .limit(1);
-
-    if (!roleData || roleData.length === 0) {
-      return new Response(JSON.stringify({ error: "Forbidden: insufficient permissions" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    if (!isCronCall) {
+      // Verify user identity for manual calls
+      const supabaseAuth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        global: { headers: { Authorization: authHeader || "" } },
+      });
+      const { data: userData, error: userError } = await supabaseAuth.auth.getUser();
+      if (userError || !userData?.user) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userData.user.id)
+        .in("role", ["admin", "staff"])
+        .limit(1);
+      if (!roleData || roleData.length === 0) {
+        return new Response(JSON.stringify({ error: "Forbidden: insufficient permissions" }), { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
     }
 
     // 1. Get used topics to avoid repetition
