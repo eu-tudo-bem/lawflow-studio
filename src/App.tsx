@@ -5,8 +5,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import WhatsAppButton from "./components/WhatsAppButton";
-import ProtectedRoute from "./components/ProtectedRoute";
+
+// Lazy-load auth/utility components so they don't block FCP on the homepage
+const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
+const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
 
 // Lazy-loaded pages for code splitting
 const Login = lazy(() => import("./pages/Login"));
