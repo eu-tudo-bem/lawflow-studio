@@ -74,6 +74,8 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
+            {/* Hyper-local SEO Pages – Paraná Cities */}
+            <Route path="/escritorio-advocacia-:cidade" element={<LocalAdvocaciaPage />} />
             {/* Blog */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
