@@ -36,13 +36,17 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <Services />
-        <About />
-        <Testimonials />
-        <FAQ />
-        <Contact />
+        <Suspense fallback={null}>
+          <Services />
+          <About />
+          <Testimonials />
+          <FAQ />
+          <Contact />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
