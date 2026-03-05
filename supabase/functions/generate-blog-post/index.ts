@@ -300,7 +300,7 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
       .from("blog_posts")
       .insert({
         title: topic.title_seo,
-        slug: topic.slug,
+        slug: finalSlug,
         content,
         excerpt,
         meta_title: topic.title_seo,
