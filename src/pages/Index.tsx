@@ -1,14 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
-import Services from "@/components/landing/Services";
-import About from "@/components/landing/About";
-import Testimonials from "@/components/landing/Testimonials";
-import FAQ from "@/components/landing/FAQ";
-import Contact from "@/components/landing/Contact";
-import Footer from "@/components/landing/Footer";
+
+// Below-the-fold sections: lazy-loaded to reduce initial JS parse time and improve FCP
+const Services = lazy(() => import("@/components/landing/Services"));
+const About = lazy(() => import("@/components/landing/About"));
+const Testimonials = lazy(() => import("@/components/landing/Testimonials"));
+const FAQ = lazy(() => import("@/components/landing/FAQ"));
+const Contact = lazy(() => import("@/components/landing/Contact"));
+const Footer = lazy(() => import("@/components/landing/Footer"));
 
 const Index = () => {
   const location = useLocation();
