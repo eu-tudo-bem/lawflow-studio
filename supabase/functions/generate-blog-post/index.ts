@@ -177,7 +177,31 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
 
     const topicRaw = await callAI(LOVABLE_API_KEY, topicPrompt);
     const cleanedTopic = topicRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-    const topic = JSON.parse(cleanedTopic);
+
+    let topic;
+    try {
+      topic = JSON.parse(cleanedTopic);
+    } catch {
+      // Retry once with explicit JSON-only instruction
+      console.warn("First topic parse failed, retrying with stricter prompt...");
+      const retryRaw = await callAI(LOVABLE_API_KEY, topicPrompt + "\n\nIMPORTANT: Respond with ONLY raw JSON. No markdown. No backticks. No explanation. Start with { and end with }");
+      const retryClean = retryRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+      try {
+        topic = JSON.parse(retryClean);
+      } catch {
+        // Final fallback: generate a safe default topic from the area
+        console.error("Both topic parses failed, using area-based fallback");
+        const safeSlug = `${chosenArea.id}-direitos-${Date.now()}`;
+        topic = {
+          trend_used: "Busca recorrente no Google Brasil",
+          keyword: `${chosenArea.name.toLowerCase()} direitos`,
+          secondary_keywords: chosenArea.topics[0].split(", ").slice(0, 3),
+          title_seo: `Seus Direitos em ${chosenArea.name}: Guia Prático`,
+          meta_description: `Entenda seus direitos em ${chosenArea.name}. Tire suas dúvidas e saiba como agir.`,
+          slug: safeSlug,
+        };
+      }
+    }
 
     console.log(`📊 Trend used: "${topic.trend_used}" → Topic: "${topic.keyword}"`);
 
@@ -265,12 +289,18 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
       ? excerptMatch[1].replace(/<[^>]+>/g, "").substring(0, 250)
       : topic.meta_description;
 
-    // 9. Insert the blog post
+    // 9. Insert the blog post — ensure unique slug
+    let finalSlug = topic.slug;
+    const { data: existingSlug } = await supabase.from("blog_posts").select("id").eq("slug", finalSlug).maybeSingle();
+    if (existingSlug) {
+      finalSlug = `${finalSlug}-${Date.now()}`;
+    }
+
     const { data: post, error: postErr } = await supabase
       .from("blog_posts")
       .insert({
         title: topic.title_seo,
-        slug: topic.slug,
+        slug: finalSlug,
         content,
         excerpt,
         meta_title: topic.title_seo,
