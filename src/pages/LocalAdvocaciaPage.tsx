@@ -24,21 +24,27 @@ const LocalAdvocaciaPage = () => {
   const { cidade } = useParams<{ cidade: string }>();
   const city = getCityBySlug(cidade || "");
 
-  if (!city) {
-    return <Navigate to="/404" replace />;
-  }
+  const cityName = city?.name ?? "";
+  const cityRegion = city?.region ?? "";
+  const citySlug = city?.slug ?? "";
+  const v = city?.variationIndex ?? 0;
 
-  const v = city.variationIndex;
-  const subtitle = textVariations.subtitle[v](city.name, city.region);
-  const serviceIntro = textVariations.serviceIntro[v](city.name);
-  const problemsIntro = textVariations.problemsIntro[v](city.name);
-  const attendanceText = textVariations.attendanceText[v](city.name);
-  const ctaText = textVariations.ctaText[v](city.name);
-  const whatsappLink = getWhatsAppLink(city.name);
+  const subtitle = textVariations.subtitle[v](cityName, cityRegion);
+  const serviceIntro = textVariations.serviceIntro[v](cityName);
+  const problemsIntro = textVariations.problemsIntro[v](cityName);
+  const attendanceText = textVariations.attendanceText[v](cityName);
+  const ctaText = textVariations.ctaText[v](cityName);
+  const whatsappLink = getWhatsAppLink(cityName);
 
-  const metaTitle = `Escritório de Advocacia em ${city.name} | Advogado Especialista`;
-  const metaDescription = `Advogado em ${city.name}. Atendimento rápido para divórcio, pensão, cobranças e direito civil. Fale com um advogado agora.`;
-  const canonical = `https://fernandezefernandes.adv.br/escritorio-advocacia-${city.slug}`;
+  const metaTitle = city
+    ? `Escritório de Advocacia em ${cityName} | Advogado Especialista`
+    : "Advocacia no Paraná";
+  const metaDescription = city
+    ? `Advogado em ${cityName}. Atendimento rápido para divórcio, pensão, cobranças e direito civil. Fale com um advogado agora.`
+    : "";
+  const canonical = city
+    ? `https://fernandezefernandes.adv.br/escritorio-advocacia-${citySlug}`
+    : "";
 
   usePageSEO({
     title: metaTitle,
