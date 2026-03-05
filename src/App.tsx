@@ -42,6 +42,7 @@ const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
 const CobrancaAluguel = lazy(() => import("./pages/CobrancaAluguel"));
 const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
+const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 
 const queryClient = new QueryClient();
 
