@@ -82,7 +82,7 @@ const LocalAdvocaciaPage = () => {
       },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
-        name: `Serviços Jurídicos em ${city.name}`,
+        name: `Serviços Jurídicos em ${cityName}`,
         itemListElement: services.map((s) => ({
           "@type": "Offer",
           itemOffered: {
@@ -103,12 +103,14 @@ const LocalAdvocaciaPage = () => {
           {
             "@type": "ListItem",
             position: 2,
-            name: `Advocacia em ${city.name}`,
+            name: `Advocacia em ${cityName}`,
             item: canonical,
           },
         ],
       },
     };
+
+    if (!city) return;
 
     const script = document.createElement("script");
     script.id = schemaId;
@@ -120,9 +122,14 @@ const LocalAdvocaciaPage = () => {
       const el = document.getElementById(schemaId);
       if (el) el.remove();
     };
-  }, [city.slug]);
+  }, [citySlug]);
+
+  if (!city) {
+    return <Navigate to="/404" replace />;
+  }
 
   return (
+
     <div className="min-h-screen bg-background font-sans">
       {/* Minimal Header */}
       <header className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-4 px-4 sticky top-0 z-40 shadow-md">
