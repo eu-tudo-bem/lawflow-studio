@@ -289,7 +289,13 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
       ? excerptMatch[1].replace(/<[^>]+>/g, "").substring(0, 250)
       : topic.meta_description;
 
-    // 9. Insert the blog post
+    // 9. Insert the blog post — ensure unique slug
+    let finalSlug = topic.slug;
+    const { data: existingSlug } = await supabase.from("blog_posts").select("id").eq("slug", finalSlug).maybeSingle();
+    if (existingSlug) {
+      finalSlug = `${finalSlug}-${Date.now()}`;
+    }
+
     const { data: post, error: postErr } = await supabase
       .from("blog_posts")
       .insert({
