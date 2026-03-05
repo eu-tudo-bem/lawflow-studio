@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logoImg from "@/assets/logo.png";
+import logoWebp from "@/assets/logo.png"; // will stay PNG until WebP is available
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
