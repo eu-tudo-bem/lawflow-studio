@@ -1,6 +1,6 @@
 import { ArrowRight, Shield, Award, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.webp";
 
 const Hero = () => {
   const scrollToContact = () => {
