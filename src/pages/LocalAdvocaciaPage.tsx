@@ -175,7 +175,7 @@ const LocalAdvocaciaPage = () => {
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold mb-6 leading-tight">
             Escritório de Advocacia em{" "}
-            <span className="text-[hsl(45_60%_55%)]">{city.name}</span>
+            <span className="text-[hsl(45_60%_55%)]">{cityName}</span>
           </h1>
           <p className="text-lg md:text-xl text-[hsl(45_20%_95%)]/80 mb-8 leading-relaxed max-w-3xl">
             {subtitle}
@@ -225,7 +225,7 @@ const LocalAdvocaciaPage = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-10">
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
-              Serviços Jurídicos em {city.name}
+              Serviços Jurídicos em {cityName}
             </h2>
             <p className="text-muted-foreground">{serviceIntro}</p>
           </div>
@@ -248,18 +248,18 @@ const LocalAdvocaciaPage = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-10">
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
-              Problemas que Resolvemos em {city.name}
+              Problemas que Resolvemos em {cityName}
             </h2>
             <p className="text-muted-foreground">{problemsIntro}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              `Advogado para divórcio em ${city.name}`,
-              `Advogado para pensão alimentícia em ${city.name}`,
-              `Advogado para cobrança de aluguel em ${city.name}`,
-              `Advogado para regularização de veículo em ${city.name}`,
-              `Advogado para usucapião em ${city.name}`,
-              `Advogado para direito agrário em ${city.name}`,
+              `Advogado para divórcio em ${cityName}`,
+              `Advogado para pensão alimentícia em ${cityName}`,
+              `Advogado para cobrança de aluguel em ${cityName}`,
+              `Advogado para regularização de veículo em ${cityName}`,
+              `Advogado para usucapião em ${cityName}`,
+              `Advogado para direito agrário em ${cityName}`,
             ].map((problem) => (
               <div
                 key={problem}
@@ -280,7 +280,7 @@ const LocalAdvocaciaPage = () => {
             <Users className="h-8 w-8 text-[hsl(45_60%_55%)]" />
           </div>
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Atendimento para {city.name} e Região
+            Atendimento para {cityName} e Região
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed mb-8">
             {attendanceText}
