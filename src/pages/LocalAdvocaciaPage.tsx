@@ -171,7 +171,7 @@ const LocalAdvocaciaPage = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="flex items-center gap-2 text-[hsl(45_60%_55%)] text-sm font-medium mb-4">
             <MapPin className="h-4 w-4" />
-            {city.region} · Estado do Paraná
+            {cityRegion} · Estado do Paraná
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold mb-6 leading-tight">
             Escritório de Advocacia em{" "}
@@ -307,7 +307,7 @@ const LocalAdvocaciaPage = () => {
             Também Atendemos em Outras Cidades do Paraná
           </h2>
           <div className="flex flex-wrap gap-2 justify-center">
-            {PARANA_CITIES.filter((c) => c.slug !== city.slug)
+            {PARANA_CITIES.filter((c) => c.slug !== citySlug)
               .slice(0, 12)
               .map((c) => (
                 <Link
