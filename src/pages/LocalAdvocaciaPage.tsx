@@ -161,7 +161,7 @@ const LocalAdvocaciaPage = () => {
               </Link>
             </li>
             <li><ChevronRight className="h-3 w-3" /></li>
-            <li className="text-foreground font-medium">Advocacia em {city.name}</li>
+            <li className="text-foreground font-medium">Advocacia em {cityName}</li>
           </ol>
         </div>
       </nav>
