@@ -56,7 +56,9 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <WhatsAppButton />
+      <Suspense fallback={null}>
+        <WhatsAppButton />
+      </Suspense>
       <BrowserRouter>
         <Suspense fallback={<PageLoader />}>
           <Routes>
