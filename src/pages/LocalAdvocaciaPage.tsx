@@ -62,19 +62,19 @@ const LocalAdvocaciaPage = () => {
     const schema = {
       "@context": "https://schema.org",
       "@type": ["LegalService", "LocalBusiness"],
-      name: `Fernandez & Fernandes Advocacia – ${city.name}`,
+      name: `Fernandez & Fernandes Advocacia – ${cityName}`,
       description: metaDescription,
       url: canonical,
       telephone: "+554130000000",
       address: {
         "@type": "PostalAddress",
-        addressLocality: city.name,
+        addressLocality: cityName,
         addressRegion: "PR",
         addressCountry: "BR",
       },
       areaServed: {
         "@type": "City",
-        name: city.name,
+        name: cityName,
         containedInPlace: {
           "@type": "State",
           name: "Paraná",
