@@ -42,6 +42,7 @@ const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
 const CobrancaAluguel = lazy(() => import("./pages/CobrancaAluguel"));
 const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
+const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,8 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
+            {/* Hyper-local SEO Pages – Paraná Cities */}
+            <Route path="/escritorio-advocacia-:cidade" element={<LocalAdvocaciaPage />} />
             {/* Blog */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
