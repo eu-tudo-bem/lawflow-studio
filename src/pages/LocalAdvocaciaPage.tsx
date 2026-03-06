@@ -7,8 +7,10 @@ import {
   textVariations,
   getWhatsAppLink,
   PARANA_CITIES,
+  type CityData,
 } from "@/data/localSEOCities";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const services = [
   { label: "Divórcio Consensual", icon: "⚖️" },
