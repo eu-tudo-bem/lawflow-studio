@@ -85,13 +85,17 @@ const App = () => (
             {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
               <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
             ))}
+            {/* Catch-all para cidades dinâmicas adicionadas via dashboard */}
+            <Route path="/escritorio-advocacia-:cidade" element={<LocalAdvocaciaPage />} />
             <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
-            {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas) */}
+            {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas nativas) */}
             {(["pensao-alimenticia","divorcio-consensual","cobranca-aluguel","transferencia-veiculo","direito-agrario"] as const).flatMap((svc) =>
               ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
                 <Route key={`${svc}-${city}`} path={`/advogado-${svc}-${city}`} element={<ServiceLocalPage serviceSlug={svc} citySlug={city} />} />
               ))
             )}
+            {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
+            <Route path="/advogado-:serviceCity" element={<DynamicServiceCityRoute />} />
             {/* Gerador de Documentos Jurídicos */}
             <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
             {["notificacao-cobranca-aluguel","notificacao-divida","acordo-divorcio","declaracao-uniao-estavel","contrato-arrendamento-rural","declaracao-dependencia-economica","revisao-pensao-alimenticia"].map((slug) => (
