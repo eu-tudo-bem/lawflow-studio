@@ -1,37 +1,36 @@
-import { useLocation, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useEffect, lazy, Suspense } from "react";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { getCityBySlug } from "@/data/localSEOCities";
-import { lazy, Suspense } from "react";
 
 const LocalAdvocaciaPage = lazy(() => import("./LocalAdvocaciaPage"));
 
 const NotFound = () => {
   const location = useLocation();
 
-  // Intercept /escritorio-advocacia-{cidade} pattern
+  // Check if this matches the /escritorio-advocacia-{cidade} pattern
   const advocaciaMatch = location.pathname.match(/^\/escritorio-advocacia-(.+)$/);
-  if (advocaciaMatch) {
-    const slug = advocaciaMatch[1];
-    const city = getCityBySlug(slug);
-    if (city) {
-      return (
-        <Suspense fallback={null}>
-          <LocalAdvocaciaPage />
-        </Suspense>
-      );
-    }
-  }
+  const matchedCity = advocaciaMatch ? getCityBySlug(advocaciaMatch[1]) : null;
 
-  usePageSEO({
-    title: "Página não encontrada | Fernandez & Fernandes",
-    description: "A página que você procura não foi encontrada.",
-    robots: "noindex, nofollow",
-  });
+  usePageSEO(
+    matchedCity
+      ? { title: `Escritório de Advocacia em ${matchedCity.name} | Advogado Especialista`, description: "", robots: "index, follow" }
+      : { title: "Página não encontrada | Fernandez & Fernandes", description: "A página que você procura não foi encontrada.", robots: "noindex, nofollow" }
+  );
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+    if (!matchedCity) {
+      console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    }
+  }, [location.pathname, matchedCity]);
+
+  if (matchedCity) {
+    return (
+      <Suspense fallback={null}>
+        <LocalAdvocaciaPage />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
