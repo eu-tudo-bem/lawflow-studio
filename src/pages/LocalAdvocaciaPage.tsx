@@ -1,4 +1,4 @@
-import { useParams, Navigate, Link } from "react-router-dom";
+import { useParams, Navigate, Link, useLocation } from "react-router-dom";
 import { MessageCircle, Scale, Users, CheckCircle, MapPin, Phone, ArrowRight, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePageSEO } from "@/hooks/usePageSEO";
