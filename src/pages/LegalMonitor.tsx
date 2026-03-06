@@ -388,7 +388,7 @@ const LegalMonitor = () => {
                         className="border border-border rounded-lg p-4 hover:border-accent/50 transition-colors"
                       >
                         <div className="flex flex-wrap items-start gap-2 mb-2">
-                          <Badge className={`${AREA_COLORS[change.area_direito] || "bg-gray-100 text-gray-800"} border-0 text-xs`}>
+                        <Badge className={`${AREA_COLORS[change.area_direito] || "bg-muted text-muted-foreground"} border-0 text-xs`}>
                             {AREA_LABELS[change.area_direito] || change.area_direito}
                           </Badge>
                           <Badge className={`${statusCfg.color} border-0 text-xs flex items-center gap-1`}>
