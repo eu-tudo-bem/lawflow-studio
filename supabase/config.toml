@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.verify-role]
 verify_jwt = false
+
+[functions.legal-monitor]
+verify_jwt = false
