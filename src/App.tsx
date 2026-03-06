@@ -60,6 +60,19 @@ const PageLoader = () => (
   </div>
 );
 
+// Resolve /escritorio-advocacia-{city} for dynamic cities (not in the static list)
+// rest = e.g. "pinhais" (the part after /escritorio-advocacia-)
+const DynamicCityRoute = () => {
+  const { "*": rest } = useParams<{ "*": string }>();
+  const citySlug = rest ?? "";
+  if (!citySlug) return <Navigate to="/404" replace />;
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <LocalAdvocaciaPage citySlugOverride={citySlug} />
+    </Suspense>
+  );
+};
+
 // Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
 // rest = e.g. "pensao-alimenticia-pinhais" (the part after /advogado-)
 const DynamicServiceCityRoute = () => {
