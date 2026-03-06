@@ -96,6 +96,8 @@ const App = () => (
             {["notificacao-cobranca-aluguel","notificacao-divida","acordo-divorcio","declaracao-uniao-estavel","contrato-arrendamento-rural","declaracao-dependencia-economica","revisao-pensao-alimenticia"].map((slug) => (
               <Route key={slug} path={`/gerador-${slug}`} element={<GeradorDocumentoPage docTypeSlug={slug} />} />
             ))}
+            {/* Perguntas Jurídicas — Agente de Descoberta */}
+            <Route path="/pergunta/:slug" element={<PerguntaJuridica />} />
             {/* Blog */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
