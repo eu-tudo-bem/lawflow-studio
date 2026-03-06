@@ -415,6 +415,39 @@ export type Database = {
         }
         Relationships: []
       }
+      discovery_agent_logs: {
+        Row: {
+          areas_scanned: string[] | null
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          pages_generated: number | null
+          questions_found: number | null
+          status: string
+        }
+        Insert: {
+          areas_scanned?: string[] | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          pages_generated?: number | null
+          questions_found?: number | null
+          status: string
+        }
+        Update: {
+          areas_scanned?: string[] | null
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          pages_generated?: number | null
+          questions_found?: number | null
+          status?: string
+        }
+        Relationships: []
+      }
       document_generations: {
         Row: {
           converted: boolean
@@ -581,6 +614,78 @@ export type Database = {
           id?: string
           posts_generated?: number
           status?: string
+        }
+        Relationships: []
+      }
+      legal_questions: {
+        Row: {
+          city_slug: string | null
+          cluster_subtopic: boolean | null
+          cluster_topic: string | null
+          content: string | null
+          created_at: string
+          id: string
+          leads_generated: number | null
+          legal_area: string
+          meta_description: string | null
+          page_title: string | null
+          parent_slug: string | null
+          published_at: string | null
+          question: string
+          related_slugs: string[] | null
+          schema_faq: Json | null
+          slug: string
+          source: string | null
+          status: string
+          tags: string[] | null
+          updated_at: string
+          views: number | null
+        }
+        Insert: {
+          city_slug?: string | null
+          cluster_subtopic?: boolean | null
+          cluster_topic?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          leads_generated?: number | null
+          legal_area: string
+          meta_description?: string | null
+          page_title?: string | null
+          parent_slug?: string | null
+          published_at?: string | null
+          question: string
+          related_slugs?: string[] | null
+          schema_faq?: Json | null
+          slug: string
+          source?: string | null
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+          views?: number | null
+        }
+        Update: {
+          city_slug?: string | null
+          cluster_subtopic?: boolean | null
+          cluster_topic?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          leads_generated?: number | null
+          legal_area?: string
+          meta_description?: string | null
+          page_title?: string | null
+          parent_slug?: string | null
+          published_at?: string | null
+          question?: string
+          related_slugs?: string[] | null
+          schema_faq?: Json | null
+          slug?: string
+          source?: string | null
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+          views?: number | null
         }
         Relationships: []
       }
