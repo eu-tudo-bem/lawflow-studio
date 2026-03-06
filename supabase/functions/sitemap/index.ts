@@ -23,7 +23,18 @@ const LEGAL_SERVICE_SLUGS = [
   "direito-agrario",
 ];
 
+const DOCUMENT_GENERATOR_SLUGS = [
+  "notificacao-cobranca-aluguel",
+  "notificacao-divida",
+  "acordo-divorcio",
+  "declaracao-uniao-estavel",
+  "contrato-arrendamento-rural",
+  "declaracao-dependencia-economica",
+  "revisao-pensao-alimenticia",
+];
+
 const staticPages = [
+  // Páginas principais
   { loc: "/", changefreq: "weekly", priority: "1.0" },
   { loc: "/blog", changefreq: "daily", priority: "0.9" },
   { loc: "/calculadora", changefreq: "monthly", priority: "0.7" },
@@ -36,7 +47,14 @@ const staticPages = [
   { loc: "/cobranca-aluguel", changefreq: "monthly", priority: "0.8" },
   { loc: "/direito-agrario", changefreq: "monthly", priority: "0.8" },
   { loc: "/transferencia-veiculos", changefreq: "monthly", priority: "0.8" },
-  // Hyper-local: escritório geral por cidade
+  // Gerador de Documentos Jurídicos (hub + 7 páginas individuais)
+  { loc: "/gerador-documentos", changefreq: "monthly", priority: "0.8" },
+  ...DOCUMENT_GENERATOR_SLUGS.map((slug) => ({
+    loc: `/gerador-${slug}`,
+    changefreq: "monthly",
+    priority: "0.75",
+  })),
+  // Hyper-local: escritório geral por cidade (24 páginas)
   ...PARANA_CITY_SLUGS.map((slug) => ({
     loc: `/escritorio-advocacia-${slug}`,
     changefreq: "monthly",
