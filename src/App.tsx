@@ -61,14 +61,23 @@ const PageLoader = () => (
 );
 
 // Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
+// rest = e.g. "pensao-alimenticia-pinhais" (the part after /advogado-)
 const DynamicServiceCityRoute = () => {
   const { "*": rest } = useParams<{ "*": string }>();
-  // rest = "pensao-alimenticia-guaira" (the part after /advogado/)
   if (!rest) return <Navigate to="/404" replace />;
-  const match = LEGAL_SERVICES
-    .map((s) => ({ service: s, city: rest.startsWith(s.keyword + "-") ? rest.slice(s.keyword.length + 1) : null }))
-    .find((m) => m.city !== null);
-  if (!match || !match.city) return <Navigate to="/404" replace />;
+
+  // Try to match the longest service slug first (to avoid partial matches)
+  const sortedServices = [...LEGAL_SERVICES].sort((a, b) => b.keyword.length - a.keyword.length);
+  const match = sortedServices
+    .map((s) => {
+      const prefix = s.keyword + "-";
+      return rest.startsWith(prefix)
+        ? { service: s, city: rest.slice(prefix.length) }
+        : null;
+    })
+    .find((m) => m !== null && m.city.length > 0);
+
+  if (!match) return <Navigate to="/404" replace />;
   return (
     <Suspense fallback={<PageLoader />}>
       {/* @ts-ignore */}
