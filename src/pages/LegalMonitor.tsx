@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   Scale, Play, RefreshCw, ExternalLink, CheckCircle2, AlertCircle,
   Clock, Newspaper, TrendingUp, Search, Tag, Calendar, ChevronRight,
-  BarChart3, Zap, FileText, Globe, MapPin, ArrowUpRight, Brain,
+  BarChart3, Zap, FileText, Globe, MapPin, ArrowUpRight, Brain, Map,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
