@@ -415,6 +415,45 @@ export type Database = {
         }
         Relationships: []
       }
+      document_generations: {
+        Row: {
+          converted: boolean
+          converted_at: string | null
+          created_at: string
+          document_label: string
+          document_type: string
+          form_data: Json | null
+          id: string
+          lead_email: string
+          lead_name: string
+          lead_whatsapp: string
+        }
+        Insert: {
+          converted?: boolean
+          converted_at?: string | null
+          created_at?: string
+          document_label: string
+          document_type: string
+          form_data?: Json | null
+          id?: string
+          lead_email: string
+          lead_name: string
+          lead_whatsapp: string
+        }
+        Update: {
+          converted?: boolean
+          converted_at?: string | null
+          created_at?: string
+          document_label?: string
+          document_type?: string
+          form_data?: Json | null
+          id?: string
+          lead_email?: string
+          lead_name?: string
+          lead_whatsapp?: string
+        }
+        Relationships: []
+      }
       document_submissions: {
         Row: {
           client_id: string
