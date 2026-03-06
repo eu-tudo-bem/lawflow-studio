@@ -20,7 +20,28 @@ interface Props {
 }
 
 const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
-  const city = getCityBySlug(citySlug);
+  const nativeCity = getCityBySlug(citySlug);
+  const [dynamicCity, setDynamicCity] = useState<CityData | null>(null);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    if (nativeCity || !citySlug) return;
+    supabase
+      .from("seo_cities" as any)
+      .select("slug, name, region")
+      .eq("slug", citySlug)
+      .eq("active", true)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setDynamicCity({ slug: (data as any).slug, name: (data as any).name, region: (data as any).region, variationIndex: 0 });
+        } else {
+          setNotFound(true);
+        }
+      });
+  }, [citySlug, nativeCity]);
+
+  const city = nativeCity || dynamicCity;
   const service = getServiceBySlug(serviceSlug);
 
   const v = city?.variationIndex ?? 0;
