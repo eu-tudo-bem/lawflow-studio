@@ -9,8 +9,10 @@ import {
   PARANA_CITIES,
   LEGAL_SERVICES,
   getServiceCitySlug,
+  type CityData,
 } from "@/data/localSEOCities";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   citySlug: string;
@@ -18,7 +20,28 @@ interface Props {
 }
 
 const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
-  const city = getCityBySlug(citySlug);
+  const nativeCity = getCityBySlug(citySlug);
+  const [dynamicCity, setDynamicCity] = useState<CityData | null>(null);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    if (nativeCity || !citySlug) return;
+    supabase
+      .from("seo_cities" as any)
+      .select("slug, name, region")
+      .eq("slug", citySlug)
+      .eq("active", true)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setDynamicCity({ slug: (data as any).slug, name: (data as any).name, region: (data as any).region, variationIndex: 0 });
+        } else {
+          setNotFound(true);
+        }
+      });
+  }, [citySlug, nativeCity]);
+
+  const city = nativeCity || dynamicCity;
   const service = getServiceBySlug(serviceSlug);
 
   const v = city?.variationIndex ?? 0;
@@ -112,7 +135,15 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     return () => { [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
-  if (!city || !service) return <Navigate to="/404" replace />;
+  if (!service) return <Navigate to="/404" replace />;
+  if (!city && notFound) return <Navigate to="/404" replace />;
+  if (!city) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   const nearbyCities = city.nearbySlug
     ? city.nearbySlug.map((s) => PARANA_CITIES.find((c) => c.slug === s)).filter(Boolean).slice(0, 5) as typeof PARANA_CITIES

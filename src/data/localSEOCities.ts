@@ -83,6 +83,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "cianorte", name: "Cianorte", region: "Noroeste do Paraná", variationIndex: 1, nearbySlug: ["maringa","umuarama","campo-mourao","apucarana"] },
   { slug: "castro", name: "Castro", region: "Centro do Paraná", variationIndex: 2, nearbySlug: ["ponta-grossa","telemacos-borba","guarapuava","irati"] },
   { slug: "dois-vizinhos", name: "Dois Vizinhos", region: "Sudoeste do Paraná", variationIndex: 3, nearbySlug: ["pato-branco","francisco-beltrao","palmas","coronel-vivida"] },
+  { slug: "guaira", name: "Guaíra", region: "Oeste do Paraná", variationIndex: 4, nearbySlug: ["cascavel","toledo","foz-do-iguacu","palotina"] },
 ];
 
 export function getCityBySlug(slug: string): CityData | undefined {

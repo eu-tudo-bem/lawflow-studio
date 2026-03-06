@@ -3,8 +3,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import { LEGAL_SERVICES } from "@/data/localSEOCities";
 
 // Lazy-load auth/utility components so they don't block FCP on the homepage
 const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
@@ -59,6 +60,23 @@ const PageLoader = () => (
   </div>
 );
 
+// Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
+const DynamicServiceCityRoute = () => {
+  const { "*": rest } = useParams<{ "*": string }>();
+  // rest = "pensao-alimenticia-guaira" (the part after /advogado/)
+  if (!rest) return <Navigate to="/404" replace />;
+  const match = LEGAL_SERVICES
+    .map((s) => ({ service: s, city: rest.startsWith(s.keyword + "-") ? rest.slice(s.keyword.length + 1) : null }))
+    .find((m) => m.city !== null);
+  if (!match || !match.city) return <Navigate to="/404" replace />;
+  return (
+    <Suspense fallback={<PageLoader />}>
+      {/* @ts-ignore */}
+      <ServiceLocalPage serviceSlug={match.service.slug} citySlug={match.city} />
+    </Suspense>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -82,16 +100,20 @@ const App = () => (
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
             {/* Hyper-local SEO Pages – escritório por cidade */}
-            {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos"].map((city) => (
+            {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
               <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
             ))}
+            {/* Catch-all para cidades dinâmicas adicionadas via dashboard */}
             <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
-            {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 24 cidades = 120 páginas) */}
+            {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas nativas) */}
             {(["pensao-alimenticia","divorcio-consensual","cobranca-aluguel","transferencia-veiculo","direito-agrario"] as const).flatMap((svc) =>
-              ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos"].map((city) => (
+              ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
                 <Route key={`${svc}-${city}`} path={`/advogado-${svc}-${city}`} element={<ServiceLocalPage serviceSlug={svc} citySlug={city} />} />
               ))
             )}
+            {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
+            {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
+            <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
             {/* Gerador de Documentos Jurídicos */}
             <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
             {["notificacao-cobranca-aluguel","notificacao-divida","acordo-divorcio","declaracao-uniao-estavel","contrato-arrendamento-rural","declaracao-dependencia-economica","revisao-pensao-alimenticia"].map((slug) => (
