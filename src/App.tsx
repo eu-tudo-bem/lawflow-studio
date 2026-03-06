@@ -54,6 +54,24 @@ const SEOLocalManager = lazy(() => import("./pages/SEOLocalManager"));
 
 const queryClient = new QueryClient();
 
+// Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
+const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
+
+const DynamicServiceCityRoute = () => {
+  const { serviceCity } = useParams<{ serviceCity: string }>();
+  if (!serviceCity) return <Navigate to="/404" replace />;
+  // Try to match known service slug from the start of serviceCity
+  const match = LEGAL_SERVICES
+    .map((s) => ({ service: s, rest: serviceCity.startsWith(s.keyword + "-") ? serviceCity.slice(s.keyword.length + 1) : null }))
+    .find((m) => m.rest !== null);
+  if (!match || !match.rest) return <Navigate to="/404" replace />;
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" /></div>}>
+      <ServiceLocalPage serviceSlug={match.service.slug} citySlug={match.rest} />
+    </Suspense>
+  );
+};
+
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
     <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
