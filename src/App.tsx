@@ -60,15 +60,37 @@ const PageLoader = () => (
   </div>
 );
 
+// Resolve /escritorio-advocacia-{city} for dynamic cities (not in the static list)
+// rest = e.g. "pinhais" (the part after /escritorio-advocacia-)
+const DynamicCityRoute = () => {
+  const { "*": rest } = useParams<{ "*": string }>();
+  const citySlug = rest ?? "";
+  if (!citySlug) return <Navigate to="/404" replace />;
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <LocalAdvocaciaPage citySlugOverride={citySlug} />
+    </Suspense>
+  );
+};
+
 // Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
+// rest = e.g. "pensao-alimenticia-pinhais" (the part after /advogado-)
 const DynamicServiceCityRoute = () => {
   const { "*": rest } = useParams<{ "*": string }>();
-  // rest = "pensao-alimenticia-guaira" (the part after /advogado/)
   if (!rest) return <Navigate to="/404" replace />;
-  const match = LEGAL_SERVICES
-    .map((s) => ({ service: s, city: rest.startsWith(s.keyword + "-") ? rest.slice(s.keyword.length + 1) : null }))
-    .find((m) => m.city !== null);
-  if (!match || !match.city) return <Navigate to="/404" replace />;
+
+  // Try to match the longest service slug first (to avoid partial matches)
+  const sortedServices = [...LEGAL_SERVICES].sort((a, b) => b.keyword.length - a.keyword.length);
+  const match = sortedServices
+    .map((s) => {
+      const prefix = s.keyword + "-";
+      return rest.startsWith(prefix)
+        ? { service: s, city: rest.slice(prefix.length) }
+        : null;
+    })
+    .find((m) => m !== null && m.city.length > 0);
+
+  if (!match) return <Navigate to="/404" replace />;
   return (
     <Suspense fallback={<PageLoader />}>
       {/* @ts-ignore */}
@@ -99,12 +121,12 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
-            {/* Hyper-local SEO Pages – escritório por cidade */}
+            {/* Hyper-local SEO Pages – escritório por cidade (estáticas + dinâmicas via catch-all) */}
             {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
               <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
             ))}
-            {/* Catch-all para cidades dinâmicas adicionadas via dashboard */}
-            <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
+            {/* Catch-all para cidades dinâmicas: /escritorio-advocacia-{qualquer-cidade} */}
+            <Route path="/escritorio-advocacia-*" element={<DynamicCityRoute />} />
             {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas nativas) */}
             {(["pensao-alimenticia","divorcio-consensual","cobranca-aluguel","transferencia-veiculo","direito-agrario"] as const).flatMap((svc) =>
               ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
