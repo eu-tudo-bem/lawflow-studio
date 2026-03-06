@@ -20,14 +20,12 @@ const services = [
   { label: "Cobranças Judiciais", icon: "💼" },
 ];
 
-const LocalAdvocaciaPage = () => {
+const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } = {}) => {
   const params = useParams<{ cidade?: string; "*"?: string }>();
   const location = useLocation();
 
-  // Support both /escritorio-advocacia-{cidade} (via NotFound intercept) and /escritorio-advocacia/{cidade}
-  let cidadeSlug = params.cidade || params["*"] || "";
-
-  // If no param, extract from pathname directly (e.g. /escritorio-advocacia-curitiba)
+  // Support: explicit prop > /escritorio-advocacia/:cidade > pathname pattern
+  let cidadeSlug = citySlugOverride || params.cidade || params["*"] || "";
   if (!cidadeSlug) {
     const m = location.pathname.match(/^\/escritorio-advocacia-(.+)$/);
     cidadeSlug = m ? m[1] : "";
