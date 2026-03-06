@@ -770,6 +770,75 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_cities: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          nearby_slugs: string[] | null
+          region: string
+          slug: string
+          variation_index: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          nearby_slugs?: string[] | null
+          region: string
+          slug: string
+          variation_index?: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          nearby_slugs?: string[] | null
+          region?: string
+          slug?: string
+          variation_index?: number
+        }
+        Relationships: []
+      }
+      seo_services: {
+        Row: {
+          active: boolean
+          area: string
+          created_at: string
+          icon: string
+          id: string
+          keyword: string
+          name: string
+          short_name: string
+          slug: string
+        }
+        Insert: {
+          active?: boolean
+          area: string
+          created_at?: string
+          icon?: string
+          id?: string
+          keyword: string
+          name: string
+          short_name: string
+          slug: string
+        }
+        Update: {
+          active?: boolean
+          area?: string
+          created_at?: string
+          icon?: string
+          id?: string
+          keyword?: string
+          name?: string
+          short_name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       submission_documents: {
         Row: {
           created_at: string
