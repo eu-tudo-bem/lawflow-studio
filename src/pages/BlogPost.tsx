@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSEO } from "@/hooks/usePageSEO";
-import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
+import { buildBreadcrumbSchema, buildArticleSchema, buildFaqSchema, extractFaqsFromHtml } from "@/lib/seoSchemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,7 @@ interface Post {
   excerpt: string | null;
   cover_image_url: string | null;
   published_at: string | null;
+  updated_at?: string | null;
   meta_title: string | null;
   meta_description: string | null;
   tags: string[] | null;
@@ -91,7 +92,7 @@ export default function BlogPost() {
     setLoading(true);
     const { data, error } = await supabase
       .from("blog_posts")
-      .select("id, title, slug, subtitle, content, excerpt, cover_image_url, published_at, meta_title, meta_description, tags, views, blog_categories(name, slug)")
+      .select("id, title, slug, subtitle, content, excerpt, cover_image_url, published_at, updated_at, meta_title, meta_description, tags, views, blog_categories(name, slug)")
       .eq("slug", slug!)
       .eq("status", "published")
       .maybeSingle();
@@ -187,6 +188,22 @@ export default function BlogPost() {
 
   const readingTime = estimateReadingTime(post.content);
   const isFamilyLaw = post.blog_categories?.slug === "direito-da-familia" || post.blog_categories?.slug === "direito-de-familia";
+  const isLegalUpdate = post.blog_categories?.slug === "atualizacoes-da-lei";
+
+  // Extract FAQs from HTML for structured data
+  const faqs = extractFaqsFromHtml(post.content);
+  const faqSchema = buildFaqSchema(faqs);
+  const articleSchema = buildArticleSchema({
+    title: post.title,
+    excerpt: post.meta_description || post.excerpt,
+    publishedAt: post.published_at,
+    updatedAt: post.updated_at,
+    slug: post.slug,
+    coverImageUrl: post.cover_image_url,
+    tags: post.tags,
+    categoryName: post.blog_categories?.name,
+    articleType: isLegalUpdate ? "LegalArticle" : "Article",
+  });
 
   return (
     <>
@@ -203,23 +220,19 @@ export default function BlogPost() {
         }}
       />
 
-      {/* Schema Markup */}
+      {/* Article / LegalArticle Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: post.title,
-            description: post.excerpt,
-            datePublished: post.published_at,
-            author: { "@type": "Organization", name: "Fernandez & Fernandes Advocacia" },
-            publisher: { "@type": "Organization", name: "Fernandez & Fernandes Advocacia" },
-            image: post.cover_image_url || "",
-            url: window.location.href,
-          }),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
+
+      {/* FAQPage Schema — only when FAQs are found in content */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <main className="min-h-screen bg-[hsl(var(--background))] pt-20">
         {/* Cover */}
