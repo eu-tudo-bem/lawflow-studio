@@ -36,6 +36,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogAdmin = lazy(() => import("./pages/BlogAdmin"));
 const AnalysesReceived = lazy(() => import("./pages/AnalysesReceived"));
 const TJPRMonitor = lazy(() => import("./pages/TJPRMonitor"));
+const LegalMonitor = lazy(() => import("./pages/LegalMonitor"));
 const Unauthorized = lazy(() => import("./pages/Unauthorized"));
 const PensaoAlimenticia = lazy(() => import("./pages/PensaoAlimenticia"));
 const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
