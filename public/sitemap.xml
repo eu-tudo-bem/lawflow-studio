@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Static pages -->
   <url><loc>https://fernandezefernandes.adv.br/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/blog</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/calculadora</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -20,6 +21,7 @@
   <url><loc>https://fernandezefernandes.adv.br/gerador-contrato-arrendamento-rural</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/gerador-declaracao-dependencia-economica</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/gerador-revisao-pensao-alimenticia</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <!-- 26 city office pages -->
   <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-curitiba</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-londrina</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-maringa</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
@@ -45,6 +47,8 @@
   <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-castro</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-dois-vizinhos</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-guaira</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://fernandezefernandes.adv.br/escritorio-advocacia-pinhais</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <!-- 130 service × city pages (5 services × 26 cities) -->
   <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-curitiba</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-londrina</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-maringa</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
@@ -70,6 +74,7 @@
   <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-castro</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-dois-vizinhos</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-guaira</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-pinhais</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-curitiba</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-londrina</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-maringa</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
@@ -95,6 +100,7 @@
   <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-castro</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-dois-vizinhos</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-guaira</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-pinhais</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-curitiba</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-londrina</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-maringa</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
@@ -120,6 +126,7 @@
   <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-castro</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-dois-vizinhos</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-guaira</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-pinhais</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-curitiba</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-londrina</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-maringa</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
@@ -145,6 +152,7 @@
   <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-castro</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-dois-vizinhos</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-guaira</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-pinhais</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-curitiba</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-londrina</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-maringa</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
@@ -170,98 +178,5 @@
   <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-castro</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-dois-vizinhos</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-guaira</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/novo-teto-minha-casa-minha-vida-fgts-2026</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/penhora-imovel-alto-padrao-divida-aluguel</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/arrendamento-terras-publicas-incra-140-2026</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/indenizacao-stf-terras-produtivas-reforma-agraria</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/stf-valida-indices-produtividade-reforma-agraria</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/novo-sncr-2026-regras-cadastro-rural-ccir</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/penhora-previdencia-privada-pensao-alimenticia</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/protocolo-escuta-protegida-acoes-familia</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/fgts-digital-mudanca-vencimento-rescisao</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/itr-arrendamento-rural-decisao-stj</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/pagamento-servicos-ambientais-assentamentos-decreto-12150</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/fgts-futuro-regras-financiamento-imobiliario</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/usucapiao-extrajudicial-reforma-codigo-civil-2025</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/impenhorabilidade-bem-familia-fiador-stj</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/reforma-codigo-civil-responsabilidade-ia-danos</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/impenhorabilidade-bem-familia-fiador-locacao-comercial</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/reforma-codigo-civil-sucessao-conjuge</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/ifood-responde-golpe-maquininha-delivery-direitos</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/processar-banco-emprestimo-biometria-falsa</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/como-fica-conta-instagram-influenciador-morreu-inventario</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/pedido-de-demissao-quais-direitos-recebo</loc><lastmod>2026-02-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/como-processar-empresa-danos-morais-consumidor</loc><lastmod>2026-02-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/como-suspender-desconto-emprestimo-consignado</loc><lastmod>2026-02-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/quem-tem-direito-pensao-por-morte-pai-falecido</loc><lastmod>2026-02-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/quanto-tempo-a-empresa-tem-para-pagar-a-rescisao</loc><lastmod>2026-02-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/contrato-empresarial-mal-elaborado</loc><lastmod>2026-02-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/juros-abusivos-cartao-de-credito</loc><lastmod>2026-02-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/como-funciona-guarda-dos-filhos</loc><lastmod>2026-02-18</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/blog/fui-demitido-quais-sao-meus-direitos</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/locador-pode-reaver-imovel-antes-do-prazo</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/contrato-de-aluguel-sem-multa-e-valido</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-a-acao-de-despejo-por-falta-de-pagamento</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-os-direitos-do-inquilino-em-um-processo-de-despejo</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/despejo-por-falta-de-pagamento-prazo-londrina</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/despejo-por-falta-de-pagamento-prazo-curitiba</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/despejo-por-falta-de-pagamento-prazo</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/contrato-de-aluguel-rescisao-multa-maringa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/contrato-de-aluguel-rescisao-multa-londrina</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/contrato-de-aluguel-rescisao-multa-curitiba</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/contrato-de-aluguel-rescisao-multa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-provar-uma-cobranca-indevida</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-os-direitos-do-consumidor-em-caso-de-cobranca-indevida</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/divida-prescrita-pode-negativar-o-nome</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-consultar-meu-cpf-gratuitamente</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/negativacao-indevida-como-resolver</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/cobranca-indevida-como-contestar</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/produto-com-defeito-o-que-fazer</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-os-deveres-dos-pais-na-guarda-compartilhada</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-pedir-guarda-compartilhada-no-brasil</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/divorcio-extrajudicial-no-parana-como-funciona</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/divorcio-litigioso-no-parana-quais-os-passos</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/guarda-compartilhada-como-funciona-maringa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/guarda-compartilhada-como-funciona-londrina</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/guarda-compartilhada-como-funciona-curitiba</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/guarda-compartilhada-como-funciona</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quanto-custa-um-divorcio-no-parana-maringa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quanto-custa-um-divorcio-no-parana-londrina</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quanto-custa-um-divorcio-no-parana-curitiba</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quanto-custa-um-divorcio-no-parana</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/divida-de-banco-pode-bloquear-cnh</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/stf-suspensao-cnh-por-divida</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-sao-os-prazos-para-recorrer-de-multa-de-transito</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-fazer-a-indicacao-de-condutor-infrator</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/descaminho-e-crime-afiancavel</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/qual-a-pena-para-o-crime-de-contrabando</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-significa-agressao-injusta-na-legitima-defesa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-a-legitima-defesa-no-direito-penal-brasileiro</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-sao-os-crimes-ambientais-mais-comuns-no-brasil</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-e-crime-ambiental-e-como-denunciar</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-o-programa-de-protecao-a-testemunhas</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-os-direitos-do-preso-em-flagrante</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-o-habeas-corpus</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-e-prisao-preventiva-e-quando-e-decretada</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/qual-a-diferenca-entre-crime-doloso-e-culposo</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-o-inventario-extrajudicial</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quem-tem-direito-a-heranca-sem-testamento</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-fazer-um-testamento-valido-no-brasil</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/qual-o-prazo-para-abertura-de-inventario</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-e-uniao-estavel-e-quais-os-direitos</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-a-pensao-alimenticia-para-filhos-maiores</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-e-alienacao-parental-e-como-provar</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-a-adocao-no-brasil</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/qual-a-diferenca-entre-separacao-e-divorcio</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-calcular-a-pensao-alimenticia-no-parana</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-fazer-quando-o-pai-nao-paga-a-pensao-alimenticia</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-pedir-revisao-de-pensao-alimenticia</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-e-penhora-on-line-e-como-funciona</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-cancelar-uma-negativacao-no-spc-serasa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-e-prescricao-de-divida-e-como-funciona</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-bens-nao-podem-ser-penhorados</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-funciona-a-execucao-de-divida-no-brasil</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/o-que-fazer-quando-recebo-cobranca-de-divida-prescrita</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/como-contestar-uma-cobranca-indevida-no-cartao-de-credito</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://fernandezefernandes.adv.br/pergunta/quais-os-direitos-do-trabalhador-ao-ser-demitido-sem-justa-causa</loc><lastmod>2026-03-06</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-pinhais</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
 </urlset>
