@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Scale, Play, RefreshCw, ExternalLink, CheckCircle2, AlertCircle,
   Clock, Newspaper, TrendingUp, Search, Tag, Calendar, ChevronRight,
-  BarChart3, Zap, FileText, Globe,
+  BarChart3, Zap, FileText, Globe, MapPin, ArrowUpRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/DashboardLayout";
+import { PARANA_CITIES, LEGAL_SERVICES, getServiceCitySlug } from "@/data/localSEOCities";
 
 interface LegalChange {
   id: string;
@@ -439,6 +440,89 @@ const LegalMonitor = () => {
               })}
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* SEO Programático – Páginas Hiperlocais */}
+      <Card className="border-0 shadow-card mt-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="font-serif flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-accent" />
+            SEO Programático — Páginas Hiperlocais
+          </CardTitle>
+          <Badge variant="outline" className="text-xs">
+            {PARANA_CITIES.length * LEGAL_SERVICES.length + PARANA_CITIES.length} páginas geradas
+          </Badge>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground mb-6">
+            Páginas otimizadas automaticamente para cada serviço × cidade do Paraná. Cada página contém Schema
+            markup <code className="bg-muted px-1 rounded text-xs">LegalService</code> +{" "}
+            <code className="bg-muted px-1 rounded text-xs">FAQPage</code>, H1/H2/H3, meta tags e CTAs de conversão.
+          </p>
+
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {[
+              { label: "Cidades cobertas", value: PARANA_CITIES.length },
+              { label: "Serviços jurídicos", value: LEGAL_SERVICES.length },
+              { label: "Páginas de serviço", value: PARANA_CITIES.length * LEGAL_SERVICES.length },
+            ].map(({ label, value }) => (
+              <div key={label} className="bg-accent/5 rounded-lg p-4 text-center border border-border">
+                <p className="text-2xl font-bold text-accent">{value}</p>
+                <p className="text-xs text-muted-foreground mt-1">{label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Services list */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-foreground mb-3">Serviços cadastrados</h3>
+            <div className="flex flex-wrap gap-2">
+              {LEGAL_SERVICES.map((svc) => (
+                <Badge key={svc.slug} variant="secondary" className="text-xs">
+                  {svc.icon} {svc.name}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {/* Cities table with quick links */}
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Cidades e páginas de serviço</h3>
+            <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+              {PARANA_CITIES.map((city) => (
+                <div key={city.slug} className="border border-border rounded-lg p-3 hover:border-accent/50 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-3.5 w-3.5 text-accent" />
+                      <span className="font-medium text-sm text-foreground">{city.name}</span>
+                      <span className="text-xs text-muted-foreground">· {city.region}</span>
+                    </div>
+                    <Link
+                      to={`/escritorio-advocacia-${city.slug}`}
+                      target="_blank"
+                      className="text-xs text-accent hover:underline flex items-center gap-1"
+                    >
+                      Página geral <ArrowUpRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {LEGAL_SERVICES.map((svc) => (
+                      <Link
+                        key={svc.slug}
+                        to={`/${getServiceCitySlug(svc.slug, city.slug)}`}
+                        target="_blank"
+                        className="text-xs bg-muted hover:bg-accent/10 hover:text-accent text-muted-foreground px-2 py-0.5 rounded transition-colors flex items-center gap-1"
+                      >
+                        {svc.icon} {svc.shortName}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </DashboardLayout>

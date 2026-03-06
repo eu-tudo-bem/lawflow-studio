@@ -11,7 +11,16 @@ const PARANA_CITY_SLUGS = [
   "curitiba", "londrina", "maringa", "cascavel", "foz-do-iguacu",
   "ponta-grossa", "guarapuava", "colombo", "apucarana", "toledo",
   "arapongas", "campo-largo", "campo-mourao", "paranagua", "umuarama",
-  "cornelio-procopio", "pato-branco", "francisco-beltrao", "castro", "dois-vizinhos",
+  "cornelio-procopio", "pato-branco", "francisco-beltrao", "telemacos-borba",
+  "irati", "palmas", "cianorte", "castro", "dois-vizinhos",
+];
+
+const LEGAL_SERVICE_SLUGS = [
+  "pensao-alimenticia",
+  "divorcio-consensual",
+  "cobranca-aluguel",
+  "transferencia-veiculo",
+  "direito-agrario",
 ];
 
 const staticPages = [
@@ -27,12 +36,20 @@ const staticPages = [
   { loc: "/cobranca-aluguel", changefreq: "monthly", priority: "0.8" },
   { loc: "/direito-agrario", changefreq: "monthly", priority: "0.8" },
   { loc: "/transferencia-veiculos", changefreq: "monthly", priority: "0.8" },
-  // Hyper-local SEO pages – Paraná cities
+  // Hyper-local: escritório geral por cidade
   ...PARANA_CITY_SLUGS.map((slug) => ({
     loc: `/escritorio-advocacia-${slug}`,
     changefreq: "monthly",
     priority: "0.9",
   })),
+  // Hyper-local: serviço × cidade (5 × 24 = 120 páginas)
+  ...LEGAL_SERVICE_SLUGS.flatMap((svc) =>
+    PARANA_CITY_SLUGS.map((city) => ({
+      loc: `/advogado-${svc}-${city}`,
+      changefreq: "monthly",
+      priority: "0.85",
+    }))
+  ),
 ];
 
 Deno.serve(async (req) => {
