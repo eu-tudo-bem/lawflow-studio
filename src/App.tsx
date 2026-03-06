@@ -103,7 +103,6 @@ const App = () => (
               <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
             ))}
             {/* Catch-all para cidades dinâmicas adicionadas via dashboard */}
-            <Route path="/escritorio-advocacia-:cidade" element={<LocalAdvocaciaPage />} />
             <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
             {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas nativas) */}
             {(["pensao-alimenticia","divorcio-consensual","cobranca-aluguel","transferencia-veiculo","direito-agrario"] as const).flatMap((svc) =>
