@@ -176,21 +176,61 @@ const LegalMonitor = () => {
     toast({ title: "Mudança descartada" });
   };
 
+  const regenerateSitemap = async () => {
+    setRegeneratingSitemap(true);
+    toast({ title: "Gerando sitemap…", description: "Aguarde alguns segundos." });
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sitemap`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${session?.access_token}` },
+        }
+      );
+      if (!response.ok) throw new Error("Erro ao gerar sitemap");
+      const text = await response.text();
+      const urlCount = (text.match(/<url>/g) || []).length;
+      toast({
+        title: "Sitemap atualizado ✅",
+        description: `${urlCount} URLs geradas e salvas no storage.`,
+      });
+    } catch (e: any) {
+      toast({ title: "Erro", description: e.message, variant: "destructive" });
+    } finally {
+      setRegeneratingSitemap(false);
+    }
+  };
+
   return (
     <DashboardLayout
       title="Monitor Jurídico Inteligente"
       headerActions={
-        <Button
-          onClick={() => runMonitor()}
-          disabled={running}
-          className="bg-accent text-accent-foreground hover:bg-accent/90"
-        >
-          {running ? (
-            <><RefreshCw className="h-4 w-4 mr-2 animate-spin" />Executando…</>
-          ) : (
-            <><Play className="h-4 w-4 mr-2" />Executar Monitor</>
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={regenerateSitemap}
+            disabled={regeneratingSitemap}
+            title="Regenerar sitemap.xml manualmente"
+          >
+            {regeneratingSitemap ? (
+              <><RefreshCw className="h-4 w-4 mr-2 animate-spin" />Gerando…</>
+            ) : (
+              <><Map className="h-4 w-4 mr-2" />Gerar Sitemap</>
+            )}
+          </Button>
+          <Button
+            onClick={() => runMonitor()}
+            disabled={running}
+            className="bg-accent text-accent-foreground hover:bg-accent/90"
+          >
+            {running ? (
+              <><RefreshCw className="h-4 w-4 mr-2 animate-spin" />Executando…</>
+            ) : (
+              <><Play className="h-4 w-4 mr-2" />Executar Monitor</>
+            )}
+          </Button>
+        </div>
       }
     >
       {/* Stats */}
