@@ -249,9 +249,9 @@ const PerguntaJuridica = () => {
                 Nossa equipe está pronta para analisar seu caso. Consulta inicial gratuita.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Button
+                 <Button
                   onClick={handleWhatsApp}
-                  className="bg-[#25D366] hover:bg-[#20BA5A] text-white gap-2"
+                  className="bg-green-500 hover:bg-green-600 text-white gap-2"
                 >
                   <MessageCircle className="h-4 w-4" />
                   Fale com um Advogado Agora
