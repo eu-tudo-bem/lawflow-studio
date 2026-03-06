@@ -45,6 +45,9 @@ const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
 const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
+const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
+const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
+const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
 
 const queryClient = new QueryClient();
 
@@ -87,6 +90,11 @@ const App = () => (
                 <Route key={`${svc}-${city}`} path={`/advogado-${svc}-${city}`} element={<ServiceLocalPage serviceSlug={svc} citySlug={city} />} />
               ))
             )}
+            {/* Gerador de Documentos Jurídicos */}
+            <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
+            {["notificacao-cobranca-aluguel","notificacao-divida","acordo-divorcio","declaracao-uniao-estavel","contrato-arrendamento-rural","declaracao-dependencia-economica","revisao-pensao-alimenticia"].map((slug) => (
+              <Route key={slug} path={`/gerador-${slug}`} element={<GeradorDocumentoPage docTypeSlug={slug} />} />
+            ))}
             {/* Blog */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
@@ -101,6 +109,7 @@ const App = () => (
             <Route path="/dashboard/messages" element={<ProtectedRoute requiredRole="staff"><Messages /></ProtectedRoute>} />
             <Route path="/dashboard/chat" element={<ProtectedRoute requiredRole="staff"><Chat /></ProtectedRoute>} />
             <Route path="/dashboard/blog" element={<ProtectedRoute requiredRole="staff"><BlogAdmin /></ProtectedRoute>} />
+            <Route path="/dashboard/documentos" element={<ProtectedRoute requiredRole="staff"><DocumentosAdmin /></ProtectedRoute>} />
             <Route path="/dashboard/analyses" element={<ProtectedRoute requiredRole="staff"><AnalysesReceived /></ProtectedRoute>} />
             <Route path="/dashboard/tjpr" element={<ProtectedRoute requiredRole="staff"><TJPRMonitor /></ProtectedRoute>} />
             <Route path="/dashboard/legal-monitor" element={<ProtectedRoute requiredRole="staff"><LegalMonitor /></ProtectedRoute>} />
