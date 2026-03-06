@@ -84,6 +84,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "castro", name: "Castro", region: "Centro do Paraná", variationIndex: 2, nearbySlug: ["ponta-grossa","telemacos-borba","guarapuava","irati"] },
   { slug: "dois-vizinhos", name: "Dois Vizinhos", region: "Sudoeste do Paraná", variationIndex: 3, nearbySlug: ["pato-branco","francisco-beltrao","palmas","coronel-vivida"] },
   { slug: "guaira", name: "Guaíra", region: "Oeste do Paraná", variationIndex: 4, nearbySlug: ["cascavel","toledo","foz-do-iguacu","palotina"] },
+  { slug: "pinhais", name: "Pinhais", region: "Grande Curitiba", variationIndex: 0, nearbySlug: ["curitiba","colombo","campo-largo","araucaria"] },
 ];
 
 export function getCityBySlug(slug: string): CityData | undefined {
