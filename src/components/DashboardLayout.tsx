@@ -2,11 +2,9 @@ import { useEffect, useState, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Scale, Users, Briefcase, Calendar, Mail, LogOut,
-  Menu, X, MessageSquare, BookOpen, FileSearch, Gavel, LayoutDashboard, Radar
+  Menu, X, MessageSquare, BookOpen, FileSearch, Gavel, LayoutDashboard, Radar, FileText
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
-
+...
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Users, label: "Clientes", href: "/dashboard/clients" },
@@ -15,6 +13,7 @@ const menuItems = [
   { icon: Mail, label: "Contatos do Site", href: "/dashboard/messages" },
   { icon: MessageSquare, label: "Chat com Clientes", href: "/dashboard/chat" },
   { icon: BookOpen, label: "Blog Jurídico", href: "/dashboard/blog" },
+  { icon: FileText, label: "Gerador de Docs", href: "/dashboard/documentos" },
   { icon: FileSearch, label: "Análises Recebidas", href: "/dashboard/analyses" },
   { icon: Gavel, label: "Monitoramento TJPR", href: "/dashboard/tjpr" },
   { icon: Radar, label: "Monitor Jurídico IA", href: "/dashboard/legal-monitor" },
