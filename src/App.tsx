@@ -48,6 +48,7 @@ const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
 const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
 const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
 const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
+const PerguntaJuridica = lazy(() => import("./pages/PerguntaJuridica"));
 
 const queryClient = new QueryClient();
 
