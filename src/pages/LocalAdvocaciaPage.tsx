@@ -21,8 +21,17 @@ const services = [
 ];
 
 const LocalAdvocaciaPage = () => {
-  const { cidade } = useParams<{ cidade: string }>();
-  const city = getCityBySlug(cidade || "");
+  const params = useParams<{ cidade?: string; "*"?: string }>();
+  const location = useLocation();
+
+  // Support both /escritorio-advocacia-{cidade} (splat) and /escritorio-advocacia/{cidade}
+  let cidadeSlug = params.cidade;
+  if (!cidadeSlug) {
+    // splat route: params["*"] contains the city slug after "escritorio-advocacia-"
+    cidadeSlug = params["*"] || "";
+  }
+
+  const city = getCityBySlug(cidadeSlug);
 
   const cityName = city?.name ?? "";
   const cityRegion = city?.region ?? "";
