@@ -135,7 +135,15 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     return () => { [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
-  if (!city || !service) return <Navigate to="/404" replace />;
+  if (!service) return <Navigate to="/404" replace />;
+  if (!city && notFound) return <Navigate to="/404" replace />;
+  if (!city) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   const nearbyCities = city.nearbySlug
     ? city.nearbySlug.map((s) => PARANA_CITIES.find((c) => c.slug === s)).filter(Boolean).slice(0, 5) as typeof PARANA_CITIES
