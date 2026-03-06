@@ -191,9 +191,11 @@ const LegalMonitor = () => {
       if (!response.ok) throw new Error("Erro ao gerar sitemap");
       const text = await response.text();
       const urlCount = (text.match(/<url>/g) || []).length;
+      // Persist updated XML to Supabase Storage (public bucket "sitemap")
+      // This is now the canonical sitemap — robots.txt already points to the storage URL
       toast({
         title: "Sitemap atualizado ✅",
-        description: `${urlCount} URLs geradas e salvas no storage.`,
+        description: `${urlCount} URLs indexadas. O sitemap no storage foi atualizado automaticamente.`,
       });
     } catch (e: any) {
       toast({ title: "Erro", description: e.message, variant: "destructive" });
