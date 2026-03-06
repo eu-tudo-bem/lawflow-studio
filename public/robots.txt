@@ -8,4 +8,4 @@ Disallow: /client-login
 Disallow: /client-portal
 Disallow: /client-portal/*
 
-Sitemap: https://eojgjfefbjhslyeodcls.supabase.co/storage/v1/object/public/sitemap/sitemap.xml
+Sitemap: https://fernandezefernandes.adv.br/sitemap.xml
