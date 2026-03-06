@@ -1,4 +1,4 @@
-import { useLocation, Link, Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle } from "lucide-react";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import {
@@ -34,15 +34,12 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
   const whatsappLink = getWhatsAppLink(cityName, service?.name);
   const pageTitle = city && service ? `Advogado de ${service.name} em ${cityName} | Fernandez & Fernandes` : "";
-  const metaDescription = city && service ? `Precisa de advogado de ${service.name.toLowerCase()} em ${cityName}? Atendimento especializado, rápido e online. Consulta gratuita. Fale agora via WhatsApp.` : "";
+  const metaDescription = city && service
+    ? `Precisa de advogado de ${service.name.toLowerCase()} em ${cityName}? Atendimento especializado, rápido e online. Consulta gratuita. Fale agora via WhatsApp.`
+    : "";
   const canonical = city && service ? `https://fernandezefernandes.adv.br/advogado-${service.keyword}-${city.slug}` : "";
 
-  usePageSEO({
-    title: pageTitle,
-    description: metaDescription,
-    canonical,
-    robots: "index, follow",
-  });
+  usePageSEO({ title: pageTitle, description: metaDescription, canonical, robots: "index, follow" });
 
   const faqItems = city && service ? [
     {
@@ -63,7 +60,6 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     },
   ] : [];
 
-  // Schema markup
   useEffect(() => {
     const schemaId = "service-local-schema";
     const faqSchemaId = "service-local-faq-schema";
@@ -79,20 +75,12 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       url: canonical,
       telephone: "+554130000000",
       priceRange: "$$",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: cityName,
-        addressRegion: "PR",
-        addressCountry: "BR",
-      },
+      address: { "@type": "PostalAddress", addressLocality: cityName, addressRegion: "PR", addressCountry: "BR" },
       areaServed: { "@type": "City", name: cityName, containedInPlace: { "@type": "State", name: "Paraná" } },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: `${service.name} em ${cityName}`,
-        itemListElement: [{
-          "@type": "Offer",
-          itemOffered: { "@type": "LegalService", name: service.name, description: metaDescription },
-        }],
+        itemListElement: [{ "@type": "Offer", itemOffered: { "@type": "LegalService", name: service.name } }],
       },
       breadcrumb: {
         "@type": "BreadcrumbList",
@@ -114,138 +102,20 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       })),
     };
 
-    const s1 = document.createElement("script");
-    s1.id = schemaId; s1.type = "application/ld+json";
-    s1.text = JSON.stringify(legalServiceSchema);
-    document.head.appendChild(s1);
+    [{ id: schemaId, data: legalServiceSchema }, { id: faqSchemaId, data: faqSchema }].forEach(({ id, data }) => {
+      const script = document.createElement("script");
+      script.id = id; script.type = "application/ld+json";
+      script.text = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
 
-    const s2 = document.createElement("script");
-    s2.id = faqSchemaId; s2.type = "application/ld+json";
-    s2.text = JSON.stringify(faqSchema);
-    document.head.appendChild(s2);
-
-    return () => {
-      [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove());
-    };
+    return () => { [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
   if (!city || !service) return <Navigate to="/404" replace />;
 
-  const v = city.variationIndex;
-  const cityName = city.name;
-  const cityRegion = city.region;
-  const variations = serviceTextVariations[serviceSlug];
-
-  const intro = variations.intro[v % variations.intro.length](cityName);
-  const situations = variations.situations[v % variations.situations.length](cityName);
-  const howItWorks = variations.howItWorks[v % variations.howItWorks.length](cityName);
-  const whenToLook = variations.whenToLook[v % variations.whenToLook.length](cityName);
-  const conclusion = variations.conclusion[v % variations.conclusion.length](cityName);
-
-  const whatsappLink = getWhatsAppLink(cityName, service.name);
-  const pageTitle = `Advogado de ${service.name} em ${cityName} | Fernandez & Fernandes`;
-  const metaDescription = `Precisa de advogado de ${service.name.toLowerCase()} em ${cityName}? Atendimento especializado, rápido e online. Consulta gratuita. Fale agora via WhatsApp.`;
-  const canonical = `https://fernandezefernandes.adv.br/advogado-${service.keyword}-${city.slug}`;
-
-  usePageSEO({
-    title: pageTitle,
-    description: metaDescription,
-    canonical,
-    robots: "index, follow",
-  });
-
-  // FAQ items for schema
-  const faqItems = [
-    {
-      q: `Quanto custa um advogado de ${service.name.toLowerCase()} em ${cityName}?`,
-      a: `Os honorários variam conforme a complexidade do caso. Oferecemos consulta inicial gratuita para avaliar sua situação e apresentar uma proposta personalizada para clientes de ${cityName} e região.`,
-    },
-    {
-      q: `É possível contratar um advogado de ${service.name.toLowerCase()} de ${cityName} de forma online?`,
-      a: `Sim. Nosso escritório atende clientes de ${cityName} 100% de forma online. Toda a documentação pode ser enviada digitalmente, e o acompanhamento do processo é feito por meio de comunicação direta com seu advogado.`,
-    },
-    {
-      q: `Qual o prazo para resolver um caso de ${service.name.toLowerCase()} em ${cityName}?`,
-      a: `O prazo varia conforme a complexidade. Casos simples podem ser resolvidos em semanas, enquanto processos judiciais podem levar meses. Em ${cityName}, buscaremos sempre a solução mais rápida para o seu caso.`,
-    },
-    {
-      q: `Preciso ir pessoalmente ao escritório para contratar o serviço em ${cityName}?`,
-      a: `Não. Nosso atendimento é 100% digital para clientes de ${cityName}. Toda a consulta, documentação e acompanhamento são feitos de forma online, com a mesma qualidade do atendimento presencial.`,
-    },
-  ];
-
-  // Schema markup
-  useEffect(() => {
-    const schemaId = "service-local-schema";
-    const faqSchemaId = "service-local-faq-schema";
-    [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove());
-
-    if (!city || !service) return;
-
-    const legalServiceSchema = {
-      "@context": "https://schema.org",
-      "@type": ["LegalService", "LocalBusiness"],
-      name: `Advogado de ${service.name} em ${cityName} — Fernandez & Fernandes`,
-      description: metaDescription,
-      url: canonical,
-      telephone: "+554130000000",
-      priceRange: "$$",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: cityName,
-        addressRegion: "PR",
-        addressCountry: "BR",
-      },
-      areaServed: { "@type": "City", name: cityName, containedInPlace: { "@type": "State", name: "Paraná" } },
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: `${service.name} em ${cityName}`,
-        itemListElement: [{
-          "@type": "Offer",
-          itemOffered: { "@type": "LegalService", name: service.name, description: metaDescription },
-        }],
-      },
-      breadcrumb: {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Início", item: "https://fernandezefernandes.adv.br" },
-          { "@type": "ListItem", position: 2, name: service.name, item: `https://fernandezefernandes.adv.br/${service.slug}` },
-          { "@type": "ListItem", position: 3, name: `${service.name} em ${cityName}`, item: canonical },
-        ],
-      },
-    };
-
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqItems.map(({ q, a }) => ({
-        "@type": "Question",
-        name: q,
-        acceptedAnswer: { "@type": "Answer", text: a },
-      })),
-    };
-
-    const s1 = document.createElement("script");
-    s1.id = schemaId; s1.type = "application/ld+json";
-    s1.text = JSON.stringify(legalServiceSchema);
-    document.head.appendChild(s1);
-
-    const s2 = document.createElement("script");
-    s2.id = faqSchemaId; s2.type = "application/ld+json";
-    s2.text = JSON.stringify(faqSchema);
-    document.head.appendChild(s2);
-
-    return () => {
-      [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove());
-    };
-  }, [citySlug, serviceSlug]);
-
-  // Nearby cities: prefer cities defined as nearby, fallback to first 4 others with same service
   const nearbyCities = city.nearbySlug
-    ? city.nearbySlug
-        .map((s) => PARANA_CITIES.find((c) => c.slug === s))
-        .filter(Boolean)
-        .slice(0, 5) as typeof PARANA_CITIES
+    ? city.nearbySlug.map((s) => PARANA_CITIES.find((c) => c.slug === s)).filter(Boolean).slice(0, 5) as typeof PARANA_CITIES
     : PARANA_CITIES.filter((c) => c.slug !== citySlug).slice(0, 5);
 
   return (
@@ -275,8 +145,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           <ol className="flex items-center gap-1 text-sm text-muted-foreground flex-wrap">
             <li>
               <Link to="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
-                <Home className="h-3 w-3" />
-                Início
+                <Home className="h-3 w-3" /> Início
               </Link>
             </li>
             <li><ChevronRight className="h-3 w-3" /></li>
@@ -320,8 +189,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
               to="/#contact"
               className="inline-flex items-center justify-center gap-2 border-2 border-[hsl(45_20%_95%)]/30 text-[hsl(45_20%_95%)] font-semibold px-8 py-4 rounded-xl hover:border-[hsl(45_20%_95%)]/70 transition-all"
             >
-              Agendar Consulta
-              <ArrowRight className="h-5 w-5" />
+              Agendar Consulta <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
         </div>
@@ -352,9 +220,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-6">
             {service.name} em {cityName}: Entenda Seus Direitos
           </h2>
-          <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed space-y-4">
-            <p>{intro}</p>
-          </div>
+          <p className="text-muted-foreground leading-relaxed text-lg">{intro}</p>
         </div>
       </section>
 
@@ -369,10 +235,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {situations.map((situation) => (
-              <div
-                key={situation}
-                className="flex items-start gap-3 p-4 rounded-xl bg-background border border-border"
-              >
+              <div key={situation} className="flex items-start gap-3 p-4 rounded-xl bg-background border border-border">
                 <CheckCircle className="h-5 w-5 text-[hsl(45_60%_55%)] mt-0.5 flex-shrink-0" />
                 <span className="text-foreground font-medium">{situation}</span>
               </div>
@@ -458,9 +321,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           <h2 className="font-serif text-2xl md:text-3xl font-bold mb-4">
             Atendimento Jurídico em {cityName}
           </h2>
-          <p className="text-[hsl(45_20%_95%)]/80 text-lg leading-relaxed mb-8">
-            {conclusion}
-          </p>
+          <p className="text-[hsl(45_20%_95%)]/80 text-lg leading-relaxed mb-8">{conclusion}</p>
           <a
             href={whatsappLink}
             target="_blank"
@@ -470,9 +331,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
             <MessageCircle className="h-7 w-7" />
             Falar com Advogado Agora
           </a>
-          <p className="text-sm text-[hsl(45_20%_95%)]/60 mt-4">
-            Resposta em até 1 hora · Primeira consulta gratuita
-          </p>
+          <p className="text-sm text-[hsl(45_20%_95%)]/60 mt-4">Resposta em até 1 hora · Primeira consulta gratuita</p>
         </div>
       </section>
 
@@ -498,12 +357,8 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
       {/* Footer */}
       <footer className="bg-[hsl(220_50%_8%)] text-[hsl(45_20%_95%)]/60 py-8 px-4 text-center text-sm">
-        <p className="mb-2">
-          © {new Date().getFullYear()} Fernandez & Fernandes Advocacia & Consultoria · OAB/PR
-        </p>
-        <Link to="/" className="text-[hsl(45_60%_55%)] hover:underline">
-          Acessar site completo
-        </Link>
+        <p className="mb-2">© {new Date().getFullYear()} Fernandez & Fernandes Advocacia & Consultoria · OAB/PR</p>
+        <Link to="/" className="text-[hsl(45_60%_55%)] hover:underline">Acessar site completo</Link>
       </footer>
     </div>
   );
