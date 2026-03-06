@@ -1,19 +1,36 @@
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { usePageSEO } from "@/hooks/usePageSEO";
+import { getCityBySlug } from "@/data/localSEOCities";
+
+const LocalAdvocaciaPage = lazy(() => import("./LocalAdvocaciaPage"));
 
 const NotFound = () => {
   const location = useLocation();
 
-  usePageSEO({
-    title: "Página não encontrada | Fernandez & Fernandes",
-    description: "A página que você procura não foi encontrada.",
-    robots: "noindex, nofollow",
-  });
+  // Check if this matches the /escritorio-advocacia-{cidade} pattern
+  const advocaciaMatch = location.pathname.match(/^\/escritorio-advocacia-(.+)$/);
+  const matchedCity = advocaciaMatch ? getCityBySlug(advocaciaMatch[1]) : null;
+
+  usePageSEO(
+    matchedCity
+      ? { title: `Escritório de Advocacia em ${matchedCity.name} | Advogado Especialista`, description: "", robots: "index, follow" }
+      : { title: "Página não encontrada | Fernandez & Fernandes", description: "A página que você procura não foi encontrada.", robots: "noindex, nofollow" }
+  );
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+    if (!matchedCity) {
+      console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    }
+  }, [location.pathname, matchedCity]);
+
+  if (matchedCity) {
+    return (
+      <Suspense fallback={null}>
+        <LocalAdvocaciaPage />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">

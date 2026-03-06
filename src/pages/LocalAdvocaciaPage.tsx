@@ -1,4 +1,4 @@
-import { useParams, Navigate, Link } from "react-router-dom";
+import { useParams, Navigate, Link, useLocation } from "react-router-dom";
 import { MessageCircle, Scale, Users, CheckCircle, MapPin, Phone, ArrowRight, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePageSEO } from "@/hooks/usePageSEO";
@@ -20,9 +20,18 @@ const services = [
   { label: "Cobranças Judiciais", icon: "💼" },
 ];
 
-const LocalAdvocaciaPage = () => {
-  const { cidade } = useParams<{ cidade: string }>();
-  const city = getCityBySlug(cidade || "");
+const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } = {}) => {
+  const params = useParams<{ cidade?: string; "*"?: string }>();
+  const location = useLocation();
+
+  // Support: explicit prop > /escritorio-advocacia/:cidade > pathname pattern
+  let cidadeSlug = citySlugOverride || params.cidade || params["*"] || "";
+  if (!cidadeSlug) {
+    const m = location.pathname.match(/^\/escritorio-advocacia-(.+)$/);
+    cidadeSlug = m ? m[1] : "";
+  }
+
+  const city = getCityBySlug(cidadeSlug);
 
   const cityName = city?.name ?? "";
   const cityRegion = city?.region ?? "";
