@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSEO } from "@/hooks/usePageSEO";
-import { buildBreadcrumbSchema } from "@/lib/seoSchemas";
+import { buildBreadcrumbSchema, buildArticleSchema, buildFaqSchema, extractFaqsFromHtml } from "@/lib/seoSchemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
