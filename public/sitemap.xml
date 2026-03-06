@@ -1,78 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Páginas principais -->
   <url>
     <loc>https://fernandezefernandes.adv.br/</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/blog</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/calculadora</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/simulador-pensao</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/simulador-juros</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/simulador-aposentadoria</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/simulador-horas-extras</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- Páginas de serviço -->
   <url>
     <loc>https://fernandezefernandes.adv.br/pensao-alimenticia</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/divorcio-consensual</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/cobranca-aluguel</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/direito-agrario</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fernandezefernandes.adv.br/transferencia-veiculos</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Páginas hiper-locais SEO – Cidades do Paraná -->
+  <!-- Gerador de Documentos Jurídicos -->
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-documentos</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-notificacao-cobranca-aluguel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-notificacao-divida</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-acordo-divorcio</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-declaracao-uniao-estavel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-contrato-arrendamento-rural</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-declaracao-dependencia-economica</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/gerador-revisao-pensao-alimenticia</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <!-- Hiper-local: escritório geral por cidade (24 páginas) -->
   <url>
     <loc>https://fernandezefernandes.adv.br/escritorio-advocacia-curitiba</loc>
     <lastmod>2026-03-06</lastmod>
@@ -182,6 +233,30 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://fernandezefernandes.adv.br/escritorio-advocacia-telemacos-borba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/escritorio-advocacia-irati</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/escritorio-advocacia-palmas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/escritorio-advocacia-cianorte</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://fernandezefernandes.adv.br/escritorio-advocacia-castro</loc>
     <lastmod>2026-03-06</lastmod>
     <changefreq>monthly</changefreq>
@@ -193,6 +268,732 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+  <!-- Hiper-local: pensao-alimenticia × 24 cidades -->
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-curitiba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-londrina</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-maringa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-cascavel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-foz-do-iguacu</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-ponta-grossa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-guarapuava</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-colombo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-apucarana</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-toledo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-arapongas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-campo-largo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-campo-mourao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-paranagua</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-umuarama</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-cornelio-procopio</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-pato-branco</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-francisco-beltrao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-telemacos-borba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-irati</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-palmas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-cianorte</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-castro</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-pensao-alimenticia-dois-vizinhos</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <!-- Hiper-local: divorcio-consensual × 24 cidades -->
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-curitiba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-londrina</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-maringa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-cascavel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-foz-do-iguacu</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-ponta-grossa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-guarapuava</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-colombo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-apucarana</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-toledo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-arapongas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-campo-largo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-campo-mourao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-paranagua</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-umuarama</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-cornelio-procopio</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-pato-branco</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-francisco-beltrao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-telemacos-borba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-irati</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-palmas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-cianorte</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-castro</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-divorcio-consensual-dois-vizinhos</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <!-- Hiper-local: cobranca-aluguel × 24 cidades -->
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-curitiba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-londrina</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-maringa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-cascavel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-foz-do-iguacu</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-ponta-grossa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-guarapuava</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-colombo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-apucarana</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-toledo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-arapongas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-campo-largo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-campo-mourao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-paranagua</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-umuarama</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-cornelio-procopio</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-pato-branco</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-francisco-beltrao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-telemacos-borba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-irati</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-palmas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-cianorte</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-castro</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-cobranca-aluguel-dois-vizinhos</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <!-- Hiper-local: transferencia-veiculo × 24 cidades -->
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-curitiba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-londrina</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-maringa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-cascavel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-foz-do-iguacu</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-ponta-grossa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-guarapuava</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-colombo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-apucarana</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-toledo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-arapongas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-campo-largo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-campo-mourao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-paranagua</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-umuarama</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-cornelio-procopio</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-pato-branco</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-francisco-beltrao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-telemacos-borba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-irati</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-palmas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-cianorte</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-castro</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-transferencia-veiculo-dois-vizinhos</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <!-- Hiper-local: direito-agrario × 24 cidades -->
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-curitiba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-londrina</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-maringa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-cascavel</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-foz-do-iguacu</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-ponta-grossa</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-guarapuava</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-colombo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-apucarana</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-toledo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-arapongas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-campo-largo</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-campo-mourao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-paranagua</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-umuarama</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-cornelio-procopio</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-pato-branco</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-francisco-beltrao</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-telemacos-borba</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-irati</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-palmas</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-cianorte</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-castro</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://fernandezefernandes.adv.br/advogado-direito-agrario-dois-vizinhos</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <!-- Posts do blog -->
   <url>
     <loc>https://fernandezefernandes.adv.br/blog/quem-tem-direito-pensao-por-morte-pai-falecido</loc>
     <lastmod>2026-02-21</lastmod>
