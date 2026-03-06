@@ -33,7 +33,29 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
     cidadeSlug = m ? m[1] : "";
   }
 
-  const city = getCityBySlug(cidadeSlug);
+  const nativeCity = getCityBySlug(cidadeSlug);
+  const [dynamicCity, setDynamicCity] = useState<CityData | null>(null);
+  const [notFound, setNotFound] = useState(false);
+
+  // Fetch from DB if not a native city
+  useEffect(() => {
+    if (nativeCity || !cidadeSlug) return;
+    supabase
+      .from("seo_cities" as any)
+      .select("slug, name, region")
+      .eq("slug", cidadeSlug)
+      .eq("active", true)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setDynamicCity({ slug: (data as any).slug, name: (data as any).name, region: (data as any).region, variationIndex: 0 });
+        } else {
+          setNotFound(true);
+        }
+      });
+  }, [cidadeSlug, nativeCity]);
+
+  const city = nativeCity || dynamicCity;
 
   const cityName = city?.name ?? "";
   const cityRegion = city?.region ?? "";
