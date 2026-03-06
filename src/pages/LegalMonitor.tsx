@@ -82,6 +82,7 @@ const LegalMonitor = () => {
   const [topPosts, setTopPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
+  const [regeneratingSitemap, setRegeneratingSitemap] = useState(false);
   const [stats, setStats] = useState({
     totalChanges: 0,
     published: 0,
