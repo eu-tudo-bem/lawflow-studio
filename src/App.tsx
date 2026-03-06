@@ -82,13 +82,13 @@ const App = () => (
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
             {/* Hyper-local SEO Pages – escritório por cidade */}
-            {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos"].map((city) => (
+            {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
               <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
             ))}
             <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
-            {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 24 cidades = 120 páginas) */}
+            {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas) */}
             {(["pensao-alimenticia","divorcio-consensual","cobranca-aluguel","transferencia-veiculo","direito-agrario"] as const).flatMap((svc) =>
-              ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos"].map((city) => (
+              ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
                 <Route key={`${svc}-${city}`} path={`/advogado-${svc}-${city}`} element={<ServiceLocalPage serviceSlug={svc} citySlug={city} />} />
               ))
             )}
