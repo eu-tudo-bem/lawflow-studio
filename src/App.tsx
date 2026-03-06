@@ -161,7 +161,7 @@ const App = () => (
             <Route path="/dashboard/analyses" element={<ProtectedRoute requiredRole="staff"><AnalysesReceived /></ProtectedRoute>} />
             <Route path="/dashboard/tjpr" element={<ProtectedRoute requiredRole="staff"><TJPRMonitor /></ProtectedRoute>} />
             <Route path="/dashboard/legal-monitor" element={<ProtectedRoute requiredRole="staff"><LegalMonitor /></ProtectedRoute>} />
-            <Route path="/dashboard/seo-local" element={<ProtectedRoute requiredRole="staff"><SEOLocalManager /></ProtectedRoute>} />
+            <Route path="/dashboard/seo-local" element={<Navigate to="/dashboard/legal-monitor" replace />} />
             {/* Client Portal Routes */}
             <Route path="/client-login" element={<ClientLogin />} />
             <Route path="/client-portal" element={<ProtectedRoute requiredRole="client"><ClientPortal /></ProtectedRoute>}>
