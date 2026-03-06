@@ -45,6 +45,9 @@ const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
 const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
+const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
+const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
+const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
 
 const queryClient = new QueryClient();
 
