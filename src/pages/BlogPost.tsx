@@ -28,6 +28,7 @@ interface Post {
   excerpt: string | null;
   cover_image_url: string | null;
   published_at: string | null;
+  updated_at?: string | null;
   meta_title: string | null;
   meta_description: string | null;
   tags: string[] | null;
