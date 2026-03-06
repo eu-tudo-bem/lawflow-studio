@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Scale, Play, RefreshCw, ExternalLink, CheckCircle2, AlertCircle,
   Clock, Newspaper, TrendingUp, Search, Tag, Calendar, ChevronRight,
-  BarChart3, Zap, FileText, Globe,
+  BarChart3, Zap, FileText, Globe, MapPin, ArrowUpRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/DashboardLayout";
+import { PARANA_CITIES, LEGAL_SERVICES, getServiceCitySlug } from "@/data/localSEOCities";
 
 interface LegalChange {
   id: string;
