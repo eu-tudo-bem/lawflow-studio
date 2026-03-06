@@ -92,7 +92,7 @@ export default function BlogPost() {
     setLoading(true);
     const { data, error } = await supabase
       .from("blog_posts")
-      .select("id, title, slug, subtitle, content, excerpt, cover_image_url, published_at, meta_title, meta_description, tags, views, blog_categories(name, slug)")
+      .select("id, title, slug, subtitle, content, excerpt, cover_image_url, published_at, updated_at, meta_title, meta_description, tags, views, blog_categories(name, slug)")
       .eq("slug", slug!)
       .eq("status", "published")
       .maybeSingle();
