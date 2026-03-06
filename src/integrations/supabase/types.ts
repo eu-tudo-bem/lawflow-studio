@@ -453,6 +453,98 @@ export type Database = {
           },
         ]
       }
+      legal_changes: {
+        Row: {
+          area_direito: string
+          blog_post_id: string | null
+          created_at: string
+          fonte: string | null
+          id: string
+          leads_gerados: number
+          norma_referencia: string | null
+          palavras_chave: string[] | null
+          resumo: string | null
+          status: string
+          tipo_impacto: string | null
+          titulo: string
+          updated_at: string
+          url_fonte: string | null
+        }
+        Insert: {
+          area_direito: string
+          blog_post_id?: string | null
+          created_at?: string
+          fonte?: string | null
+          id?: string
+          leads_gerados?: number
+          norma_referencia?: string | null
+          palavras_chave?: string[] | null
+          resumo?: string | null
+          status?: string
+          tipo_impacto?: string | null
+          titulo: string
+          updated_at?: string
+          url_fonte?: string | null
+        }
+        Update: {
+          area_direito?: string
+          blog_post_id?: string | null
+          created_at?: string
+          fonte?: string | null
+          id?: string
+          leads_gerados?: number
+          norma_referencia?: string | null
+          palavras_chave?: string[] | null
+          resumo?: string | null
+          status?: string
+          tipo_impacto?: string | null
+          titulo?: string
+          updated_at?: string
+          url_fonte?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "legal_changes_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      legal_monitor_logs: {
+        Row: {
+          areas_scanned: string[] | null
+          changes_found: number
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          posts_generated: number
+          status: string
+        }
+        Insert: {
+          areas_scanned?: string[] | null
+          changes_found?: number
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          posts_generated?: number
+          status: string
+        }
+        Update: {
+          areas_scanned?: string[] | null
+          changes_found?: number
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          posts_generated?: number
+          status?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           case_id: string | null
