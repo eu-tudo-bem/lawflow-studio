@@ -3,15 +3,17 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   Scale, Play, RefreshCw, ExternalLink, CheckCircle2, AlertCircle,
   Clock, Newspaper, TrendingUp, Search, Tag, Calendar, ChevronRight,
-  BarChart3, Zap, FileText, Globe, MapPin, ArrowUpRight,
+  BarChart3, Zap, FileText, Globe, MapPin, ArrowUpRight, Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/DashboardLayout";
 import { PARANA_CITIES, LEGAL_SERVICES, getServiceCitySlug } from "@/data/localSEOCities";
+import { DiscoveryAgentTab } from "@/components/DiscoveryAgentTab";
 
 interface LegalChange {
   id: string;
@@ -184,7 +186,7 @@ const LegalMonitor = () => {
           {running ? (
             <><RefreshCw className="h-4 w-4 mr-2 animate-spin" />Executando…</>
           ) : (
-            <><Play className="h-4 w-4 mr-2" />Executar Agente</>
+            <><Play className="h-4 w-4 mr-2" />Executar Monitor</>
           )}
         </Button>
       }
@@ -220,311 +222,329 @@ const LegalMonitor = () => {
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6 mb-8">
-        {/* Quick Monitor by Area */}
-        <Card className="border-0 shadow-card">
-          <CardHeader>
-            <CardTitle className="font-serif text-base flex items-center gap-2">
-              <Zap className="h-5 w-5 text-accent" />
-              Monitor por Área
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {[
-              { id: "familia", label: "Direito de Família" },
-              { id: "civil", label: "Direito Civil" },
-              { id: "imobiliario", label: "Direito Imobiliário" },
-              { id: "agrario", label: "Direito Agrário" },
-              { id: "trabalhista", label: "Direito do Trabalho" },
-              { id: "consumidor", label: "Direito do Consumidor" },
-            ].map((area) => (
-              <Button
-                key={area.id}
-                variant="outline"
-                size="sm"
-                className="w-full justify-between"
-                disabled={running}
-                onClick={() => runMonitor([area.id])}
-              >
-                <span>{area.label}</span>
-                <ChevronRight className="h-3 w-3" />
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
+      {/* Tabs */}
+      <Tabs defaultValue="monitor" className="w-full">
+        <TabsList className="mb-6">
+          <TabsTrigger value="monitor" className="flex items-center gap-2">
+            <Scale className="h-4 w-4" />
+            Monitor Legislativo
+          </TabsTrigger>
+          <TabsTrigger value="discovery" className="flex items-center gap-2">
+            <Brain className="h-4 w-4" />
+            Agente de Descoberta
+          </TabsTrigger>
+          <TabsTrigger value="hyperlocal" className="flex items-center gap-2">
+            <MapPin className="h-4 w-4" />
+            SEO Hiperlocal
+          </TabsTrigger>
+        </TabsList>
 
-        {/* Execution Logs */}
-        <Card className="border-0 shadow-card">
-          <CardHeader>
-            <CardTitle className="font-serif text-base flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-accent" />
-              Histórico de Execuções
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <p className="text-sm text-muted-foreground">Carregando…</p>
-            ) : logs.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Nenhuma execução registrada.</p>
-            ) : (
-              <div className="space-y-3">
-                {logs.map((log) => (
-                  <div key={log.id} className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      {log.status === "success" ? (
-                        <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
-                      ) : log.status === "error" ? (
-                        <AlertCircle className="h-4 w-4 text-destructive shrink-0" />
-                      ) : (
-                        <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
-                      )}
-                      <div>
-                        <p className="text-xs font-medium text-foreground">
-                          {log.changes_found} detec. / {log.posts_generated} pub.
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(log.created_at).toLocaleDateString("pt-BR", {
-                            day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                    {log.duration_ms && (
-                      <span className="text-xs text-muted-foreground">{(log.duration_ms / 1000).toFixed(0)}s</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Top Posts */}
-        <Card className="border-0 shadow-card">
-          <CardHeader>
-            <CardTitle className="font-serif text-base flex items-center gap-2">
-              <Globe className="h-5 w-5 text-accent" />
-              Páginas com Mais Visitas
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {topPosts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Nenhuma página ainda.</p>
-            ) : (
-              <div className="space-y-3">
-                {topPosts.map((post) => (
-                  <div key={post.id} className="flex items-center justify-between gap-2">
-                    <a
-                      href={`/blog/${post.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-medium text-foreground hover:text-accent line-clamp-2 flex-1"
-                    >
-                      {post.title}
-                    </a>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-                      <TrendingUp className="h-3 w-3" />
-                      {post.views}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Changes Table */}
-      <Card className="border-0 shadow-card">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="font-serif flex items-center gap-2">
-            <FileText className="h-5 w-5 text-accent" />
-            Mudanças Legislativas Detectadas
-          </CardTitle>
-          <Button variant="ghost" size="sm" onClick={loadData} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-          </Button>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="flex items-center justify-center h-32">
-              <RefreshCw className="h-6 w-6 animate-spin text-accent" />
-            </div>
-          ) : changes.length === 0 ? (
-            <div className="text-center py-12">
-              <Scale className="h-12 w-12 mx-auto text-muted-foreground/30 mb-4" />
-              <p className="text-muted-foreground">Nenhuma mudança detectada ainda.</p>
-              <p className="text-sm text-muted-foreground mt-1">Clique em "Executar Agente" para iniciar o monitoramento.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {changes.map((change) => {
-                const statusCfg = STATUS_CONFIG[change.status] || STATUS_CONFIG["detected"];
-                const StatusIcon = statusCfg.icon;
-                return (
-                  <div
-                    key={change.id}
-                    className="border border-border rounded-lg p-4 hover:border-accent/50 transition-colors"
+        {/* ── Monitor Legislativo ── */}
+        <TabsContent value="monitor">
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            {/* Quick Monitor by Area */}
+            <Card className="border-0 shadow-card">
+              <CardHeader>
+                <CardTitle className="font-serif text-base flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-accent" />
+                  Monitor por Área
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {[
+                  { id: "familia", label: "Direito de Família" },
+                  { id: "civil", label: "Direito Civil" },
+                  { id: "imobiliario", label: "Direito Imobiliário" },
+                  { id: "agrario", label: "Direito Agrário" },
+                  { id: "trabalhista", label: "Direito do Trabalho" },
+                  { id: "consumidor", label: "Direito do Consumidor" },
+                ].map((area) => (
+                  <Button
+                    key={area.id}
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-between"
+                    disabled={running}
+                    onClick={() => runMonitor([area.id])}
                   >
-                    <div className="flex flex-wrap items-start gap-2 mb-2">
-                      <Badge className={`${AREA_COLORS[change.area_direito] || "bg-gray-100 text-gray-800"} border-0 text-xs`}>
-                        {AREA_LABELS[change.area_direito] || change.area_direito}
-                      </Badge>
-                      <Badge className={`${statusCfg.color} border-0 text-xs flex items-center gap-1`}>
-                        <StatusIcon className="h-3 w-3" />
-                        {statusCfg.label}
-                      </Badge>
-                      {change.fonte && (
-                        <Badge variant="outline" className="text-xs">
-                          {change.fonte}
-                        </Badge>
-                      )}
-                    </div>
+                    <span>{area.label}</span>
+                    <ChevronRight className="h-3 w-3" />
+                  </Button>
+                ))}
+              </CardContent>
+            </Card>
 
-                    <h3 className="font-semibold text-foreground mb-1">{change.titulo}</h3>
-                    {change.resumo && (
-                      <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{change.resumo}</p>
-                    )}
-
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {change.norma_referencia && (
-                        <span className="text-xs bg-muted px-2 py-0.5 rounded font-mono">{change.norma_referencia}</span>
-                      )}
-                      {change.tipo_impacto && (
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Tag className="h-3 w-3" />
-                          {change.tipo_impacto}
-                        </span>
-                      )}
-                      <span className="text-xs text-muted-foreground flex items-center gap-1 ml-auto">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(change.created_at).toLocaleDateString("pt-BR")}
-                      </span>
-                    </div>
-
-                    {change.palavras_chave && change.palavras_chave.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {change.palavras_chave.slice(0, 5).map((kw) => (
-                          <span key={kw} className="text-xs bg-accent/10 text-accent px-2 py-0.5 rounded">
-                            {kw}
-                          </span>
-                        ))}
+            {/* Execution Logs */}
+            <Card className="border-0 shadow-card">
+              <CardHeader>
+                <CardTitle className="font-serif text-base flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5 text-accent" />
+                  Histórico de Execuções
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <p className="text-sm text-muted-foreground">Carregando…</p>
+                ) : logs.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Nenhuma execução registrada.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {logs.map((log) => (
+                      <div key={log.id} className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          {log.status === "success" ? (
+                            <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                          ) : log.status === "error" ? (
+                            <AlertCircle className="h-4 w-4 text-destructive shrink-0" />
+                          ) : (
+                            <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
+                          )}
+                          <div>
+                            <p className="text-xs font-medium text-foreground">
+                              {log.changes_found} detec. / {log.posts_generated} pub.
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(log.created_at).toLocaleDateString("pt-BR", {
+                                day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                        {log.duration_ms && (
+                          <span className="text-xs text-muted-foreground">{(log.duration_ms / 1000).toFixed(0)}s</span>
+                        )}
                       </div>
-                    )}
-
-                    <div className="flex gap-2">
-                      {change.blog_post_id && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-7 text-xs"
-                          onClick={() => navigate(`/dashboard/blog`)}
-                        >
-                          <ExternalLink className="h-3 w-3 mr-1" />
-                          Ver Página
-                        </Button>
-                      )}
-                      {change.status === "detected" && (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-7 text-xs text-muted-foreground hover:text-destructive"
-                          onClick={() => dismissChange(change.id)}
-                        >
-                          Descartar
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* SEO Programático – Páginas Hiperlocais */}
-      <Card className="border-0 shadow-card mt-6">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="font-serif flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-accent" />
-            SEO Programático — Páginas Hiperlocais
-          </CardTitle>
-          <Badge variant="outline" className="text-xs">
-            {PARANA_CITIES.length * LEGAL_SERVICES.length + PARANA_CITIES.length} páginas geradas
-          </Badge>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground mb-6">
-            Páginas otimizadas automaticamente para cada serviço × cidade do Paraná. Cada página contém Schema
-            markup <code className="bg-muted px-1 rounded text-xs">LegalService</code> +{" "}
-            <code className="bg-muted px-1 rounded text-xs">FAQPage</code>, H1/H2/H3, meta tags e CTAs de conversão.
-          </p>
-
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            {[
-              { label: "Cidades cobertas", value: PARANA_CITIES.length },
-              { label: "Serviços jurídicos", value: LEGAL_SERVICES.length },
-              { label: "Páginas de serviço", value: PARANA_CITIES.length * LEGAL_SERVICES.length },
-            ].map(({ label, value }) => (
-              <div key={label} className="bg-accent/5 rounded-lg p-4 text-center border border-border">
-                <p className="text-2xl font-bold text-accent">{value}</p>
-                <p className="text-xs text-muted-foreground mt-1">{label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Services list */}
-          <div className="mb-6">
-            <h3 className="text-sm font-semibold text-foreground mb-3">Serviços cadastrados</h3>
-            <div className="flex flex-wrap gap-2">
-              {LEGAL_SERVICES.map((svc) => (
-                <Badge key={svc.slug} variant="secondary" className="text-xs">
-                  {svc.icon} {svc.name}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          {/* Cities table with quick links */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3">Cidades e páginas de serviço</h3>
-            <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
-              {PARANA_CITIES.map((city) => (
-                <div key={city.slug} className="border border-border rounded-lg p-3 hover:border-accent/50 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-3.5 w-3.5 text-accent" />
-                      <span className="font-medium text-sm text-foreground">{city.name}</span>
-                      <span className="text-xs text-muted-foreground">· {city.region}</span>
-                    </div>
-                    <Link
-                      to={`/escritorio-advocacia-${city.slug}`}
-                      target="_blank"
-                      className="text-xs text-accent hover:underline flex items-center gap-1"
-                    >
-                      Página geral <ArrowUpRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {LEGAL_SERVICES.map((svc) => (
-                      <Link
-                        key={svc.slug}
-                        to={`/${getServiceCitySlug(svc.slug, city.slug)}`}
-                        target="_blank"
-                        className="text-xs bg-muted hover:bg-accent/10 hover:text-accent text-muted-foreground px-2 py-0.5 rounded transition-colors flex items-center gap-1"
-                      >
-                        {svc.icon} {svc.shortName}
-                      </Link>
                     ))}
                   </div>
-                </div>
-              ))}
-            </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Top Posts */}
+            <Card className="border-0 shadow-card">
+              <CardHeader>
+                <CardTitle className="font-serif text-base flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-accent" />
+                  Páginas com Mais Visitas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {topPosts.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Nenhuma página ainda.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {topPosts.map((post) => (
+                      <div key={post.id} className="flex items-center justify-between gap-2">
+                        <a
+                          href={`/blog/${post.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-medium text-foreground hover:text-accent line-clamp-2 flex-1"
+                        >
+                          {post.title}
+                        </a>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
+                          <TrendingUp className="h-3 w-3" />
+                          {post.views}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* Changes Table */}
+          <Card className="border-0 shadow-card">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="font-serif flex items-center gap-2">
+                <FileText className="h-5 w-5 text-accent" />
+                Mudanças Legislativas Detectadas
+              </CardTitle>
+              <Button variant="ghost" size="sm" onClick={loadData} disabled={loading}>
+                <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+              </Button>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-32">
+                  <RefreshCw className="h-6 w-6 animate-spin text-accent" />
+                </div>
+              ) : changes.length === 0 ? (
+                <div className="text-center py-12">
+                  <Scale className="h-12 w-12 mx-auto text-muted-foreground/30 mb-4" />
+                  <p className="text-muted-foreground">Nenhuma mudança detectada ainda.</p>
+                  <p className="text-sm text-muted-foreground mt-1">Clique em "Executar Monitor" para iniciar.</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {changes.map((change) => {
+                    const statusCfg = STATUS_CONFIG[change.status] || STATUS_CONFIG["detected"];
+                    const StatusIcon = statusCfg.icon;
+                    return (
+                      <div
+                        key={change.id}
+                        className="border border-border rounded-lg p-4 hover:border-accent/50 transition-colors"
+                      >
+                        <div className="flex flex-wrap items-start gap-2 mb-2">
+                          <Badge className={`${AREA_COLORS[change.area_direito] || "bg-gray-100 text-gray-800"} border-0 text-xs`}>
+                            {AREA_LABELS[change.area_direito] || change.area_direito}
+                          </Badge>
+                          <Badge className={`${statusCfg.color} border-0 text-xs flex items-center gap-1`}>
+                            <StatusIcon className="h-3 w-3" />
+                            {statusCfg.label}
+                          </Badge>
+                          {change.fonte && (
+                            <Badge variant="outline" className="text-xs">
+                              {change.fonte}
+                            </Badge>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-foreground mb-1">{change.titulo}</h3>
+                        {change.resumo && (
+                          <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{change.resumo}</p>
+                        )}
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {change.norma_referencia && (
+                            <span className="text-xs bg-muted px-2 py-0.5 rounded font-mono">{change.norma_referencia}</span>
+                          )}
+                          {change.tipo_impacto && (
+                            <span className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Tag className="h-3 w-3" />
+                              {change.tipo_impacto}
+                            </span>
+                          )}
+                          <span className="text-xs text-muted-foreground flex items-center gap-1 ml-auto">
+                            <Calendar className="h-3 w-3" />
+                            {new Date(change.created_at).toLocaleDateString("pt-BR")}
+                          </span>
+                        </div>
+                        {change.palavras_chave && change.palavras_chave.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {change.palavras_chave.slice(0, 5).map((kw) => (
+                              <span key={kw} className="text-xs bg-accent/10 text-accent px-2 py-0.5 rounded">
+                                {kw}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex gap-2">
+                          {change.blog_post_id && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-7 text-xs"
+                              onClick={() => navigate(`/dashboard/blog`)}
+                            >
+                              <ExternalLink className="h-3 w-3 mr-1" />
+                              Ver Página
+                            </Button>
+                          )}
+                          {change.status === "detected" && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 text-xs text-muted-foreground hover:text-destructive"
+                              onClick={() => dismissChange(change.id)}
+                            >
+                              Descartar
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* ── Agente de Descoberta ── */}
+        <TabsContent value="discovery">
+          <DiscoveryAgentTab />
+        </TabsContent>
+
+        {/* ── SEO Hiperlocal ── */}
+        <TabsContent value="hyperlocal">
+          <Card className="border-0 shadow-card">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="font-serif flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-accent" />
+                SEO Programático — Páginas Hiperlocais
+              </CardTitle>
+              <Badge variant="outline" className="text-xs">
+                {PARANA_CITIES.length * LEGAL_SERVICES.length + PARANA_CITIES.length} páginas geradas
+              </Badge>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-6">
+                Páginas otimizadas automaticamente para cada serviço × cidade do Paraná. Cada página contém Schema
+                markup <code className="bg-muted px-1 rounded text-xs">LegalService</code> +{" "}
+                <code className="bg-muted px-1 rounded text-xs">FAQPage</code>, H1/H2/H3, meta tags e CTAs de conversão.
+              </p>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {[
+                  { label: "Cidades cobertas", value: PARANA_CITIES.length },
+                  { label: "Serviços jurídicos", value: LEGAL_SERVICES.length },
+                  { label: "Páginas de serviço", value: PARANA_CITIES.length * LEGAL_SERVICES.length },
+                ].map(({ label, value }) => (
+                  <div key={label} className="bg-accent/5 rounded-lg p-4 text-center border border-border">
+                    <p className="text-2xl font-bold text-accent">{value}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mb-6">
+                <h3 className="text-sm font-semibold text-foreground mb-3">Serviços cadastrados</h3>
+                <div className="flex flex-wrap gap-2">
+                  {LEGAL_SERVICES.map((svc) => (
+                    <Badge key={svc.slug} variant="secondary" className="text-xs">
+                      {svc.icon} {svc.name}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-3">Cidades e páginas de serviço</h3>
+                <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                  {PARANA_CITIES.map((city) => (
+                    <div key={city.slug} className="border border-border rounded-lg p-3 hover:border-accent/50 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-3.5 w-3.5 text-accent" />
+                          <span className="font-medium text-sm text-foreground">{city.name}</span>
+                          <span className="text-xs text-muted-foreground">· {city.region}</span>
+                        </div>
+                        <Link
+                          to={`/escritorio-advocacia-${city.slug}`}
+                          target="_blank"
+                          className="text-xs text-accent hover:underline flex items-center gap-1"
+                        >
+                          Página geral <ArrowUpRight className="h-3 w-3" />
+                        </Link>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {LEGAL_SERVICES.map((svc) => (
+                          <Link
+                            key={svc.slug}
+                            to={`/${getServiceCitySlug(svc.slug, city.slug)}`}
+                            target="_blank"
+                            className="text-xs bg-muted hover:bg-accent/10 hover:text-accent text-muted-foreground px-2 py-0.5 rounded transition-colors flex items-center gap-1"
+                          >
+                            {svc.icon} {svc.shortName}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </DashboardLayout>
   );
 };
