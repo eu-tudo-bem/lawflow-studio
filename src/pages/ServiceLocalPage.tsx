@@ -9,8 +9,10 @@ import {
   PARANA_CITIES,
   LEGAL_SERVICES,
   getServiceCitySlug,
+  type CityData,
 } from "@/data/localSEOCities";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   citySlug: string;
