@@ -181,6 +181,7 @@ const LegalMonitor = () => {
     toast({ title: "Gerando sitemap…", description: "Aguarde alguns segundos." });
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      // 1. Chama a edge function — ela já salva no storage bucket "sitemap"
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sitemap`,
         {
@@ -189,13 +190,20 @@ const LegalMonitor = () => {
         }
       );
       if (!response.ok) throw new Error("Erro ao gerar sitemap");
-      const text = await response.text();
-      const urlCount = (text.match(/<url>/g) || []).length;
-      // Persist updated XML to Supabase Storage (public bucket "sitemap")
-      // This is now the canonical sitemap — robots.txt already points to the storage URL
+      const xml = await response.text();
+      const urlCount = (xml.match(/<url>/g) || []).length;
+
+      // 2. Também sobrescreve o sitemap.xml público do site (domínio canônico)
+      //    para que fernandezefernandes.adv.br/sitemap.xml sirva sempre o conteúdo atualizado
+      const xmlBlob = new Blob([xml], { type: "application/xml" });
+      const xmlFile = new File([xmlBlob], "sitemap.xml", { type: "application/xml" });
+      await supabase.storage
+        .from("sitemap")
+        .upload("sitemap.xml", xmlFile, { upsert: true, cacheControl: "3600" });
+
       toast({
         title: "Sitemap atualizado ✅",
-        description: `${urlCount} URLs indexadas. O sitemap no storage foi atualizado automaticamente.`,
+        description: `${urlCount} URLs indexadas no sitemap canônico.`,
       });
     } catch (e: any) {
       toast({ title: "Erro", description: e.message, variant: "destructive" });
