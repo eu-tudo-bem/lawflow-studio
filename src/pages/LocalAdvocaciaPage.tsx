@@ -312,7 +312,7 @@ const LocalAdvocaciaPage = () => {
               .map((c) => (
                 <Link
                   key={c.slug}
-                  to={`/escritorio-advocacia-${c.slug}`}
+                  to={`/escritorio-advocacia/${c.slug}`}
                   className="px-3 py-1.5 text-sm bg-background border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-[hsl(45_60%_55%)] transition-colors"
                 >
                   {c.name}
