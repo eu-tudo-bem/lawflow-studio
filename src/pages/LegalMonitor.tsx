@@ -111,8 +111,8 @@ const LegalMonitor = () => {
           .limit(5),
       ]);
 
-      const changesData = (changesRes.data || []) as LegalChange[];
-      const logsData = (logsRes.data || []) as MonitorLog[];
+      const changesData = (changesRes.data || []) as unknown as LegalChange[];
+      const logsData = (logsRes.data || []) as unknown as MonitorLog[];
       const postsData = (postsRes.data || []) as BlogPost[];
 
       setChanges(changesData);
