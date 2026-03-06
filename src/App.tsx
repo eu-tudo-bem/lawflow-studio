@@ -74,8 +74,10 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
-            {/* Hyper-local SEO Pages – Paraná Cities */}
-            <Route path="/escritorio-advocacia-*" element={<LocalAdvocaciaPage />} />
+            {/* Hyper-local SEO Pages – Paraná Cities (explicit routes, React Router v6 doesn't support inline params) */}
+            {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","castro","dois-vizinhos"].map((city) => (
+              <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
+            ))}
             <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
             {/* Blog */}
             <Route path="/blog" element={<Blog />} />
