@@ -2,7 +2,7 @@ import { useEffect, useState, ReactNode } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Scale, Users, Briefcase, Calendar, Mail, LogOut,
-  Menu, X, MessageSquare, BookOpen, FileSearch, Gavel, LayoutDashboard
+  Menu, X, MessageSquare, BookOpen, FileSearch, Gavel, LayoutDashboard, Radar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,6 +17,7 @@ const menuItems = [
   { icon: BookOpen, label: "Blog Jurídico", href: "/dashboard/blog" },
   { icon: FileSearch, label: "Análises Recebidas", href: "/dashboard/analyses" },
   { icon: Gavel, label: "Monitoramento TJPR", href: "/dashboard/tjpr" },
+  { icon: Radar, label: "Monitor Jurídico IA", href: "/dashboard/legal-monitor" },
 ];
 
 interface DashboardLayoutProps {

@@ -36,6 +36,7 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogAdmin = lazy(() => import("./pages/BlogAdmin"));
 const AnalysesReceived = lazy(() => import("./pages/AnalysesReceived"));
 const TJPRMonitor = lazy(() => import("./pages/TJPRMonitor"));
+const LegalMonitor = lazy(() => import("./pages/LegalMonitor"));
 const Unauthorized = lazy(() => import("./pages/Unauthorized"));
 const PensaoAlimenticia = lazy(() => import("./pages/PensaoAlimenticia"));
 const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
@@ -95,6 +96,7 @@ const App = () => (
             <Route path="/dashboard/blog" element={<ProtectedRoute requiredRole="staff"><BlogAdmin /></ProtectedRoute>} />
             <Route path="/dashboard/analyses" element={<ProtectedRoute requiredRole="staff"><AnalysesReceived /></ProtectedRoute>} />
             <Route path="/dashboard/tjpr" element={<ProtectedRoute requiredRole="staff"><TJPRMonitor /></ProtectedRoute>} />
+            <Route path="/dashboard/legal-monitor" element={<ProtectedRoute requiredRole="staff"><LegalMonitor /></ProtectedRoute>} />
             {/* Client Portal Routes */}
             <Route path="/client-login" element={<ClientLogin />} />
             <Route path="/client-portal" element={<ProtectedRoute requiredRole="client"><ClientPortal /></ProtectedRoute>}>
