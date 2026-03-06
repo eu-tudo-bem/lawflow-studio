@@ -244,21 +244,21 @@ const GeradorDocumentoPage = ({ docTypeSlug }: Props) => {
                 <Label htmlFor="lead_name">Nome completo <span className="text-destructive">*</span></Label>
                 <Input id="lead_name" placeholder="Seu nome completo" {...leadForm.register("lead_name")} className="mt-1" />
                 {leadForm.formState.errors.lead_name && (
-                  <p className="text-xs text-destructive mt-1">{leadForm.formState.errors.lead_name.message}</p>
+                  <p className="text-xs text-destructive mt-1">{String(leadForm.formState.errors.lead_name.message)}</p>
                 )}
               </div>
               <div>
                 <Label htmlFor="lead_email">E-mail <span className="text-destructive">*</span></Label>
                 <Input id="lead_email" type="email" placeholder="seu@email.com" {...leadForm.register("lead_email")} className="mt-1" />
                 {leadForm.formState.errors.lead_email && (
-                  <p className="text-xs text-destructive mt-1">{leadForm.formState.errors.lead_email.message}</p>
+                  <p className="text-xs text-destructive mt-1">{String(leadForm.formState.errors.lead_email.message)}</p>
                 )}
               </div>
               <div>
                 <Label htmlFor="lead_whatsapp">WhatsApp <span className="text-destructive">*</span></Label>
                 <Input id="lead_whatsapp" placeholder="(41) 99999-9999" {...leadForm.register("lead_whatsapp")} className="mt-1" />
                 {leadForm.formState.errors.lead_whatsapp && (
-                  <p className="text-xs text-destructive mt-1">{leadForm.formState.errors.lead_whatsapp.message}</p>
+                  <p className="text-xs text-destructive mt-1">{String(leadForm.formState.errors.lead_whatsapp.message)}</p>
                 )}
               </div>
 
