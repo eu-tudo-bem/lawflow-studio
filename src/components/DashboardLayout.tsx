@@ -19,6 +19,7 @@ const menuItems = [
   { icon: FileSearch, label: "Análises Recebidas", href: "/dashboard/analyses" },
   { icon: Gavel, label: "Monitoramento TJPR", href: "/dashboard/tjpr" },
   { icon: Radar, label: "Monitor Jurídico IA", href: "/dashboard/legal-monitor" },
+  { icon: Globe, label: "SEO Programático", href: "/dashboard/seo-local" },
 ];
 
 interface DashboardLayoutProps {
