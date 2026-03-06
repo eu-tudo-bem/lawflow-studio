@@ -63,6 +63,7 @@ const PageLoader = () => (
 // Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
 const DynamicServiceCityRoute = () => {
   const { "*": rest } = useParams<{ "*": string }>();
+  // rest = "pensao-alimenticia-guaira" (the part after /advogado/)
   if (!rest) return <Navigate to="/404" replace />;
   const match = LEGAL_SERVICES
     .map((s) => ({ service: s, city: rest.startsWith(s.keyword + "-") ? rest.slice(s.keyword.length + 1) : null }))
