@@ -111,7 +111,8 @@ const App = () => (
               ))
             )}
             {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
-            <Route path="/advogado-:serviceCity" element={<DynamicServiceCityRoute />} />
+            {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
+            <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
             {/* Gerador de Documentos Jurídicos */}
             <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
             {["notificacao-cobranca-aluguel","notificacao-divida","acordo-divorcio","declaracao-uniao-estavel","contrato-arrendamento-rural","declaracao-dependencia-economica","revisao-pensao-alimenticia"].map((slug) => (
