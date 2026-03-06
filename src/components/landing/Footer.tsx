@@ -57,6 +57,11 @@ const Footer = () => {
             <h4 className="font-semibold mb-4 mt-6">Ferramentas Gratuitas</h4>
             <ul className="space-y-2 text-[hsl(45_20%_95%)]/70 text-sm">
               <li>
+                <Link to="/gerador-documentos" className="hover:text-[hsl(45_20%_95%)] transition-colors font-medium text-[hsl(45_20%_95%)]/90">
+                  📄 Gerador de Documentos Jurídicos
+                </Link>
+              </li>
+              <li>
                 <Link to="/calculadora#simulador" className="hover:text-[hsl(45_20%_95%)] transition-colors">
                   Calculadora de Rescisão
                 </Link>
