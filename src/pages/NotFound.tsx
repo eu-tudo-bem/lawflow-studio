@@ -1,9 +1,27 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { usePageSEO } from "@/hooks/usePageSEO";
+import { getCityBySlug } from "@/data/localSEOCities";
+import { lazy, Suspense } from "react";
+
+const LocalAdvocaciaPage = lazy(() => import("./LocalAdvocaciaPage"));
 
 const NotFound = () => {
   const location = useLocation();
+
+  // Intercept /escritorio-advocacia-{cidade} pattern
+  const advocaciaMatch = location.pathname.match(/^\/escritorio-advocacia-(.+)$/);
+  if (advocaciaMatch) {
+    const slug = advocaciaMatch[1];
+    const city = getCityBySlug(slug);
+    if (city) {
+      return (
+        <Suspense fallback={null}>
+          <LocalAdvocaciaPage />
+        </Suspense>
+      );
+    }
+  }
 
   usePageSEO({
     title: "Página não encontrada | Fernandez & Fernandes",
