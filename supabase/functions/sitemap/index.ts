@@ -7,6 +7,7 @@ const corsHeaders = {
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
+// ── Static city/service slugs (keep in sync with src/data/localSEOCities.ts) ──
 const PARANA_CITY_SLUGS = [
   "curitiba", "londrina", "maringa", "cascavel", "foz-do-iguacu",
   "ponta-grossa", "guarapuava", "colombo", "apucarana", "toledo",
@@ -47,20 +48,20 @@ const staticPages = [
   { loc: "/cobranca-aluguel", changefreq: "monthly", priority: "0.8" },
   { loc: "/direito-agrario", changefreq: "monthly", priority: "0.8" },
   { loc: "/transferencia-veiculos", changefreq: "monthly", priority: "0.8" },
-  // Gerador de Documentos Jurídicos (hub + 7 páginas individuais)
+  // Gerador de Documentos Jurídicos (hub + páginas individuais)
   { loc: "/gerador-documentos", changefreq: "monthly", priority: "0.8" },
   ...DOCUMENT_GENERATOR_SLUGS.map((slug) => ({
     loc: `/gerador-${slug}`,
     changefreq: "monthly",
     priority: "0.75",
   })),
-  // Hyper-local: escritório geral por cidade (24 páginas)
+  // Hyper-local: escritório geral por cidade
   ...PARANA_CITY_SLUGS.map((slug) => ({
     loc: `/escritorio-advocacia-${slug}`,
     changefreq: "monthly",
     priority: "0.9",
   })),
-  // Hyper-local: serviço × cidade (5 × 24 = 120 páginas)
+  // Hyper-local: serviço × cidade
   ...LEGAL_SERVICE_SLUGS.flatMap((svc) =>
     PARANA_CITY_SLUGS.map((city) => ({
       loc: `/advogado-${svc}-${city}`,
@@ -80,16 +81,26 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // ── Fetch blog posts ──────────────────────────────────────────────
     const { data: posts } = await supabase
       .from("blog_posts")
       .select("slug, updated_at, published_at")
       .eq("status", "published")
       .order("published_at", { ascending: false });
 
+    // ── Fetch published legal questions (SEO programático) ────────────
+    const { data: questions } = await supabase
+      .from("legal_questions")
+      .select("slug, updated_at, published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false });
+
+    // ── Build XML ─────────────────────────────────────────────────────
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 `;
 
+    // Static pages
     for (const page of staticPages) {
       xml += `  <url>
     <loc>${BASE_URL}${page.loc}</loc>
@@ -99,6 +110,7 @@ Deno.serve(async (req) => {
 `;
     }
 
+    // Blog posts
     if (posts) {
       for (const post of posts) {
         const lastmod = (post.updated_at || post.published_at || "").split("T")[0];
@@ -112,9 +124,23 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Legal questions — /pergunta/:slug
+    if (questions) {
+      for (const q of questions) {
+        const lastmod = (q.updated_at || q.published_at || "").split("T")[0];
+        xml += `  <url>
+    <loc>${BASE_URL}/pergunta/${q.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+`;
+      }
+    }
+
     xml += `</urlset>`;
 
-    // Save to storage bucket for static access
+    // ── Save to storage bucket for static access ──────────────────────
     const xmlBlob = new Blob([xml], { type: "application/xml" });
     await supabase.storage
       .from("sitemap")
@@ -124,7 +150,12 @@ Deno.serve(async (req) => {
         cacheControl: "3600",
       });
 
-    console.log("Sitemap updated successfully with", (posts?.length || 0), "blog posts");
+    const totalPages =
+      staticPages.length + (posts?.length || 0) + (questions?.length || 0);
+
+    console.log(
+      `Sitemap updated: ${staticPages.length} static | ${posts?.length || 0} blog posts | ${questions?.length || 0} legal questions | total: ${totalPages} URLs`
+    );
 
     return new Response(xml, {
       headers: {
