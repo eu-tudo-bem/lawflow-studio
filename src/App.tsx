@@ -55,15 +55,21 @@ const SEOLocalManager = lazy(() => import("./pages/SEOLocalManager"));
 const queryClient = new QueryClient();
 
 // Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
+// ServiceLocalPage is already lazy-loaded above; wrap in Suspense inside the component
 const DynamicServiceCityRoute = () => {
-  const { serviceCity } = useParams<{ serviceCity: string }>();
-  if (!serviceCity) return <Navigate to="/404" replace />;
+  const { "*": rest } = useParams<{ "*": string }>();
+  if (!rest) return <Navigate to="/404" replace />;
   const match = LEGAL_SERVICES
-    .map((s) => ({ service: s, rest: serviceCity.startsWith(s.keyword + "-") ? serviceCity.slice(s.keyword.length + 1) : null }))
-    .find((m) => m.rest !== null);
-  if (!match || !match.rest) return <Navigate to="/404" replace />;
-  const SLP = ServiceLocalPage as any;
-  return <SLP serviceSlug={match.service.slug} citySlug={match.rest} />;
+    .map((s) => ({ service: s, city: rest.startsWith(s.keyword + "-") ? rest.slice(s.keyword.length + 1) : null }))
+    .find((m) => m.city !== null);
+  if (!match || !match.city) return <Navigate to="/404" replace />;
+  // Use createElement to avoid JSX type issues with lazy component
+  return (
+    <Suspense fallback={<PageLoader />}>
+      {/* @ts-ignore */}
+      <ServiceLocalPage serviceSlug={match.service.slug} citySlug={match.city} />
+    </Suspense>
+  );
 };
 
 const PageLoader = () => (
