@@ -7,6 +7,13 @@ const corsHeaders = {
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
+const PARANA_CITY_SLUGS = [
+  "curitiba", "londrina", "maringa", "cascavel", "foz-do-iguacu",
+  "ponta-grossa", "guarapuava", "colombo", "apucarana", "toledo",
+  "arapongas", "campo-largo", "campo-mourao", "paranagua", "umuarama",
+  "cornelio-procopio", "pato-branco", "francisco-beltrao", "castro", "dois-vizinhos",
+];
+
 const staticPages = [
   { loc: "/", changefreq: "weekly", priority: "1.0" },
   { loc: "/blog", changefreq: "daily", priority: "0.9" },
@@ -20,6 +27,12 @@ const staticPages = [
   { loc: "/cobranca-aluguel", changefreq: "monthly", priority: "0.8" },
   { loc: "/direito-agrario", changefreq: "monthly", priority: "0.8" },
   { loc: "/transferencia-veiculos", changefreq: "monthly", priority: "0.8" },
+  // Hyper-local SEO pages – Paraná cities
+  ...PARANA_CITY_SLUGS.map((slug) => ({
+    loc: `/escritorio-advocacia-${slug}`,
+    changefreq: "monthly",
+    priority: "0.9",
+  })),
 ];
 
 Deno.serve(async (req) => {
