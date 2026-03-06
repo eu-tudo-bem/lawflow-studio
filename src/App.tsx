@@ -108,12 +108,12 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
-            {/* Hyper-local SEO Pages – escritório por cidade */}
+            {/* Hyper-local SEO Pages – escritório por cidade (estáticas + dinâmicas via catch-all) */}
             {["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
               <Route key={city} path={`/escritorio-advocacia-${city}`} element={<LocalAdvocaciaPage citySlugOverride={city} />} />
             ))}
-            {/* Catch-all para cidades dinâmicas adicionadas via dashboard */}
-            <Route path="/escritorio-advocacia/:cidade" element={<LocalAdvocaciaPage />} />
+            {/* Catch-all para cidades dinâmicas: /escritorio-advocacia-{qualquer-cidade} */}
+            <Route path="/escritorio-advocacia-*" element={<DynamicCityRoute />} />
             {/* Hyper-local SEO Pages – serviço + cidade (5 serviços × 25 cidades = 125 páginas nativas) */}
             {(["pensao-alimenticia","divorcio-consensual","cobranca-aluguel","transferencia-veiculo","direito-agrario"] as const).flatMap((svc) =>
               ["curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa","guarapuava","colombo","apucarana","toledo","arapongas","campo-largo","campo-mourao","paranagua","umuarama","cornelio-procopio","pato-branco","francisco-beltrao","telemacos-borba","irati","palmas","cianorte","castro","dois-vizinhos","guaira"].map((city) => (
