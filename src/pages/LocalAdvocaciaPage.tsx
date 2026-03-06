@@ -43,7 +43,7 @@ const LocalAdvocaciaPage = () => {
     ? `Advogado em ${cityName}. Atendimento rápido para divórcio, pensão, cobranças e direito civil. Fale com um advogado agora.`
     : "";
   const canonical = city
-    ? `https://fernandezefernandes.adv.br/escritorio-advocacia-${citySlug}`
+    ? `https://fernandezefernandes.adv.br/escritorio-advocacia/${citySlug}`
     : "";
 
   usePageSEO({
