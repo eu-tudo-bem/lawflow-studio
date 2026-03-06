@@ -90,6 +90,11 @@ const App = () => (
                 <Route key={`${svc}-${city}`} path={`/advogado-${svc}-${city}`} element={<ServiceLocalPage serviceSlug={svc} citySlug={city} />} />
               ))
             )}
+            {/* Gerador de Documentos Jurídicos */}
+            <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
+            {["notificacao-cobranca-aluguel","notificacao-divida","acordo-divorcio","declaracao-uniao-estavel","contrato-arrendamento-rural","declaracao-dependencia-economica","revisao-pensao-alimenticia"].map((slug) => (
+              <Route key={slug} path={`/gerador-${slug}`} element={<GeradorDocumentoPage docTypeSlug={slug} />} />
+            ))}
             {/* Blog */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
