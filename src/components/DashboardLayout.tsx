@@ -17,6 +17,7 @@ const menuItems = [
   { icon: BookOpen, label: "Blog Jurídico", href: "/dashboard/blog" },
   { icon: FileSearch, label: "Análises Recebidas", href: "/dashboard/analyses" },
   { icon: Gavel, label: "Monitoramento TJPR", href: "/dashboard/tjpr" },
+  { icon: Radar, label: "Monitor Jurídico IA", href: "/dashboard/legal-monitor" },
 ];
 
 interface DashboardLayoutProps {
