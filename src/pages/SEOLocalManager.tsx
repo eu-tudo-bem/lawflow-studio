@@ -245,12 +245,12 @@ const SEOLocalManager = () => {
       </div>
 
       {/* How it works banner */}
-      <Card className="border-0 shadow-card bg-green-50 border-green-200 mb-6">
+      <Card className="border-0 shadow-card bg-primary/5 border-primary/20 mb-6">
         <CardContent className="p-4 flex items-start gap-3">
-          <Rocket className="h-5 w-5 text-green-600 shrink-0 mt-0.5" />
+          <Rocket className="h-5 w-5 text-primary shrink-0 mt-0.5" />
           <div>
-            <p className="font-semibold text-green-800 text-sm">Totalmente automático</p>
-            <p className="text-xs text-green-700 mt-0.5">
+            <p className="font-semibold text-foreground text-sm">Totalmente automático</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
               Ao adicionar uma cidade ou serviço, as páginas SEO são criadas <strong>instantaneamente</strong> — sem copiar código, sem reiniciar o sistema.
             </p>
           </div>
