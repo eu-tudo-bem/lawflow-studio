@@ -24,11 +24,13 @@ const LocalAdvocaciaPage = () => {
   const params = useParams<{ cidade?: string; "*"?: string }>();
   const location = useLocation();
 
-  // Support both /escritorio-advocacia-{cidade} (splat) and /escritorio-advocacia/{cidade}
-  let cidadeSlug = params.cidade;
+  // Support both /escritorio-advocacia-{cidade} (via NotFound intercept) and /escritorio-advocacia/{cidade}
+  let cidadeSlug = params.cidade || params["*"] || "";
+
+  // If no param, extract from pathname directly (e.g. /escritorio-advocacia-curitiba)
   if (!cidadeSlug) {
-    // splat route: params["*"] contains the city slug after "escritorio-advocacia-"
-    cidadeSlug = params["*"] || "";
+    const m = location.pathname.match(/^\/escritorio-advocacia-(.+)$/);
+    cidadeSlug = m ? m[1] : "";
   }
 
   const city = getCityBySlug(cidadeSlug);
