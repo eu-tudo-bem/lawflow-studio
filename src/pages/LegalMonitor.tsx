@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/DashboardLayout";
 import { PARANA_CITIES, LEGAL_SERVICES, getServiceCitySlug } from "@/data/localSEOCities";
 import { DiscoveryAgentTab } from "@/components/DiscoveryAgentTab";
+import { HyperlocalSEOPanel } from "@/components/HyperlocalSEOPanel";
 
 interface LegalChange {
   id: string;
