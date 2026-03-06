@@ -102,8 +102,8 @@ const SEOLocalManager = () => {
       supabase.from("seo_cities" as any).select("*").order("created_at"),
       supabase.from("seo_services" as any).select("*").order("created_at"),
     ]);
-    setDbCities((citiesRes.data || []) as DbCity[]);
-    setDbServices((servicesRes.data || []) as DbService[]);
+    setDbCities((citiesRes.data || []) as unknown as DbCity[]);
+    setDbServices((servicesRes.data || []) as unknown as DbService[]);
     setLoadingDb(false);
   };
 
