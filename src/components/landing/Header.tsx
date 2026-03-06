@@ -21,6 +21,7 @@ const Header = () => {
   ];
 
   const toolsLinks = [
+    { label: "📄 Gerador de Documentos Jurídicos", href: "/gerador-documentos" },
     { label: "Calculadora de Rescisão", href: "/calculadora#simulador" },
     { label: "Simulador de Pensão Alimentícia", href: "/simulador-pensao#simulador" },
     { label: "Simulador de Juros Abusivos", href: "/simulador-juros#simulador" },
