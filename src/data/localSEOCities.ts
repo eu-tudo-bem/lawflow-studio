@@ -56,6 +56,14 @@ export const LEGAL_SERVICES: ServiceData[] = [
     keyword: "direito-agrario",
     area: "Direito Agrário",
   },
+  {
+    slug: "atraso-voo",
+    name: "Atraso e Cancelamento de Voo",
+    shortName: "Direito do Passageiro",
+    icon: "✈️",
+    keyword: "atraso-voo",
+    area: "Direito do Consumidor",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
@@ -771,6 +779,36 @@ export const serviceTextVariations: Record<
         `Se você tem imóvel rural na região de ${city} e precisa de orientação jurídica, nosso escritório oferece atendimento especializado em direito agrário. Consulta inicial gratuita e atendimento 100% online. Fale conosco agora pelo WhatsApp.`,
       (city) =>
         `Proprietários rurais da região de ${city} contam com nossa equipe para resolver questões jurídicas do campo. Regularização fundiária, contratos agrários, conflitos de posse e muito mais. Entre em contato via WhatsApp e proteja seu patrimônio rural.`,
+    ],
+  },
+  "atraso-voo": {
+    intro: [
+      (city) =>
+        `Passageiros em ${city} que enfrentam atrasos de voo ou cancelamentos têm direitos garantidos pelo Código de Defesa do Consumidor e pelas normas da ANAC. Se o seu voo atrasou mais de 4 horas, você pode ter direito a uma indenização significativa por danos morais.`,
+      (city) =>
+        `Problemas com voos na região de ${city} são comuns, mas o que muitos não sabem é que a companhia aérea é responsável por prestar assistência material e reparar danos causados por atrasos excessivos, overbooking ou perda de conexão.`,
+    ],
+    situations: [
+      (city) => [
+        `Voo saindo de ${city} com atraso superior a 4 horas`,
+        `Cancelamento de voo sem aviso prévio de 72 horas`,
+        `Overbooking ou preterição de embarque em ${city}`,
+        `Perda de conexão devido a atraso da primeira aeronave`,
+        `Extravio de bagagem ou danos a pertences pessoais`,
+        `Falta de assistência material (alimentação e hospedagem)`,
+      ],
+    ],
+    howItWorks: [
+      (city) =>
+        `Para buscar seus direitos em ${city}, guarde todos os cartões de embarque, fotos dos painéis de atraso e comprovantes de gastos extras. O advogado ingressa com uma ação de indenização contra a companhia aérea, muitas vezes sem necessidade de audiência presencial, buscando o ressarcimento pelos transtornos causados.`,
+    ],
+    whenToLook: [
+      (city) =>
+        `Procure um especialista em ${city} se o seu voo atrasou mais de 4 horas, se o cancelamento causou a perda de um compromisso importante ou se a empresa não ofereceu suporte básico durante a espera no aeroporto.`,
+    ],
+    conclusion: [
+      (city) =>
+        `Nosso escritório atende passageiros de ${city} de forma 100% digital, buscando indenizações contra companhias aéreas nacionais e internacionais. Fale conosco pelo WhatsApp e saiba agora se você tem direito a uma indenização.`,
     ],
   },
 };
