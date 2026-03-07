@@ -64,6 +64,22 @@ export const LEGAL_SERVICES: ServiceData[] = [
     keyword: "atraso-voo",
     area: "Direito do Consumidor",
   },
+  {
+    slug: "revisional-juros",
+    name: "Revisional de Juros Bancários",
+    shortName: "Redução de Parcelas",
+    icon: "📉",
+    keyword: "revisional-juros",
+    area: "Direito Bancário",
+  },
+  {
+    slug: "indenizacao-energia",
+    name: "Indenização por Queda de Energia",
+    shortName: "Dano Elétrico",
+    icon: "⚡",
+    keyword: "indenizacao-energia",
+    area: "Direito do Consumidor",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
