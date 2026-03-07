@@ -185,12 +185,8 @@ const LegalMonitor = () => {
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sitemap`,
         {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${session?.access_token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
+          method: "GET",
+          headers: { Authorization: `Bearer ${session?.access_token}` },
         }
       );
       if (!response.ok) throw new Error("Erro ao gerar sitemap");
