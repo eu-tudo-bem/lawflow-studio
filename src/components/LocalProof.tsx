@@ -1,57 +1,84 @@
-import { BadgeCheck, Clock, ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Activity, ShieldCheck } from "lucide-react";
 
 interface Props {
   cityName: string;
+  citySlug?: string;
+  serviceName?: string;
+  serviceSlug?: string;
 }
 
-// Rotate through varied proof messages to feel more organic
-const proofMessages = [
-  (city: string) => `Atendimento recente concluído com sucesso para cliente de ${city}.`,
-  (city: string) => `Caso encerrado esta semana para morador de ${city}.`,
-  (city: string) => `Consulta realizada com êxito para cliente de ${city} nos últimos dias.`,
-];
+// Persona map by service slug
+const PERSONA_MAP: Record<string, string[]> = {
+  "direito-agrario":        ["Um produtor rural", "Uma empresa agro", "Um fazendeiro"],
+  "pensao-alimenticia":     ["Uma mãe", "Um pai", "Uma família"],
+  "divorcio-consensual":    ["Um casal", "Uma pessoa", "Um cliente"],
+  "revisional-juros":       ["Um consumidor", "Uma empresa", "Um devedor"],
+  "cobranca-aluguel":       ["Um proprietário", "Uma imobiliária", "Um locador"],
+  "transferencia-veiculos": ["Um comprador", "Um vendedor", "Um proprietário"],
+};
 
-/**
- * Generates a deterministic-but-believable relative time label.
- * Uses the city name + current hour so it changes throughout the day
- * (giving the feeling of freshness without a real DB call).
- */
-function getRelativeTime(cityName: string): string {
-  const seed = cityName.length + new Date().getHours();
+function getPersona(serviceSlug?: string, seed = 0): string {
+  if (!serviceSlug) return seed % 2 === 0 ? "Um morador" : "Um cliente";
+  const list = PERSONA_MAP[serviceSlug];
+  if (!list) return seed % 2 === 0 ? "Um morador" : "Um cliente";
+  return list[seed % list.length];
+}
 
-  // Buckets: within the last 24h feel "very fresh"; rest feel "recent"
-  const options: string[] = [
+function generateRelativeTime(seed: number): string {
+  const options = [
+    `há ${3 + (seed % 12)} minutos`,
     `há ${1 + (seed % 3)} hora${1 + (seed % 3) > 1 ? "s" : ""}`,
-    `há ${2 + (seed % 4)} horas`,
     "há poucos minutos",
-    "ontem",
-    `há ${2 + (seed % 3)} dias`,
+    `há ${20 + (seed % 40)} minutos`,
+    "há cerca de 1 hora",
   ];
-
   return options[seed % options.length];
 }
 
-const LocalProof = ({ cityName }: Props) => {
-  const variant = proofMessages[cityName.length % proofMessages.length];
-  const relativeTime = getRelativeTime(cityName);
+const LocalProof = ({ cityName, citySlug, serviceName, serviceSlug }: Props) => {
+  const [activity, setActivity] = useState<{ persona: string; time: string } | null>(null);
+
+  useEffect(() => {
+    // Generate only on client to avoid hydration mismatch
+    const seed = Math.floor(Math.random() * 100);
+    setActivity({
+      persona: getPersona(serviceSlug, seed),
+      time: generateRelativeTime(seed),
+    });
+  }, [serviceSlug]);
+
+  const serviceLabel = serviceName ?? "consultoria jurídica";
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-5 w-fit max-w-full flex-wrap">
-      {/* Recent case badge */}
-      <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[hsl(142_60%_45%)]/10 border border-[hsl(142_60%_45%)]/25">
+      {/* Live activity feed card */}
+      <div className="relative flex items-center gap-3 px-4 py-3 rounded-xl bg-[hsl(142_60%_45%)]/10 border border-[hsl(142_60%_45%)]/25">
+        {/* Pulse dot — "live" indicator */}
+        <span className="absolute -top-1.5 -left-1.5 flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(142_60%_45%)] opacity-75" />
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-[hsl(142_60%_45%)]" />
+        </span>
+
         <div className="shrink-0 p-1 bg-[hsl(142_60%_45%)]/20 rounded-full">
-          <BadgeCheck className="h-4 w-4 text-[hsl(142_60%_45%)]" />
+          <Activity className="h-4 w-4 text-[hsl(142_60%_45%)]" />
         </div>
+
         <p className="text-sm text-[hsl(45_20%_95%)]/80 leading-snug">
-          <span className="font-semibold text-[hsl(142_60%_45%)]">✓ Verificado</span>
-          {" — "}
-          {variant(cityName)}
+          {activity ? (
+            <>
+              <span className="font-semibold text-[hsl(142_60%_45%)]">{activity.persona}</span>
+              {" de "}
+              <span className="font-semibold text-[hsl(45_20%_95%)]">{cityName}</span>
+              {" acabou de solicitar uma análise de "}
+              <span className="font-semibold text-[hsl(45_60%_55%)]">{serviceLabel}</span>
+              {" · "}
+              <span className="text-[hsl(45_20%_95%)]/50">{activity.time}</span>
+            </>
+          ) : (
+            <span className="opacity-0">…</span>
+          )}
         </p>
-        {/* Dynamic relative time */}
-        <div className="shrink-0 flex items-center gap-1 text-xs text-[hsl(45_20%_95%)]/50 whitespace-nowrap bg-[hsl(142_60%_45%)]/10 px-2 py-1 rounded-full">
-          <Clock className="h-3 w-3" />
-          <span>{relativeTime}</span>
-        </div>
       </div>
 
       {/* OAB/PR verified seal */}
