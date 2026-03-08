@@ -195,9 +195,19 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       {/* Hero */}
       <section className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-4xl">
-          <div className="flex items-center gap-2 text-[hsl(45_60%_55%)] text-sm font-medium mb-4">
-            <MapPin className="h-4 w-4" />
-            {cityRegion} · Estado do Paraná
+          {/* SEO Badges */}
+          <div className="flex flex-wrap items-center gap-2 mb-5">
+            <Badge className="bg-[hsl(45_60%_55%)]/20 text-[hsl(45_60%_55%)] border border-[hsl(45_60%_55%)]/40 hover:bg-[hsl(45_60%_55%)]/30 gap-1.5 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              <Briefcase className="h-3 w-3" />
+              {service.name}
+            </Badge>
+            <Badge className="bg-[hsl(45_20%_95%)]/10 text-[hsl(45_20%_95%)] border border-[hsl(45_20%_95%)]/20 hover:bg-[hsl(45_20%_95%)]/15 gap-1.5 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              <MapPin className="h-3 w-3" />
+              {cityName} · {cityRegion}
+            </Badge>
+            <Badge className="bg-[hsl(45_20%_95%)]/10 text-[hsl(45_20%_95%)] border border-[hsl(45_20%_95%)]/20 hover:bg-[hsl(45_20%_95%)]/15 gap-1.5 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              🇧🇷 Paraná
+            </Badge>
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold mb-6 leading-tight">
             Advogado de{" "}
