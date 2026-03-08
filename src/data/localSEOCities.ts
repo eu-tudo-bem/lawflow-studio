@@ -206,6 +206,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Imobiliário",
     customCTA: "Blindar Meu Contrato Comercial",
   },
+  {
+    slug: "acordo-prenupcial",
+    name: "Advocacia Especializada em Acordo Pré-Nupcial",
+    shortName: "Acordo Pré-Nupcial",
+    icon: "📑",
+    keyword: "acordo-prenupcial",
+    area: "Direito de Família",
+    customCTA: "Planejar Meu Patrimônio de Casamento",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
