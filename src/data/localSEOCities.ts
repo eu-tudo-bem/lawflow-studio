@@ -13,6 +13,7 @@ export interface ServiceData {
   icon: string;
   keyword: string; // "advogado-{keyword}-{city}"
   area: string;
+  customCTA?: string; // Micro-copy psicológico para o botão principal
 }
 
 export const LEGAL_SERVICES: ServiceData[] = [
