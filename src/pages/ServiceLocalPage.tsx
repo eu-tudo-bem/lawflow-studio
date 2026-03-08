@@ -3,6 +3,7 @@ import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRig
 import { Badge } from "@/components/ui/badge";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import GeoPersonalizationBanner from "@/components/GeoPersonalizationBanner";
+import LocalProof from "@/components/LocalProof";
 import {
   getCityBySlug,
   getServiceBySlug,
