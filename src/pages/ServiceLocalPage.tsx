@@ -227,7 +227,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     <div className="min-h-screen bg-background font-sans">
       <Header />
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb — matches standalone BreadcrumbList JSON-LD: Início > Advogados > Cidade > Serviço */}
       <nav aria-label="Breadcrumb" className="bg-[hsl(220_30%_97%)] border-b border-border pt-20">
         <div className="container mx-auto px-4 py-2">
           <ol className="flex items-center gap-1 text-sm text-muted-foreground flex-wrap">
@@ -238,12 +238,18 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
             </li>
             <li><ChevronRight className="h-3 w-3" /></li>
             <li>
-              <Link to={`/${service.slug}`} className="hover:text-foreground transition-colors">
-                {service.name}
+              <Link to="/#services" className="hover:text-foreground transition-colors">
+                Advogados
               </Link>
             </li>
             <li><ChevronRight className="h-3 w-3" /></li>
-            <li className="text-foreground font-medium">{cityName}</li>
+            <li>
+              <Link to={`/escritorio-advocacia-${citySlug}`} className="hover:text-foreground transition-colors">
+                {cityName}
+              </Link>
+            </li>
+            <li><ChevronRight className="h-3 w-3" /></li>
+            <li className="text-foreground font-medium">{service.name}</li>
           </ol>
         </div>
       </nav>
