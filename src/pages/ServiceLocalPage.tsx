@@ -2,6 +2,7 @@ import { Link, Navigate } from "react-router-dom";
 import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle, AlertCircle, Briefcase, FileText, Users, Shield, Gavel, Landmark, Building2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { usePageSEO } from "@/hooks/usePageSEO";
+import GeoPersonalizationBanner from "@/components/GeoPersonalizationBanner";
 import {
   getCityBySlug,
   getServiceBySlug,
@@ -191,6 +192,14 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           </ol>
         </div>
       </nav>
+
+      {/* Geo Personalization Banner */}
+      <GeoPersonalizationBanner
+        pageCityName={cityName}
+        pageRegion={cityRegion}
+        serviceName={service.name}
+        whatsappLink={whatsappLink}
+      />
 
       {/* Hero */}
       <section className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24">
