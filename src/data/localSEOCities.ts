@@ -179,6 +179,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Agrário",
     customCTA: "Proteger Minha Propriedade Agora",
   },
+  {
+    slug: "reintegracao-de-posse",
+    name: "Advocacia Especializada em Reintegração de Posse",
+    shortName: "Reintegração de Posse",
+    icon: "🏘️",
+    keyword: "reintegracao-posse",
+    area: "Direito Imobiliário",
+    customCTA: "Recuperar Minha Posse Agora",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
