@@ -170,6 +170,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Agrário",
     customCTA: "Garantir Segurança no Meu Arrendamento",
   },
+  {
+    slug: "contrato-comodato-rural",
+    name: "Advocacia Especializada em Contrato de Comodato Rural",
+    shortName: "Comodato Rural",
+    icon: "🌾",
+    keyword: "comodato-rural",
+    area: "Direito Agrário",
+    customCTA: "Proteger Minha Propriedade Agora",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
