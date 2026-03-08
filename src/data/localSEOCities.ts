@@ -152,6 +152,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Imobiliário",
     customCTA: "Proteger Meu Patrimônio Agora",
   },
+  {
+    slug: "usucapiao-extrajudicial",
+    name: "Advocacia Especializada em Usucapião Extrajudicial",
+    shortName: "Usucapião Extrajudicial",
+    icon: "📜",
+    keyword: "usucapiao-extrajudicial",
+    area: "Direito Imobiliário",
+    customCTA: "Regularizar Imóvel via Cartório",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
