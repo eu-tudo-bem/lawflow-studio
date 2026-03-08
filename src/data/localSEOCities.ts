@@ -80,6 +80,14 @@ export const LEGAL_SERVICES: ServiceData[] = [
     keyword: "indenizacao-energia",
     area: "Direito do Consumidor",
   },
+  {
+    slug: "certidao-negativa",
+    name: "Emissão de Certidões Negativas (CND)",
+    shortName: "Certidões",
+    icon: "📜",
+    keyword: "certidao-negativa",
+    area: "Assessoria Jurídica",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
