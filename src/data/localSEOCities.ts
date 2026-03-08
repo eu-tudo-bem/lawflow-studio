@@ -88,6 +88,14 @@ export const LEGAL_SERVICES: ServiceData[] = [
     keyword: "certidao-negativa",
     area: "Assessoria Jurídica",
   },
+  {
+    slug: "extravio-bagagem",
+    name: "Indenização por Extravio de Bagagem",
+    shortName: "Extravio de Malas",
+    icon: "🧳",
+    keyword: "extravio-bagagem",
+    area: "Direito do Consumidor",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
@@ -1095,6 +1103,42 @@ export const serviceTextVariations: Record<
         `Não perca grandes negócios por falta de documentos legais. Em ${city}, garantimos a emissão célere das suas certidões. Fale com um advogado agora.`,
       (city: string) =>
         `Descomplique a sua vida jurídica e fiscal em ${city}. Clique no botão do WhatsApp e solicite o levantamento das suas certidões negativas hoje mesmo.`,
+    ],
+  },
+  "extravio-bagagem": {
+    intro: [
+      (city: string) =>
+        `Sua mala não chegou ao destino em ${city}? O extravio de bagagem gera direito imediato a assistência e indenização por danos materiais e morais contra a companhia aérea.`,
+      (city: string) =>
+        `Problemas com bagagem extraviada ou danificada em aeroportos na região de ${city}? Saiba como ser ressarcido pelos seus bens perdidos e pelo transtorno causado.`,
+      (city: string) =>
+        `Chegou em ${city} e sua bagagem desapareceu? A responsabilidade da transportadora é objetiva. Ajudamos passageiros a obterem a reparação financeira justa.`,
+    ],
+    situations: [
+      (city: string) => [
+        `Bagagem não localizada na esteira ao chegar em ${city}`,
+        `Mala entregue com atraso superior a 48 horas`,
+        `Bagagem violada ou com itens furtados no trajeto para ${city}`,
+        `Danos estruturais na mala que impossibilitam o uso`,
+      ],
+    ],
+    howItWorks: [
+      (city: string) =>
+        `É fundamental apresentar o comprovante de despacho e o documento P.I.R. (Property Irregularity Report) feito no aeroporto de ${city}. Com essas provas, ingressamos com a ação de indenização.`,
+      (city: string) =>
+        `Analisamos os gastos emergenciais que você teve em ${city} devido à falta da mala e buscamos a reparação integral por danos morais e materiais via judicial.`,
+    ],
+    whenToLook: [
+      (city: string) =>
+        `Assim que notar a ausência da mala em ${city}. Se a companhia não resolver em 7 dias (voos nacionais) ou 21 dias (internacionais), a indenização é certa.`,
+      (city: string) =>
+        `Procure-nos se você já preencheu o P.I.R. em ${city} e a empresa aérea está oferecendo um valor de reembolso muito abaixo do custo real dos seus pertences.`,
+    ],
+    conclusion: [
+      (city: string) =>
+        `Não aceite o descaso das companhias aéreas. Em ${city}, lute pelos seus direitos de passageiro. Fale conosco agora pelo WhatsApp.`,
+      (city: string) =>
+        `Garanta o ressarcimento do que é seu em ${city}. Nossa equipe especializada em direito aéreo está pronta para te ajudar hoje mesmo.`,
     ],
   },
 };
