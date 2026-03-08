@@ -263,7 +263,21 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       />
 
       {/* Hero */}
-      <section className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24">
+      <section
+        className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24"
+        aria-label={`Advogado Especialista em ${service.name} na cidade de ${cityName} - PR`}
+        role="region"
+      >
+        {/* Hidden image for Google Image SEO — alt text unique per page */}
+        <img
+          src="/favicon.ico"
+          alt={`Advogado Especialista em ${service.name} na cidade de ${cityName} - PR`}
+          width={1}
+          height={1}
+          className="absolute opacity-0 pointer-events-none w-px h-px"
+          aria-hidden="false"
+          loading="lazy"
+        />
         <div className="container mx-auto px-4 max-w-4xl">
           {/* SEO Badges */}
           <div className="flex flex-wrap items-center gap-2 mb-5">
