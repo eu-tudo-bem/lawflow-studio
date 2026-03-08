@@ -443,6 +443,83 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </section>
 
+      {/* Recursos Locais Úteis */}
+      <section className="py-14 bg-background border-t border-border">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <BookOpen className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+            <h2 className="font-serif text-xl md:text-2xl font-bold text-foreground">
+              Recursos Locais Úteis em {cityName}
+            </h2>
+          </div>
+          <p className="text-muted-foreground text-sm mb-6 max-w-2xl">
+            Informações sobre os órgãos jurídicos locais que podem ser relevantes para o seu caso
+            em {cityName} e região.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Fórum Card */}
+            <div className="flex flex-col gap-3 p-5 rounded-2xl border border-border bg-card hover:border-[hsl(45_60%_55%)] hover:shadow-md transition-all group">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-[hsl(45_60%_55%)]/10 rounded-xl group-hover:bg-[hsl(45_60%_55%)]/20 transition-colors">
+                  <Landmark className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Poder Judiciário · TJPR
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">Fórum da Comarca</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{localInfo.forum}</p>
+              <a
+                href="https://www.tjpr.jus.br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[hsl(45_60%_55%)] hover:underline font-medium flex items-center gap-1 w-fit"
+              >
+                Consultar processos no TJPR <ArrowRight className="h-3 w-3" />
+              </a>
+            </div>
+
+            {/* OAB Card */}
+            <div className="flex flex-col gap-3 p-5 rounded-2xl border border-border bg-card hover:border-[hsl(220_60%_55%)] hover:shadow-md transition-all group">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-[hsl(220_60%_50%)]/10 rounded-xl group-hover:bg-[hsl(220_60%_50%)]/20 transition-colors">
+                  <Scale className="h-5 w-5 text-[hsl(220_60%_65%)]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Ordem dos Advogados do Brasil
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">{localInfo.oab}</p>
+                </div>
+              </div>
+              {localInfo.oabPhone && (
+                <a
+                  href={`tel:${localInfo.oabPhone.replace(/\D/g, "")}`}
+                  className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+                >
+                  <Phone className="h-3.5 w-3.5" />
+                  {localInfo.oabPhone}
+                </a>
+              )}
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Escritório com inscrição ativa na OAB/PR, apto a representar clientes de {cityName} em
+                todas as instâncias judiciais do Paraná.
+              </p>
+              <a
+                href="https://www.oabpr.org.br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[hsl(220_60%_65%)] hover:underline font-medium flex items-center gap-1 w-fit"
+              >
+                Verificar cadastro na OAB/PR <ArrowRight className="h-3 w-3" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Final */}
       <section className="py-16 bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)]">
         <div className="container mx-auto px-4 max-w-3xl text-center">
