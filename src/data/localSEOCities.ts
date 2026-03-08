@@ -188,6 +188,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Imobiliário",
     customCTA: "Recuperar Minha Posse Agora",
   },
+  {
+    slug: "contrato-de-locacao",
+    name: "Advocacia Especializada em Contrato de Locação de Imóveis",
+    shortName: "Locação de Imóveis",
+    icon: "🔑",
+    keyword: "contrato-locacao",
+    area: "Direito Imobiliário",
+    customCTA: "Blindar Meu Contrato de Aluguel",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
