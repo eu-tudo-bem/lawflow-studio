@@ -96,6 +96,14 @@ export const LEGAL_SERVICES: ServiceData[] = [
     keyword: "extravio-bagagem",
     area: "Direito do Consumidor",
   },
+  {
+    slug: "uniao-estavel",
+    name: "Reconhecimento e Dissolução de União Estável",
+    shortName: "União Estável",
+    icon: "💍",
+    keyword: "uniao-estavel",
+    area: "Direito de Família",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
@@ -1139,6 +1147,42 @@ export const serviceTextVariations: Record<
         `Não aceite o descaso das companhias aéreas. Em ${city}, lute pelos seus direitos de passageiro. Fale conosco agora pelo WhatsApp.`,
       (city: string) =>
         `Garanta o ressarcimento do que é seu em ${city}. Nossa equipe especializada em direito aéreo está pronta para te ajudar hoje mesmo.`,
+    ],
+  },
+  "uniao-estavel": {
+    intro: [
+      (city: string) =>
+        `Vive com o seu parceiro em ${city} e deseja garantir os seus direitos patrimoniais? O reconhecimento de união estável é essencial para proteger a sua família e o seu futuro.`,
+      (city: string) =>
+        `Precisa formalizar ou dissolver uma união estável em ${city}? Oferecemos assessoria completa para garantir a partilha justa de bens e o direito à herança ou pensão.`,
+      (city: string) =>
+        `A união estável em ${city} possui regras específicas de regime de bens. Ajudamos casais a formalizarem a sua convivência ou a resolverem separações de forma célere.`,
+    ],
+    situations: [
+      (city: string) => [
+        `Reconhecimento de união estável após falecimento em ${city}`,
+        `Dissolução judicial ou extrajudicial com partilha de bens`,
+        `Contrato de convivência para definir regime de bens`,
+        `Comprovação de união para fins de pensão do INSS em ${city}`,
+      ],
+    ],
+    howItWorks: [
+      (city: string) =>
+        `Analisamos as provas da convivência pública e duradoura em ${city} para elaborar a escritura pública em cartório ou ingressar com a ação judicial de reconhecimento.`,
+      (city: string) =>
+        `No caso de separação em ${city}, conduzimos a dissolução da união focando na proteção do património e no bem-estar dos filhos do casal.`,
+    ],
+    whenToLook: [
+      (city: string) =>
+        `Procure um especialista em ${city} se vive junto há tempo considerável e deseja segurança jurídica, ou se está em processo de separação e precisa dividir bens.`,
+      (city: string) =>
+        `É fundamental buscar apoio jurídico em ${city} caso precise comprovar a união para receber herança ou benefícios previdenciários após a perda do companheiro.`,
+    ],
+    conclusion: [
+      (city: string) =>
+        `Proteja a sua relação e o seu património em ${city}. Fale com a nossa equipa especializada em Direito de Família agora mesmo.`,
+      (city: string) =>
+        `Formalize os seus direitos em ${city}. Clique no botão do WhatsApp e tire as suas dúvidas sobre união estável hoje mesmo.`,
     ],
   },
 };
