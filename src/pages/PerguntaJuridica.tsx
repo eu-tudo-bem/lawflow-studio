@@ -179,6 +179,30 @@ const PerguntaJuridica = () => {
   const areaLabel = AREA_LABELS[question.legal_area] || question.legal_area;
   const tools = AREA_TOOL_LINKS[question.legal_area] || [];
 
+  // Split HTML content and inject mid-content banner after 2nd paragraph
+  const injectMidBanner = (html: string): { before: string; after: string } => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const paragraphs = Array.from(doc.body.querySelectorAll("p, h2, h3, ul, ol"));
+    const splitAt = Math.min(2, Math.max(1, Math.floor(paragraphs.length / 2)));
+    const cutNode = paragraphs[splitAt - 1];
+    if (!cutNode) return { before: html, after: "" };
+
+    const beforeNodes: string[] = [];
+    const afterNodes: string[] = [];
+    let passed = false;
+    doc.body.childNodes.forEach((node) => {
+      if (node === cutNode) { beforeNodes.push((node as Element).outerHTML || node.textContent || ""); passed = true; }
+      else if (!passed) beforeNodes.push((node as Element).outerHTML || node.textContent || "");
+      else afterNodes.push((node as Element).outerHTML || node.textContent || "");
+    });
+    return { before: beforeNodes.join(""), after: afterNodes.join("") };
+  };
+
+  const { before: contentBefore, after: contentAfter } = question.content
+    ? injectMidBanner(question.content)
+    : { before: "", after: "" };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -216,10 +240,35 @@ const PerguntaJuridica = () => {
 
             {/* Content */}
             {question.content ? (
-              <article
-                className="prose prose-slate max-w-none prose-headings:font-serif prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-accent"
-                dangerouslySetInnerHTML={{ __html: question.content }}
-              />
+              <article className="prose prose-slate max-w-none prose-headings:font-serif prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-a:text-accent">
+                {/* First part */}
+                <div dangerouslySetInnerHTML={{ __html: contentBefore }} />
+
+                {/* Mid-content contact banner */}
+                {contentAfter && (
+                  <div className="not-prose my-6 flex items-center gap-4 rounded-xl border border-accent/30 bg-accent/5 px-5 py-4">
+                    <MessageCircle className="h-8 w-8 shrink-0 text-accent" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-foreground leading-snug">
+                        Ficou com dúvida? Fale com um advogado agora.
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Consulta inicial gratuita · Resposta em minutos
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={handleWhatsApp}
+                      className="shrink-0 bg-accent text-accent-foreground hover:bg-accent/90 gap-1.5"
+                    >
+                      WhatsApp
+                    </Button>
+                  </div>
+                )}
+
+                {/* Rest of content */}
+                {contentAfter && <div dangerouslySetInnerHTML={{ __html: contentAfter }} />}
+              </article>
             ) : (
               <div className="py-8 text-center text-muted-foreground">
                 <p>Conteúdo em preparação. Entre em contato para tirar sua dúvida.</p>
