@@ -127,7 +127,8 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
   useEffect(() => {
     const schemaId = "service-local-schema";
     const faqSchemaId = "service-local-faq-schema";
-    [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove());
+    const breadcrumbSchemaId = "service-local-breadcrumb-schema";
+    [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove());
 
     if (!city || !service) return;
 
@@ -170,14 +171,18 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       memberOf: [
         { "@type": "Organization", name: "OAB/PR — Ordem dos Advogados do Brasil — Seção Paraná", url: "https://www.oabpr.org.br" },
       ],
-      breadcrumb: {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Início", item: "https://fernandezefernandes.adv.br" },
-          { "@type": "ListItem", position: 2, name: service.name, item: `https://fernandezefernandes.adv.br/${service.slug}` },
-          { "@type": "ListItem", position: 3, name: `${service.name} em ${cityName}`, item: canonical },
-        ],
-      },
+    };
+
+    // Standalone BreadcrumbList schema — rendered separately so Google picks it up as a rich result
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Início", item: "https://fernandezefernandes.adv.br/" },
+        { "@type": "ListItem", position: 2, name: "Advogados", item: "https://fernandezefernandes.adv.br/#services" },
+        { "@type": "ListItem", position: 3, name: cityName, item: `https://fernandezefernandes.adv.br/escritorio-advocacia-${citySlug}` },
+        { "@type": "ListItem", position: 4, name: service.name, item: canonical },
+      ],
     };
 
     const faqSchema = {
@@ -190,14 +195,18 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       })),
     };
 
-    [{ id: schemaId, data: legalServiceSchema }, { id: faqSchemaId, data: faqSchema }].forEach(({ id, data }) => {
+    [
+      { id: schemaId, data: legalServiceSchema },
+      { id: breadcrumbSchemaId, data: breadcrumbSchema },
+      { id: faqSchemaId, data: faqSchema },
+    ].forEach(({ id, data }) => {
       const script = document.createElement("script");
       script.id = id; script.type = "application/ld+json";
       script.text = JSON.stringify(data);
       document.head.appendChild(script);
     });
 
-    return () => { [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
+    return () => { [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
   if (!service) return <Navigate to="/404" replace />;
@@ -218,7 +227,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     <div className="min-h-screen bg-background font-sans">
       <Header />
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb — matches standalone BreadcrumbList JSON-LD: Início > Advogados > Cidade > Serviço */}
       <nav aria-label="Breadcrumb" className="bg-[hsl(220_30%_97%)] border-b border-border pt-20">
         <div className="container mx-auto px-4 py-2">
           <ol className="flex items-center gap-1 text-sm text-muted-foreground flex-wrap">
@@ -229,12 +238,18 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
             </li>
             <li><ChevronRight className="h-3 w-3" /></li>
             <li>
-              <Link to={`/${service.slug}`} className="hover:text-foreground transition-colors">
-                {service.name}
+              <Link to="/#services" className="hover:text-foreground transition-colors">
+                Advogados
               </Link>
             </li>
             <li><ChevronRight className="h-3 w-3" /></li>
-            <li className="text-foreground font-medium">{cityName}</li>
+            <li>
+              <Link to={`/escritorio-advocacia-${citySlug}`} className="hover:text-foreground transition-colors">
+                {cityName}
+              </Link>
+            </li>
+            <li><ChevronRight className="h-3 w-3" /></li>
+            <li className="text-foreground font-medium">{service.name}</li>
           </ol>
         </div>
       </nav>
@@ -248,7 +263,21 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       />
 
       {/* Hero */}
-      <section className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24">
+      <section
+        className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24"
+        aria-label={`Advogado Especialista em ${service.name} na cidade de ${cityName} - PR`}
+        role="region"
+      >
+        {/* Hidden image for Google Image SEO — alt text unique per page */}
+        <img
+          src="/favicon.ico"
+          alt={`Advogado Especialista em ${service.name} na cidade de ${cityName} - PR`}
+          width={1}
+          height={1}
+          className="absolute opacity-0 pointer-events-none w-px h-px"
+          aria-hidden="false"
+          loading="lazy"
+        />
         <div className="container mx-auto px-4 max-w-4xl">
           {/* SEO Badges */}
           <div className="flex flex-wrap items-center gap-2 mb-5">
