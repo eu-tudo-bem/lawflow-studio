@@ -1,8 +1,64 @@
 import { ArrowRight, Shield, Award, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.webp";
+import { useEffect, useState, useRef } from "react";
+
+const TYPING_WORDS = [
+  "Divórcio Consensual",
+  "Pensão Alimentícia",
+  "Direito Agrário",
+  "Direito Trabalhista",
+  "Inventário",
+  "Direito Empresarial",
+];
+
+const TYPING_SPEED = 70;
+const ERASING_SPEED = 40;
+const PAUSE_AFTER_WORD = 1800;
+const PAUSE_BEFORE_ERASE = 200;
+
+function useTypingEffect(words: string[]) {
+  const [displayed, setDisplayed] = useState("");
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isErasing, setIsErasing] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const current = words[wordIndex];
+
+    if (!isErasing && displayed.length < current.length) {
+      timeoutRef.current = setTimeout(
+        () => setDisplayed(current.slice(0, displayed.length + 1)),
+        TYPING_SPEED
+      );
+    } else if (!isErasing && displayed.length === current.length) {
+      timeoutRef.current = setTimeout(
+        () => setIsErasing(true),
+        PAUSE_AFTER_WORD
+      );
+    } else if (isErasing && displayed.length > 0) {
+      timeoutRef.current = setTimeout(
+        () => setDisplayed(displayed.slice(0, -1)),
+        ERASING_SPEED
+      );
+    } else if (isErasing && displayed.length === 0) {
+      timeoutRef.current = setTimeout(() => {
+        setIsErasing(false);
+        setWordIndex((i) => (i + 1) % words.length);
+      }, PAUSE_BEFORE_ERASE);
+    }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [displayed, isErasing, wordIndex, words]);
+
+  return { displayed, isErasing };
+}
 
 const Hero = () => {
+  const { displayed, isErasing } = useTypingEffect(TYPING_WORDS);
+
   const scrollToContact = () => {
     const element = document.querySelector("#contact");
     if (element) {
@@ -36,19 +92,37 @@ const Hero = () => {
             Excelência Jurídica há mais de 20 anos
           </span>
 
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            Defendemos seus{" "}
-            <span className="text-gold">direitos</span> com{" "}
-            <span className="text-gold">dedicação</span> e expertise
+          <h1
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight animate-fade-up"
+            style={{ animationDelay: "0.1s" }}
+          >
+            Defendemos seus direitos
+            <br />
+            em casos de{" "}
+            <span className="inline-block relative">
+              <span className="text-gold">{displayed}</span>
+              <span
+                aria-hidden="true"
+                className={`inline-block w-[3px] h-[0.85em] bg-gold align-middle ml-0.5 rounded-sm ${
+                  isErasing ? "opacity-100" : "animate-[blink_1s_step-end_infinite]"
+                }`}
+              />
+            </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-primary-foreground/80 mb-8 leading-relaxed animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            Nossa equipe de advogados especializados está pronta para oferecer 
-            soluções jurídicas personalizadas, com ética, transparência e 
+          <p
+            className="text-lg md:text-xl text-primary-foreground/80 mb-8 leading-relaxed animate-fade-up"
+            style={{ animationDelay: "0.2s" }}
+          >
+            Nossa equipe de advogados especializados está pronta para oferecer
+            soluções jurídicas personalizadas, com ética, transparência e
             comprometimento com seu caso.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+          <div
+            className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-up"
+            style={{ animationDelay: "0.3s" }}
+          >
             <Button
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold"
@@ -60,14 +134,21 @@ const Hero = () => {
             <Button
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90"
-              onClick={() => document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() =>
+                document
+                  .querySelector("#services")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
             >
               Conheça nossos Serviços
             </Button>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+          <div
+            className="grid grid-cols-3 gap-8 animate-fade-up"
+            style={{ animationDelay: "0.4s" }}
+          >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-accent/20 rounded-lg">
                 <Users className="h-6 w-6 text-gold" />
