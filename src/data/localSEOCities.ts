@@ -197,6 +197,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Imobiliário",
     customCTA: "Blindar Meu Contrato de Aluguel",
   },
+  {
+    slug: "contrato-aluguel-comercial",
+    name: "Advocacia Especializada em Contrato de Aluguel Comercial",
+    shortName: "Aluguel Comercial",
+    icon: "🏢",
+    keyword: "aluguel-comercial",
+    area: "Direito Imobiliário",
+    customCTA: "Blindar Meu Contrato Comercial",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
