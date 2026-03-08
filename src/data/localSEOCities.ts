@@ -1030,6 +1030,65 @@ export const serviceTextVariations: Record<
         `Nosso escritório atende passageiros de ${city} de forma 100% digital, buscando indenizações contra companhias aéreas nacionais e internacionais. Fale conosco pelo WhatsApp e saiba agora se você tem direito a uma indenização.`,
     ],
   },
+  "certidao-negativa": {
+    intro: [
+      (city: string) =>
+        `Precisa comprovar regularidade fiscal em ${city}? Assessoramos na emissão rápida de Certidões Negativas de Débitos (CND) municipais, estaduais e federais.`,
+      (city: string) =>
+        `Evite bloqueios em negócios ou inventários na região de ${city}. Descomplicamos a obtenção de todas as certidões negativas para a sua empresa ou pessoa física.`,
+      (city: string) =>
+        `Burocracia travando os seus negócios em ${city}? A nossa equipa agiliza a emissão de certidões negativas (CNDs) para compra e venda de imóveis, inventários e licitações.`,
+      (city: string) =>
+        `A falta de uma Certidão Negativa pode paralisar os seus projetos. Em ${city}, oferecemos assessoria completa para levantar e emitir certidões de regularidade fiscal, cível e trabalhista.`,
+    ],
+    situations: [
+      // Foco misto/Imobiliário
+      (city: string) => [
+        `Compra e venda segura de imóveis em ${city}`,
+        `Processos de inventário e partilha de bens`,
+        `Financiamentos imobiliários e bancários`,
+        `Regularização de CPF ou CNPJ`,
+      ],
+      // Foco Empresarial
+      (city: string) => [
+        `Participação em licitações públicas em ${city}`,
+        `Baixa e encerramento administrativo de empresas`,
+        `Auditoria fiscal e due diligence`,
+        `Renovação de contratos corporativos e linhas de crédito`,
+      ],
+      // Foco Urgência/Judicial
+      (city: string) => [
+        `Desbloqueio de contas e bens em ${city}`,
+        `Apresentação obrigatória em processos judiciais`,
+        `Comprovação de regularidade trabalhista (CNDT)`,
+        `Levantamento preventivo de pendências fiscais`,
+      ],
+    ],
+    howItWorks: [
+      (city: string) =>
+        `Realizamos um levantamento completo da sua situação em órgãos de ${city} e de todo o Brasil, emitindo e validando os documentos oficiais de regularidade.`,
+      (city: string) =>
+        `A nossa equipa jurídica faz uma varredura em tribunais, prefeituras e na Receita Federal para emitir as CNDs necessárias em ${city} de forma totalmente digital e rápida.`,
+      (city: string) =>
+        `Avaliamos a documentação da sua empresa ou património em ${city}, identificamos possíveis pendências ocultas e emitimos as certidões com agilidade para não atrasar os seus negócios.`,
+    ],
+    whenToLook: [
+      (city: string) =>
+        `Sempre que precisar formalizar um contrato importante, vender um bem em ${city} ou destravar processos que exijam comprovação fiscal obrigatória.`,
+      (city: string) =>
+        `Procure-nos antes de assinar escrituras de compra e venda em ${city}, ou com antecedência ao preparar a documentação para participar de licitações e editais.`,
+      (city: string) =>
+        `Se o seu inventário ou financiamento bancário em ${city} travou devido à exigência de certidões negativas atualizadas, é hora de acionar os nossos especialistas.`,
+    ],
+    conclusion: [
+      (city: string) =>
+        `Ganhe tempo e evite a burocracia dos órgãos públicos. Deixe a emissão de certidões em ${city} com a nossa equipa especializada.`,
+      (city: string) =>
+        `Não perca grandes negócios por falta de documentos legais. Em ${city}, garantimos a emissão célere das suas certidões. Fale com um advogado agora.`,
+      (city: string) =>
+        `Descomplique a sua vida jurídica e fiscal em ${city}. Clique no botão do WhatsApp e solicite o levantamento das suas certidões negativas hoje mesmo.`,
+    ],
+  },
 };
 
 export const WHATSAPP_NUMBER = "5541995808145";
