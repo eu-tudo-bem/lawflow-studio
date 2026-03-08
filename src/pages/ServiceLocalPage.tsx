@@ -1,5 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
-import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle, AlertCircle, Briefcase, FileText, Users, Shield, Gavel, Landmark, Building2, BookOpen, Phone } from "lucide-react";
+import { MessageCircle, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle, AlertCircle, Briefcase, FileText, Users, Shield, Gavel, Landmark, Building2, BookOpen, Phone } from "lucide-react";
+import Header from "@/components/landing/Header";
 import { Badge } from "@/components/ui/badge";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import GeoPersonalizationBanner from "@/components/GeoPersonalizationBanner";
