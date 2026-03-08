@@ -224,6 +224,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Imobiliário",
     customCTA: "Garantir Minha Doação com Segurança",
   },
+  {
+    slug: "arrendamento-de-terra",
+    name: "Advocacia Especializada em Arrendamento de Terra",
+    shortName: "Arrendamento de Terra",
+    icon: "🌱",
+    keyword: "arrendamento-terra",
+    area: "Direito Agrário",
+    customCTA: "Garantir Segurança no Arrendamento",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
