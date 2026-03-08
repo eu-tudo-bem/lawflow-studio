@@ -1,5 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
 import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle, AlertCircle, Briefcase, FileText, Users, Shield, Gavel, Landmark, Building2, BookOpen, Phone } from "lucide-react";
+import Header from "@/components/landing/Header";
 import { Badge } from "@/components/ui/badge";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import GeoPersonalizationBanner from "@/components/GeoPersonalizationBanner";
@@ -215,27 +216,10 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
   return (
     <div className="min-h-screen bg-background font-sans">
-      {/* Header */}
-      <header className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-4 px-4 sticky top-0 z-40 shadow-md">
-        <div className="container mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Scale className="h-6 w-6 text-[hsl(45_60%_55%)]" />
-            <span className="font-serif font-semibold text-lg">Fernandez & Fernandes</span>
-          </Link>
-          <a
-            href={whatsappLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#25D366] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-[#1ebe5d] transition-colors"
-          >
-            <MessageCircle className="h-4 w-4" />
-            Falar Agora
-          </a>
-        </div>
-      </header>
+      <Header />
 
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="bg-[hsl(220_30%_97%)] border-b border-border">
+      <nav aria-label="Breadcrumb" className="bg-[hsl(220_30%_97%)] border-b border-border pt-20">
         <div className="container mx-auto px-4 py-2">
           <ol className="flex items-center gap-1 text-sm text-muted-foreground flex-wrap">
             <li>
