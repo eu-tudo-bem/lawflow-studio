@@ -1,7 +1,9 @@
 import { ArrowRight, Shield, Award, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import heroBg from "@/assets/hero-bg.webp";
 import { useEffect, useState, useRef } from "react";
+
+// Served from /public so the browser can discover & preload it before React hydrates
+const heroBg = "/hero-bg.webp";
 
 const TYPING_WORDS = [
   "Divórcio Consensual",
