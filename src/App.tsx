@@ -103,6 +103,9 @@ const App = () => (
         <WhatsAppButton />
       </Suspense>
       <BrowserRouter>
+        <Suspense fallback={null}>
+          <ExitIntentPopup />
+        </Suspense>
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
