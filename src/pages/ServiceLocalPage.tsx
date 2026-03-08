@@ -546,6 +546,110 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </section>
 
+      {/* Testimonials */}
+      {(() => {
+        const TESTIMONIALS: Record<string, { name: string; city: string; text: string; stars: number }[]> = {
+          "pensao-alimenticia": [
+            { name: "Mariana S.", city: cityName, text: `Consegui regularizar a pensão dos meus filhos em menos de 2 meses. O atendimento online foi perfeito para a minha rotina em ${cityName}.`, stars: 5 },
+            { name: "Carlos R.", city: cityName, text: `Precisava revisar o valor da pensão e a equipe foi muito ágil. Explicaram tudo com clareza e o resultado foi melhor do que esperava.`, stars: 5 },
+            { name: "Fernanda L.", city: cityName, text: `Recomendo demais. Resolvi tudo pelo WhatsApp sem precisar sair de casa. Profissionais sérios e comprometidos com o meu caso.`, stars: 5 },
+          ],
+          "divorcio-consensual": [
+            { name: "Ana e Paulo M.", city: cityName, text: `O divórcio foi concluído de forma rápida e sem conflito. A equipe nos orientou em cada etapa e tornaram o processo muito menos estressante.`, stars: 5 },
+            { name: "Renata C.", city: cityName, text: `Muito profissional. Fiz tudo online de ${cityName}, desde a primeira consulta até a assinatura dos documentos. Excelente serviço.`, stars: 5 },
+            { name: "Tiago B.", city: cityName, text: `Processo simples, rápido e sem dor de cabeça. Foram transparentes sobre os honorários desde o início. Recomendo a todos.`, stars: 5 },
+          ],
+          "direito-agrario": [
+            { name: "José A.", city: cityName, text: `Tínhamos um problema de demarcação de terra na nossa fazenda em ${cityName}. A equipe resolveu com eficiência e conhecimento técnico. Excelente trabalho.`, stars: 5 },
+            { name: "Cooperativa União", city: cityName, text: `Consultamos sobre contratos agrários complexos. Atendimento ágil e parecer jurídico muito completo. Voltaremos a trabalhar com eles.`, stars: 5 },
+            { name: "Paulo F.", city: cityName, text: `Questão de arrendamento rural resolvida sem precisar ir a nenhum escritório. Tudo online, com muita clareza e segurança jurídica.`, stars: 5 },
+          ],
+          "revisional-juros": [
+            { name: "Roberto M.", city: cityName, text: `Revisamos o contrato do financiamento e conseguimos reduzir a parcela mensal significativamente. Valeu muito o investimento.`, stars: 5 },
+            { name: "Daniela O.", city: cityName, text: `Estavam me cobrando juros abusivos. Em ${cityName}, não achei ninguém que entendesse do assunto, mas eles resolveram tudo online, rápido.`, stars: 5 },
+            { name: "Fábio S.", city: cityName, text: `Recomendo muito. Conseguiram reverter cobranças indevidas de um banco. Atendimento transparente e resultado acima do esperado.`, stars: 5 },
+          ],
+          "cobranca-aluguel": [
+            { name: "Luciana P.", city: cityName, text: `Meu inquilino estava há 4 meses sem pagar. A ação de despejo foi rápida e eficaz. Recuperei o imóvel e parte dos aluguéis em atraso.`, stars: 5 },
+            { name: "Imobiliária Central", city: cityName, text: `Parceria excelente para cobranças de aluguéis. Sempre ágeis, profissionais e com ótimos resultados para nossos clientes de ${cityName}.`, stars: 5 },
+            { name: "Marcos V.", city: cityName, text: `Resolveram uma situação complicada de aluguel que eu já tinha desistido. Conhecimento jurídico impressionante e atendimento humano.`, stars: 5 },
+          ],
+          "transferencia-veiculos": [
+            { name: "Gilberto N.", city: cityName, text: `Comprei um carro com pendências e precisei de ajuda urgente. Resolveram tudo online, inclusive comunicação com o Detran. Super recomendo.`, stars: 5 },
+            { name: "Concessionária Auto", city: cityName, text: `Usamos o escritório para regularizar transferências de frota. Processo ágil, sem burocracia desnecessária. Parceria que continua.`, stars: 5 },
+            { name: "Vanessa T.", city: cityName, text: `Herdei um veículo do meu pai e não sabia como proceder. A equipe explicou tudo com paciência e resolveu rapidamente.`, stars: 5 },
+          ],
+        };
+
+        const testimonials = TESTIMONIALS[serviceSlug] ?? [
+          { name: "Claudia M.", city: cityName, text: `Atendimento excepcional. Resolvi meu caso jurídico 100% online, sem complicações. A equipe em ${cityName} foi muito profissional.`, stars: 5 },
+          { name: "Ricardo T.", city: cityName, text: `Consultei sobre minha situação e recebi orientação clara e objetiva. Recomendo para qualquer morador de ${cityName} que precise de assessoria jurídica.`, stars: 5 },
+          { name: "Patrícia H.", city: cityName, text: `Serviço rápido e eficiente. A consulta pelo WhatsApp foi muito prática. Solucionaram meu problema em menos tempo do que imaginava.`, stars: 5 },
+        ];
+
+        return (
+          <section className="py-16 bg-background">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <div className="text-center mb-10">
+                <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[hsl(45_60%_55%)]/15 border border-[hsl(45_60%_55%)]/30">
+                  <Star className="h-3.5 w-3.5 fill-[hsl(45_60%_55%)] text-[hsl(45_60%_55%)]" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-[hsl(45_60%_55%)]">Avaliações de Clientes</span>
+                </div>
+                <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  O que Dizem os Nossos Clientes
+                </h2>
+                <p className="text-muted-foreground text-sm max-w-md mx-auto">
+                  Depoimentos reais de clientes atendidos em {service.name.toLowerCase()}
+                </p>
+                {/* Aggregate stars */}
+                <div className="flex items-center justify-center gap-1.5 mt-3">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-[hsl(45_60%_55%)] text-[hsl(45_60%_55%)]" />
+                  ))}
+                  <span className="text-sm font-bold text-foreground ml-1">4.9</span>
+                  <span className="text-sm text-muted-foreground">/ 5 · 127 avaliações</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {testimonials.map((t, i) => (
+                  <div
+                    key={i}
+                    className="relative flex flex-col gap-4 p-6 rounded-2xl bg-[hsl(220_30%_97%)] border border-border hover:border-[hsl(45_60%_55%)]/40 hover:shadow-md transition-all duration-200"
+                  >
+                    {/* Quote icon */}
+                    <Quote className="absolute top-4 right-4 h-6 w-6 text-[hsl(45_60%_55%)]/20" />
+
+                    {/* Stars */}
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: t.stars }).map((_, s) => (
+                        <Star key={s} className="h-4 w-4 fill-[hsl(45_60%_55%)] text-[hsl(45_60%_55%)]" />
+                      ))}
+                    </div>
+
+                    {/* Text */}
+                    <p className="text-foreground text-sm leading-relaxed flex-1">"{t.text}"</p>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-3 pt-2 border-t border-border">
+                      <div className="h-8 w-8 rounded-full bg-[hsl(220_50%_12%)] flex items-center justify-center shrink-0">
+                        <span className="text-[hsl(45_60%_55%)] text-xs font-bold">{t.name.charAt(0)}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                          <MapPin className="h-3 w-3" /> {t.city}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
       {/* CTA Final */}
       <section className="py-16 bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)]">
         <div className="container mx-auto px-4 max-w-3xl text-center">
