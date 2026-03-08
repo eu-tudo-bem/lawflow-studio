@@ -791,7 +791,6 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "candido-de-abreu", name: "Cândido de Abreu", region: "Centro", variationIndex: 2 },
   { slug: "candói", name: "Candói", region: "Centro-Sul", variationIndex: 3 },
   { slug: "cantagalo", name: "Cantagalo", region: "Centro-Sul", variationIndex: 4 },
-  // Lote 7 - Rumo aos 399 (Cidades Inéditas)
   { slug: "formosa-do-oeste", name: "Formosa do Oeste", region: "Oeste", variationIndex: 0 },
   { slug: "jesuitas", name: "Jesuítas", region: "Oeste", variationIndex: 1 },
   { slug: "nova-aurora", name: "Nova Aurora", region: "Oeste", variationIndex: 2 },
