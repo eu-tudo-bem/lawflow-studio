@@ -116,6 +116,33 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito de Família",
     customCTA: "Regularizar Minha União Estável",
   },
+  {
+    slug: "inventario-e-partilha",
+    name: "Inventário e Partilha de Bens",
+    shortName: "Inventário",
+    icon: "🏛️",
+    keyword: "inventario-partilha",
+    area: "Direito de Família e Sucessões",
+    customCTA: "Iniciar Meu Inventário Agora",
+  },
+  {
+    slug: "usucapiao",
+    name: "Ação de Usucapião Rural e Urbana",
+    shortName: "Usucapião",
+    icon: "🗺️",
+    keyword: "usucapiao",
+    area: "Direito Imobiliário",
+    customCTA: "Regularizar Meu Imóvel",
+  },
+  {
+    slug: "aposentadoria-inss",
+    name: "Planejamento e Pedido de Aposentadoria",
+    shortName: "Aposentadoria",
+    icon: "🛡️",
+    keyword: "aposentadoria-inss",
+    area: "Direito Previdenciário",
+    customCTA: "Calcular Minha Aposentadoria",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
