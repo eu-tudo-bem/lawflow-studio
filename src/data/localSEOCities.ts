@@ -161,6 +161,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Imobiliário",
     customCTA: "Regularizar Imóvel via Cartório",
   },
+  {
+    slug: "contrato-arrendamento-rural",
+    name: "Advocacia Especializada em Contrato de Arrendamento Rural",
+    shortName: "Arrendamento Rural",
+    icon: "🚜",
+    keyword: "arrendamento-rural",
+    area: "Direito Agrário",
+    customCTA: "Garantir Segurança no Meu Arrendamento",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
