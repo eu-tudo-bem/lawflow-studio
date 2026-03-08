@@ -24,6 +24,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "👨‍👩‍👧",
     keyword: "pensao-alimenticia",
     area: "Direito de Família",
+    customCTA: "Descobrir o Valor Justo do Meu Caso",
   },
   {
     slug: "divorcio-consensual",
@@ -32,6 +33,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "⚖️",
     keyword: "divorcio-consensual",
     area: "Direito de Família",
+    customCTA: "Resolver Meu Divórcio Sem Complicações",
   },
   {
     slug: "cobranca-aluguel",
@@ -40,6 +42,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "🏠",
     keyword: "cobranca-aluguel",
     area: "Direito Imobiliário",
+    customCTA: "Recuperar Meu Aluguel Agora",
   },
   {
     slug: "transferencia-veiculo",
@@ -48,6 +51,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "🚗",
     keyword: "transferencia-veiculo",
     area: "Direito Civil",
+    customCTA: "Regularizar Meu Veículo Hoje",
   },
   {
     slug: "direito-agrario",
@@ -56,6 +60,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "🌾",
     keyword: "direito-agrario",
     area: "Direito Agrário",
+    customCTA: "Solicitar Análise Contratual Gratuita",
   },
   {
     slug: "atraso-voo",
@@ -64,6 +69,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "✈️",
     keyword: "atraso-voo",
     area: "Direito do Consumidor",
+    customCTA: "Ver Quanto Posso Receber de Indenização",
   },
   {
     slug: "revisional-juros",
@@ -72,6 +78,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "📉",
     keyword: "revisional-juros",
     area: "Direito Bancário",
+    customCTA: "Simular Economia na Parcela Agora",
   },
   {
     slug: "indenizacao-energia",
@@ -80,6 +87,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "⚡",
     keyword: "indenizacao-energia",
     area: "Direito do Consumidor",
+    customCTA: "Calcular Minha Indenização Gratuitamente",
   },
   {
     slug: "certidao-negativa",
@@ -88,6 +96,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "📜",
     keyword: "certidao-negativa",
     area: "Assessoria Jurídica",
+    customCTA: "Emitir Minha Certidão Agora",
   },
   {
     slug: "extravio-bagagem",
@@ -96,6 +105,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "🧳",
     keyword: "extravio-bagagem",
     area: "Direito do Consumidor",
+    customCTA: "Reivindicar Indenização pela Mala Perdida",
   },
   {
     slug: "uniao-estavel",
@@ -104,6 +114,7 @@ export const LEGAL_SERVICES: ServiceData[] = [
     icon: "💍",
     keyword: "uniao-estavel",
     area: "Direito de Família",
+    customCTA: "Regularizar Minha União Estável",
   },
 ];
 
