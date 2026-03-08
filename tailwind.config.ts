@@ -93,12 +93,17 @@ export default {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        "blink": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.6s ease-out forwards",
         "fade-in": "fade-in 0.6s ease-out forwards",
+        "blink": "blink 1s step-end infinite",
       },
     },
   },
