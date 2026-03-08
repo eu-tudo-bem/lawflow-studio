@@ -233,6 +233,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Agrário",
     customCTA: "Garantir Segurança no Arrendamento",
   },
+  {
+    slug: "gestao-agronegocio",
+    name: "Consultoria Jurídica em Gestão do Agronegócio",
+    shortName: "Gestão do Agro",
+    icon: "🚜",
+    keyword: "gestao-agronegocio",
+    area: "Direito Agrário",
+    customCTA: "Profissionalizar Minha Gestão Rural",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
