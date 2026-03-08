@@ -143,6 +143,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito Previdenciário",
     customCTA: "Calcular Minha Aposentadoria",
   },
+  {
+    slug: "direito-imobiliario",
+    name: "Advocacia Especializada em Direito Imobiliário",
+    shortName: "Direito Imobiliário",
+    icon: "🏠",
+    keyword: "direito-imobiliario",
+    area: "Direito Imobiliário",
+    customCTA: "Proteger Meu Patrimônio Agora",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
