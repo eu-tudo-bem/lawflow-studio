@@ -395,29 +395,71 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </section>
 
-      {/* Other services for this city */}
-      <section className="py-16 bg-background">
+      {/* ── "Cercadinho" — Other services for this city ── */}
+      <section className="py-16 bg-[hsl(220_30%_97%)]">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-serif text-xl font-bold text-foreground mb-6 text-center">
-            Outros Serviços Jurídicos em {cityName}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {/* Section header */}
+          <div className="text-center mb-10">
+            <Badge className="mb-3 bg-[hsl(45_60%_55%)]/15 text-[hsl(45_60%_55%)] border border-[hsl(45_60%_55%)]/30 gap-1.5 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              <Scale className="h-3 w-3" />
+              Advocacia Completa em {cityName}
+            </Badge>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+              Outros Serviços Jurídicos em {cityName}
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto text-sm">
+              Nosso escritório atende todas as áreas do direito para moradores de {cityName}.
+              Clique para saber mais sobre cada serviço.
+            </p>
+          </div>
+
+          {/* Service hub cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             {LEGAL_SERVICES.filter((s) => s.slug !== serviceSlug).map((s) => (
               <Link
                 key={s.slug}
                 to={`/${getServiceCitySlug(s.slug, citySlug)}`}
-                className="flex items-center gap-2 p-3 rounded-xl border border-border bg-card hover:border-[hsl(45_60%_55%)] hover:shadow-md transition-all"
+                className="group flex flex-col gap-3 p-5 rounded-2xl border border-border bg-background hover:border-[hsl(45_60%_55%)] hover:shadow-lg transition-all duration-200"
               >
-                <span className="text-xl" aria-hidden="true">{s.icon}</span>
-                <span className="text-sm font-medium text-foreground">{s.shortName}</span>
+                {/* Icon + area label row */}
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-3xl leading-none" aria-hidden="true">{s.icon}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-muted px-2 py-1 rounded-full whitespace-nowrap">
+                    {s.area}
+                  </span>
+                </div>
+
+                {/* Service name */}
+                <p className="font-semibold text-foreground text-sm leading-snug group-hover:text-[hsl(45_60%_55%)] transition-colors">
+                  Advogado de {s.name} em {cityName}
+                </p>
+
+                {/* CTA arrow */}
+                <div className="flex items-center gap-1 text-xs text-[hsl(45_60%_55%)] font-medium mt-auto opacity-0 group-hover:opacity-100 transition-opacity">
+                  Ver mais <ArrowRight className="h-3 w-3" />
+                </div>
               </Link>
             ))}
+
+            {/* "All services" anchor card */}
             <Link
               to={`/escritorio-advocacia-${citySlug}`}
-              className="flex items-center gap-2 p-3 rounded-xl border border-border bg-card hover:border-[hsl(45_60%_55%)] hover:shadow-md transition-all"
+              className="group flex flex-col gap-3 p-5 rounded-2xl border-2 border-dashed border-[hsl(45_60%_55%)]/30 bg-[hsl(45_60%_55%)]/5 hover:border-[hsl(45_60%_55%)] hover:bg-[hsl(45_60%_55%)]/10 hover:shadow-lg transition-all duration-200"
             >
-              <Scale className="h-5 w-5 text-[hsl(45_60%_55%)]" />
-              <span className="text-sm font-medium text-foreground">Todos os Serviços</span>
+              <div className="flex items-start justify-between gap-2">
+                <div className="p-2 bg-[hsl(45_60%_55%)]/15 rounded-xl w-fit">
+                  <Scale className="h-6 w-6 text-[hsl(45_60%_55%)]" />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[hsl(45_60%_55%)] bg-[hsl(45_60%_55%)]/10 px-2 py-1 rounded-full whitespace-nowrap">
+                  Escritório
+                </span>
+              </div>
+              <p className="font-semibold text-foreground text-sm leading-snug group-hover:text-[hsl(45_60%_55%)] transition-colors">
+                Todos os Serviços em {cityName}
+              </p>
+              <div className="flex items-center gap-1 text-xs text-[hsl(45_60%_55%)] font-medium mt-auto">
+                Ver escritório completo <ArrowRight className="h-3 w-3" />
+              </div>
             </Link>
           </div>
         </div>
