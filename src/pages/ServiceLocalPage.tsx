@@ -269,7 +269,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
             <span className="text-[hsl(45_60%_55%)]">{service.name}</span>{" "}
             em {cityName}
           </h1>
-          <LocalProof cityName={cityName} />
+          <LocalProof cityName={cityName} citySlug={citySlug} serviceName={service.name} serviceSlug={serviceSlug} />
           <p className="text-lg md:text-xl text-[hsl(45_20%_95%)]/80 mb-8 leading-relaxed max-w-3xl">
             {intro.split(". ")[0]}. Atendimento 100% online para clientes de {cityName} e toda a região de {cityRegion}.
           </p>
