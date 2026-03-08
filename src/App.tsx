@@ -9,6 +9,7 @@ import { LEGAL_SERVICES, PARANA_CITIES } from "@/data/localSEOCities";
 
 // Lazy-load auth/utility components so they don't block FCP on the homepage
 const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
+const ExitIntentPopup = lazy(() => import("./components/ExitIntentPopup"));
 const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
 
 // Lazy-loaded pages for code splitting
@@ -102,6 +103,9 @@ const App = () => (
         <WhatsAppButton />
       </Suspense>
       <BrowserRouter>
+        <Suspense fallback={null}>
+          <ExitIntentPopup />
+        </Suspense>
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
