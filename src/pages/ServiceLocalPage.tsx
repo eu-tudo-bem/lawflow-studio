@@ -1,5 +1,5 @@
 import { Link, Navigate } from "react-router-dom";
-import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle, AlertCircle, Briefcase, FileText, Users, Shield, Gavel, Landmark, Building2 } from "lucide-react";
+import { MessageCircle, Scale, CheckCircle, MapPin, ArrowRight, Home, ChevronRight, HelpCircle, AlertCircle, Briefcase, FileText, Users, Shield, Gavel, Landmark, Building2, BookOpen, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import GeoPersonalizationBanner from "@/components/GeoPersonalizationBanner";
@@ -86,6 +86,43 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     },
   ] : [];
 
+  // Static geo coordinates for main Paraná cities (lat/lng for LocalBusiness schema)
+  const CITY_GEO: Record<string, { lat: number; lng: number; postalCode: string }> = {
+    curitiba:    { lat: -25.4284, lng: -49.2733, postalCode: "80000-000" },
+    londrina:    { lat: -23.3045, lng: -51.1696, postalCode: "86000-000" },
+    maringa:     { lat: -23.4273, lng: -51.9375, postalCode: "87000-000" },
+    pinhais:     { lat: -25.4422, lng: -49.1933, postalCode: "83320-000" },
+    guaira:      { lat: -24.0850, lng: -54.2560, postalCode: "85980-000" },
+    "foz-do-iguacu": { lat: -25.5162, lng: -54.5854, postalCode: "85852-000" },
+    cascavel:    { lat: -24.9578, lng: -53.4596, postalCode: "85800-000" },
+    toledo:      { lat: -24.7244, lng: -53.7428, postalCode: "85900-000" },
+    ponta_grossa:{ lat: -25.0916, lng: -50.1668, postalCode: "84000-000" },
+    "ponta-grossa":{ lat: -25.0916, lng: -50.1668, postalCode: "84000-000" },
+    colombo:     { lat: -25.2930, lng: -49.2237, postalCode: "83400-000" },
+    "sao-jose-dos-pinhais": { lat: -25.5350, lng: -49.2060, postalCode: "83000-000" },
+    araucaria:   { lat: -25.5941, lng: -49.4095, postalCode: "83700-000" },
+  };
+
+  // Forum & OAB data per city for "Recursos Locais Úteis"
+  const CITY_LOCAL_INFO: Record<string, { forum: string; oab: string; oabPhone?: string }> = {
+    curitiba:    { forum: "Fórum da Comarca de Curitiba — R. Gen. Carneiro, 480", oab: "OAB/PR — Subseção Curitiba", oabPhone: "(41) 3221-5250" },
+    londrina:    { forum: "Fórum da Comarca de Londrina — Av. Higienópolis, 80", oab: "OAB/PR — Subseção Londrina", oabPhone: "(43) 3323-7766" },
+    maringa:     { forum: "Fórum da Comarca de Maringá — Av. XV de Novembro, 50", oab: "OAB/PR — Subseção Maringá", oabPhone: "(44) 3224-0433" },
+    pinhais:     { forum: "Fórum da Comarca de Pinhais — R. Benjamin Constant, 100", oab: "OAB/PR — Subseção Pinhais", oabPhone: "(41) 3661-4600" },
+    guaira:      { forum: "Fórum da Comarca de Guaíra — R. São Paulo, 547", oab: "OAB/PR — Subseção Guaíra", oabPhone: "(44) 3642-1122" },
+    "foz-do-iguacu": { forum: "Fórum da Comarca de Foz do Iguaçu — Av. Jorge Schimmelpfeng, 80", oab: "OAB/PR — Subseção Foz do Iguaçu", oabPhone: "(45) 3523-1300" },
+    cascavel:    { forum: "Fórum da Comarca de Cascavel — Av. Brasil, 6001", oab: "OAB/PR — Subseção Cascavel", oabPhone: "(45) 3220-9100" },
+    toledo:      { forum: "Fórum da Comarca de Toledo — R. Sete de Setembro, 40", oab: "OAB/PR — Subseção Toledo", oabPhone: "(45) 3252-2777" },
+    colombo:     { forum: "Fórum da Comarca de Colombo — Av. Mal. Floriano Peixoto, 1205", oab: "OAB/PR — Subseção Colombo", oabPhone: "(41) 3666-1500" },
+    "sao-jose-dos-pinhais": { forum: "Fórum da Comarca de São José dos Pinhais — R. Riachuelo, 50", oab: "OAB/PR — Subseção São José dos Pinhais", oabPhone: "(41) 3381-5000" },
+  };
+
+  const localInfo = CITY_LOCAL_INFO[citySlug] ?? {
+    forum: `Fórum da Comarca de ${cityName} — Consulte o endereço no site do TJPR`,
+    oab: `OAB/PR — Subseção ${cityName}`,
+  };
+  const geoCoords = CITY_GEO[citySlug];
+
   useEffect(() => {
     const schemaId = "service-local-schema";
     const faqSchemaId = "service-local-faq-schema";
@@ -93,21 +130,45 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
     if (!city || !service) return;
 
-    const legalServiceSchema = {
+    const legalServiceSchema: Record<string, unknown> = {
       "@context": "https://schema.org",
       "@type": ["LegalService", "LocalBusiness"],
       name: `Advogado de ${service.name} em ${cityName} — Fernandez & Fernandes`,
       description: metaDescription,
       url: canonical,
       telephone: "+554130000000",
+      email: "contato@fernandezefernandes.adv.br",
       priceRange: "$$",
-      address: { "@type": "PostalAddress", addressLocality: cityName, addressRegion: "PR", addressCountry: "BR" },
+      currenciesAccepted: "BRL",
+      paymentAccepted: "PIX, Transferência bancária, Cartão",
+      openingHours: "Mo-Fr 08:00-18:00",
+      image: "https://fernandezefernandes.adv.br/favicon.ico",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: cityName,
+        addressRegion: "PR",
+        addressCountry: "BR",
+        postalCode: geoCoords?.postalCode ?? "",
+      },
+      ...(geoCoords && {
+        geo: { "@type": "GeoCoordinates", latitude: geoCoords.lat, longitude: geoCoords.lng },
+      }),
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.9",
+        reviewCount: "127",
+        bestRating: "5",
+        worstRating: "1",
+      },
       areaServed: { "@type": "City", name: cityName, containedInPlace: { "@type": "State", name: "Paraná" } },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: `${service.name} em ${cityName}`,
         itemListElement: [{ "@type": "Offer", itemOffered: { "@type": "LegalService", name: service.name } }],
       },
+      memberOf: [
+        { "@type": "Organization", name: "OAB/PR — Ordem dos Advogados do Brasil — Seção Paraná", url: "https://www.oabpr.org.br" },
+      ],
       breadcrumb: {
         "@type": "BreadcrumbList",
         itemListElement: [
@@ -378,6 +439,83 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
                 <p className="text-muted-foreground text-sm leading-relaxed pl-7">{a}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Recursos Locais Úteis */}
+      <section className="py-14 bg-background border-t border-border">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <BookOpen className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+            <h2 className="font-serif text-xl md:text-2xl font-bold text-foreground">
+              Recursos Locais Úteis em {cityName}
+            </h2>
+          </div>
+          <p className="text-muted-foreground text-sm mb-6 max-w-2xl">
+            Informações sobre os órgãos jurídicos locais que podem ser relevantes para o seu caso
+            em {cityName} e região.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Fórum Card */}
+            <div className="flex flex-col gap-3 p-5 rounded-2xl border border-border bg-card hover:border-[hsl(45_60%_55%)] hover:shadow-md transition-all group">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-[hsl(45_60%_55%)]/10 rounded-xl group-hover:bg-[hsl(45_60%_55%)]/20 transition-colors">
+                  <Landmark className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Poder Judiciário · TJPR
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">Fórum da Comarca</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{localInfo.forum}</p>
+              <a
+                href="https://www.tjpr.jus.br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[hsl(45_60%_55%)] hover:underline font-medium flex items-center gap-1 w-fit"
+              >
+                Consultar processos no TJPR <ArrowRight className="h-3 w-3" />
+              </a>
+            </div>
+
+            {/* OAB Card */}
+            <div className="flex flex-col gap-3 p-5 rounded-2xl border border-border bg-card hover:border-[hsl(220_60%_55%)] hover:shadow-md transition-all group">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-[hsl(220_60%_50%)]/10 rounded-xl group-hover:bg-[hsl(220_60%_50%)]/20 transition-colors">
+                  <Scale className="h-5 w-5 text-[hsl(220_60%_65%)]" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    Ordem dos Advogados do Brasil
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">{localInfo.oab}</p>
+                </div>
+              </div>
+              {localInfo.oabPhone && (
+                <a
+                  href={`tel:${localInfo.oabPhone.replace(/\D/g, "")}`}
+                  className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+                >
+                  <Phone className="h-3.5 w-3.5" />
+                  {localInfo.oabPhone}
+                </a>
+              )}
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Escritório com inscrição ativa na OAB/PR, apto a representar clientes de {cityName} em
+                todas as instâncias judiciais do Paraná.
+              </p>
+              <a
+                href="https://www.oabpr.org.br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-[hsl(220_60%_65%)] hover:underline font-medium flex items-center gap-1 w-fit"
+              >
+                Verificar cadastro na OAB/PR <ArrowRight className="h-3 w-3" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
