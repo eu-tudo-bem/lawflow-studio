@@ -36,6 +36,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     customCTA: "Resolver Meu Divórcio Sem Complicações",
   },
   {
+    slug: "direito-imobiliario",
+    name: "Advocacia Especializada em Direito Imobiliário",
+    shortName: "Direito Imobiliário",
+    icon: "🏠",
+    keyword: "direito-imobiliario",
+    area: "Direito Imobiliário",
+    customCTA: "Proteger Meu Patrimônio Agora"
+  }
+  {
     slug: "cobranca-aluguel",
     name: "Cobrança de Aluguel",
     shortName: "Cobrança de Aluguel",
