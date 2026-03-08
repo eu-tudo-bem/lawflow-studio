@@ -11,9 +11,29 @@ const proofMessages = [
   (city: string) => `Consulta realizada com êxito para cliente de ${city} nos últimos dias.`,
 ];
 
+/**
+ * Generates a deterministic-but-believable relative time label.
+ * Uses the city name + current hour so it changes throughout the day
+ * (giving the feeling of freshness without a real DB call).
+ */
+function getRelativeTime(cityName: string): string {
+  const seed = cityName.length + new Date().getHours();
+
+  // Buckets: within the last 24h feel "very fresh"; rest feel "recent"
+  const options: string[] = [
+    `há ${1 + (seed % 3)} hora${1 + (seed % 3) > 1 ? "s" : ""}`,
+    `há ${2 + (seed % 4)} horas`,
+    "há poucos minutos",
+    "ontem",
+    `há ${2 + (seed % 3)} dias`,
+  ];
+
+  return options[seed % options.length];
+}
+
 const LocalProof = ({ cityName }: Props) => {
-  // Deterministically pick a variant based on city name length so it's stable per page
   const variant = proofMessages[cityName.length % proofMessages.length];
+  const relativeTime = getRelativeTime(cityName);
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-5 w-fit max-w-full flex-wrap">
@@ -27,9 +47,10 @@ const LocalProof = ({ cityName }: Props) => {
           {" — "}
           {variant(cityName)}
         </p>
-        <div className="shrink-0 flex items-center gap-1 text-xs text-[hsl(45_20%_95%)]/40 whitespace-nowrap">
+        {/* Dynamic relative time */}
+        <div className="shrink-0 flex items-center gap-1 text-xs text-[hsl(45_20%_95%)]/50 whitespace-nowrap bg-[hsl(142_60%_45%)]/10 px-2 py-1 rounded-full">
           <Clock className="h-3 w-3" />
-          Recente
+          <span>{relativeTime}</span>
         </div>
       </div>
 
