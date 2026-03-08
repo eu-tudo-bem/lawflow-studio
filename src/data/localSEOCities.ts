@@ -215,6 +215,15 @@ export const LEGAL_SERVICES: ServiceData[] = [
     area: "Direito de Família",
     customCTA: "Planejar Meu Patrimônio de Casamento",
   },
+  {
+    slug: "contrato-doacao-terreno",
+    name: "Advocacia Especializada em Contrato de Doação de Terreno",
+    shortName: "Doação de Terreno",
+    icon: "🏞️",
+    keyword: "doacao-terreno",
+    area: "Direito Imobiliário",
+    customCTA: "Garantir Minha Doação com Segurança",
+  },
 ];
 
 export const PARANA_CITIES: CityData[] = [
