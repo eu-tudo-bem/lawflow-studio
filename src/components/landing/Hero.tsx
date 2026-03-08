@@ -99,11 +99,11 @@ const Hero = () => {
             Defendemos seus direitos
             <br />
             em casos de{" "}
-            <span className="inline-block relative">
+            <span className="inline-block relative pr-1">
               <span className="text-gold">{displayed}</span>
               <span
                 aria-hidden="true"
-                className={`inline-block w-[3px] h-[0.85em] bg-gold align-middle ml-0.5 rounded-sm ${
+                className={`absolute top-0 right-[-4px] w-[3px] h-full bg-gold rounded-sm ${
                   isErasing ? "opacity-100" : "animate-[blink_1s_step-end_infinite]"
                 }`}
               />
