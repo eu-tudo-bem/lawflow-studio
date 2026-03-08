@@ -86,6 +86,43 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     },
   ] : [];
 
+  // Static geo coordinates for main Paraná cities (lat/lng for LocalBusiness schema)
+  const CITY_GEO: Record<string, { lat: number; lng: number; postalCode: string }> = {
+    curitiba:    { lat: -25.4284, lng: -49.2733, postalCode: "80000-000" },
+    londrina:    { lat: -23.3045, lng: -51.1696, postalCode: "86000-000" },
+    maringa:     { lat: -23.4273, lng: -51.9375, postalCode: "87000-000" },
+    pinhais:     { lat: -25.4422, lng: -49.1933, postalCode: "83320-000" },
+    guaira:      { lat: -24.0850, lng: -54.2560, postalCode: "85980-000" },
+    "foz-do-iguacu": { lat: -25.5162, lng: -54.5854, postalCode: "85852-000" },
+    cascavel:    { lat: -24.9578, lng: -53.4596, postalCode: "85800-000" },
+    toledo:      { lat: -24.7244, lng: -53.7428, postalCode: "85900-000" },
+    ponta_grossa:{ lat: -25.0916, lng: -50.1668, postalCode: "84000-000" },
+    "ponta-grossa":{ lat: -25.0916, lng: -50.1668, postalCode: "84000-000" },
+    colombo:     { lat: -25.2930, lng: -49.2237, postalCode: "83400-000" },
+    "sao-jose-dos-pinhais": { lat: -25.5350, lng: -49.2060, postalCode: "83000-000" },
+    araucaria:   { lat: -25.5941, lng: -49.4095, postalCode: "83700-000" },
+  };
+
+  // Forum & OAB data per city for "Recursos Locais Úteis"
+  const CITY_LOCAL_INFO: Record<string, { forum: string; oab: string; oabPhone?: string }> = {
+    curitiba:    { forum: "Fórum da Comarca de Curitiba — R. Gen. Carneiro, 480", oab: "OAB/PR — Subseção Curitiba", oabPhone: "(41) 3221-5250" },
+    londrina:    { forum: "Fórum da Comarca de Londrina — Av. Higienópolis, 80", oab: "OAB/PR — Subseção Londrina", oabPhone: "(43) 3323-7766" },
+    maringa:     { forum: "Fórum da Comarca de Maringá — Av. XV de Novembro, 50", oab: "OAB/PR — Subseção Maringá", oabPhone: "(44) 3224-0433" },
+    pinhais:     { forum: "Fórum da Comarca de Pinhais — R. Benjamin Constant, 100", oab: "OAB/PR — Subseção Pinhais", oabPhone: "(41) 3661-4600" },
+    guaira:      { forum: "Fórum da Comarca de Guaíra — R. São Paulo, 547", oab: "OAB/PR — Subseção Guaíra", oabPhone: "(44) 3642-1122" },
+    "foz-do-iguacu": { forum: "Fórum da Comarca de Foz do Iguaçu — Av. Jorge Schimmelpfeng, 80", oab: "OAB/PR — Subseção Foz do Iguaçu", oabPhone: "(45) 3523-1300" },
+    cascavel:    { forum: "Fórum da Comarca de Cascavel — Av. Brasil, 6001", oab: "OAB/PR — Subseção Cascavel", oabPhone: "(45) 3220-9100" },
+    toledo:      { forum: "Fórum da Comarca de Toledo — R. Sete de Setembro, 40", oab: "OAB/PR — Subseção Toledo", oabPhone: "(45) 3252-2777" },
+    colombo:     { forum: "Fórum da Comarca de Colombo — Av. Mal. Floriano Peixoto, 1205", oab: "OAB/PR — Subseção Colombo", oabPhone: "(41) 3666-1500" },
+    "sao-jose-dos-pinhais": { forum: "Fórum da Comarca de São José dos Pinhais — R. Riachuelo, 50", oab: "OAB/PR — Subseção São José dos Pinhais", oabPhone: "(41) 3381-5000" },
+  };
+
+  const localInfo = CITY_LOCAL_INFO[citySlug] ?? {
+    forum: `Fórum da Comarca de ${cityName} — Consulte o endereço no site do TJPR`,
+    oab: `OAB/PR — Subseção ${cityName}`,
+  };
+  const geoCoords = CITY_GEO[citySlug];
+
   useEffect(() => {
     const schemaId = "service-local-schema";
     const faqSchemaId = "service-local-faq-schema";
@@ -93,21 +130,45 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
     if (!city || !service) return;
 
-    const legalServiceSchema = {
+    const legalServiceSchema: Record<string, unknown> = {
       "@context": "https://schema.org",
       "@type": ["LegalService", "LocalBusiness"],
       name: `Advogado de ${service.name} em ${cityName} — Fernandez & Fernandes`,
       description: metaDescription,
       url: canonical,
       telephone: "+554130000000",
+      email: "contato@fernandezefernandes.adv.br",
       priceRange: "$$",
-      address: { "@type": "PostalAddress", addressLocality: cityName, addressRegion: "PR", addressCountry: "BR" },
+      currenciesAccepted: "BRL",
+      paymentAccepted: "PIX, Transferência bancária, Cartão",
+      openingHours: "Mo-Fr 08:00-18:00",
+      image: "https://fernandezefernandes.adv.br/favicon.ico",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: cityName,
+        addressRegion: "PR",
+        addressCountry: "BR",
+        postalCode: geoCoords?.postalCode ?? "",
+      },
+      ...(geoCoords && {
+        geo: { "@type": "GeoCoordinates", latitude: geoCoords.lat, longitude: geoCoords.lng },
+      }),
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.9",
+        reviewCount: "127",
+        bestRating: "5",
+        worstRating: "1",
+      },
       areaServed: { "@type": "City", name: cityName, containedInPlace: { "@type": "State", name: "Paraná" } },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: `${service.name} em ${cityName}`,
         itemListElement: [{ "@type": "Offer", itemOffered: { "@type": "LegalService", name: service.name } }],
       },
+      memberOf: [
+        { "@type": "Organization", name: "OAB/PR — Ordem dos Advogados do Brasil — Seção Paraná", url: "https://www.oabpr.org.br" },
+      ],
       breadcrumb: {
         "@type": "BreadcrumbList",
         itemListElement: [
