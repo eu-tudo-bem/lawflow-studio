@@ -179,6 +179,30 @@ const PerguntaJuridica = () => {
   const areaLabel = AREA_LABELS[question.legal_area] || question.legal_area;
   const tools = AREA_TOOL_LINKS[question.legal_area] || [];
 
+  // Split HTML content and inject mid-content banner after 2nd paragraph
+  const injectMidBanner = (html: string): { before: string; after: string } => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const paragraphs = Array.from(doc.body.querySelectorAll("p, h2, h3, ul, ol"));
+    const splitAt = Math.min(2, Math.max(1, Math.floor(paragraphs.length / 2)));
+    const cutNode = paragraphs[splitAt - 1];
+    if (!cutNode) return { before: html, after: "" };
+
+    const beforeNodes: string[] = [];
+    const afterNodes: string[] = [];
+    let passed = false;
+    doc.body.childNodes.forEach((node) => {
+      if (node === cutNode) { beforeNodes.push((node as Element).outerHTML || node.textContent || ""); passed = true; }
+      else if (!passed) beforeNodes.push((node as Element).outerHTML || node.textContent || "");
+      else afterNodes.push((node as Element).outerHTML || node.textContent || "");
+    });
+    return { before: beforeNodes.join(""), after: afterNodes.join("") };
+  };
+
+  const { before: contentBefore, after: contentAfter } = question.content
+    ? injectMidBanner(question.content)
+    : { before: "", after: "" };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
