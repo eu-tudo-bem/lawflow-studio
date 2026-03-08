@@ -297,7 +297,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
               className="inline-flex items-center justify-center gap-3 bg-[#25D366] text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-[#1ebe5d] transition-all hover:scale-105 shadow-lg"
             >
               <MessageCircle className="h-6 w-6" />
-              Falar com Advogado em {cityName}
+              {service.customCTA ?? `Falar com Advogado em ${cityName}`}
             </a>
             <Link
               to="/#contact"
