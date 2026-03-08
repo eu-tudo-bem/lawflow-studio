@@ -269,19 +269,34 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       {/* Situations */}
       <section className="py-16 bg-[hsl(220_30%_97%)]">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4 text-center">
-            Situações que Resolvemos em {cityName}
-          </h2>
-          <p className="text-muted-foreground text-center mb-8">
-            Atendemos clientes de {cityName} nos seguintes casos relacionados a {service.name.toLowerCase()}:
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {situations.map((situation) => (
-              <div key={situation} className="flex items-start gap-3 p-4 rounded-xl bg-background border border-border">
-                <CheckCircle className="h-5 w-5 text-[hsl(45_60%_55%)] mt-0.5 flex-shrink-0" />
-                <span className="text-foreground font-medium">{situation}</span>
-              </div>
-            ))}
+          <div className="text-center mb-10">
+            <Badge className="mb-3 bg-[hsl(45_60%_55%)]/15 text-[hsl(45_60%_55%)] border border-[hsl(45_60%_55%)]/30 gap-1.5 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+              <CheckCircle className="h-3 w-3" />
+              Casos que Atendemos
+            </Badge>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+              Situações que Resolvemos em {cityName}
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Atendemos clientes de {cityName} nos seguintes casos relacionados a {service.name.toLowerCase()}:
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {situations.map((situation, i) => {
+              const icons = [AlertCircle, FileText, Users, Shield, Gavel, Landmark, Building2, Briefcase];
+              const Icon = icons[i % icons.length];
+              return (
+                <div
+                  key={situation}
+                  className="group flex flex-col gap-3 p-5 rounded-2xl bg-background border border-border hover:border-[hsl(45_60%_55%)] hover:shadow-md transition-all duration-200"
+                >
+                  <div className="p-2.5 bg-[hsl(45_60%_55%)]/10 rounded-xl w-fit group-hover:bg-[hsl(45_60%_55%)]/20 transition-colors">
+                    <Icon className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                  </div>
+                  <span className="text-foreground font-medium text-sm leading-snug">{situation}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
