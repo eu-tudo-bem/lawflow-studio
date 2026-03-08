@@ -193,6 +193,14 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </nav>
 
+      {/* Geo Personalization Banner */}
+      <GeoPersonalizationBanner
+        pageCityName={cityName}
+        pageRegion={cityRegion}
+        serviceName={service.name}
+        whatsappLink={whatsappLink}
+      />
+
       {/* Hero */}
       <section className="bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-4xl">
