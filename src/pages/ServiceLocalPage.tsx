@@ -127,7 +127,8 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
   useEffect(() => {
     const schemaId = "service-local-schema";
     const faqSchemaId = "service-local-faq-schema";
-    [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove());
+    const breadcrumbSchemaId = "service-local-breadcrumb-schema";
+    [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove());
 
     if (!city || !service) return;
 
@@ -170,14 +171,18 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       memberOf: [
         { "@type": "Organization", name: "OAB/PR — Ordem dos Advogados do Brasil — Seção Paraná", url: "https://www.oabpr.org.br" },
       ],
-      breadcrumb: {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Início", item: "https://fernandezefernandes.adv.br" },
-          { "@type": "ListItem", position: 2, name: service.name, item: `https://fernandezefernandes.adv.br/${service.slug}` },
-          { "@type": "ListItem", position: 3, name: `${service.name} em ${cityName}`, item: canonical },
-        ],
-      },
+    };
+
+    // Standalone BreadcrumbList schema — rendered separately so Google picks it up as a rich result
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Início", item: "https://fernandezefernandes.adv.br/" },
+        { "@type": "ListItem", position: 2, name: "Advogados", item: "https://fernandezefernandes.adv.br/#services" },
+        { "@type": "ListItem", position: 3, name: cityName, item: `https://fernandezefernandes.adv.br/escritorio-advocacia-${citySlug}` },
+        { "@type": "ListItem", position: 4, name: service.name, item: canonical },
+      ],
     };
 
     const faqSchema = {
@@ -190,14 +195,18 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       })),
     };
 
-    [{ id: schemaId, data: legalServiceSchema }, { id: faqSchemaId, data: faqSchema }].forEach(({ id, data }) => {
+    [
+      { id: schemaId, data: legalServiceSchema },
+      { id: breadcrumbSchemaId, data: breadcrumbSchema },
+      { id: faqSchemaId, data: faqSchema },
+    ].forEach(({ id, data }) => {
       const script = document.createElement("script");
       script.id = id; script.type = "application/ld+json";
       script.text = JSON.stringify(data);
       document.head.appendChild(script);
     });
 
-    return () => { [schemaId, faqSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
+    return () => { [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
   if (!service) return <Navigate to="/404" replace />;
