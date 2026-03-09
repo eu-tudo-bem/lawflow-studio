@@ -65,7 +65,8 @@ Deno.serve(async (req) => {
     ]);
 
     const citySlugs = (cities || []).map((c) => c.slug);
-    const activeServices = services || [];
+    const serviceSlugs = (services || []).map((s) => s.slug);
+
     // ── Hyper-local pages built from DB ───────────────────────────────
     const hyperlocalCityPages = citySlugs.map((slug) => ({
       loc: `/escritorio-advocacia-${slug}`,
@@ -73,9 +74,9 @@ Deno.serve(async (req) => {
       priority: "0.9",
     }));
 
-    const hyperlocalServicePages = activeServices.flatMap((svc) =>
+    const hyperlocalServicePages = serviceSlugs.flatMap((svc) =>
       citySlugs.map((city) => ({
-        loc: `/advogado-${svc.keyword || svc.slug}-${city}`,
+        loc: `/advogado-${svc}-${city}`,
         changefreq: "monthly",
         priority: "0.85",
       })),
@@ -136,7 +137,7 @@ Deno.serve(async (req) => {
     const totalPages = allStaticPages.length + (posts?.length || 0) + (questions?.length || 0);
 
     console.log(
-      `Sitemap updated: ${allStaticPages.length} static (${citySlugs.length} cities × ${activeServices.length} services) ...`,
+      `Sitemap updated: ${allStaticPages.length} static (${citySlugs.length} cities × ${serviceSlugs.length} services) | ${posts?.length || 0} blog posts | ${questions?.length || 0} legal questions | total: ${totalPages} URLs`,
     );
 
     return new Response(xml, {
