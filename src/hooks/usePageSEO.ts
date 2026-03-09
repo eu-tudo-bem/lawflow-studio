@@ -47,15 +47,24 @@ export function usePageSEO({
   robots = "index, follow",
 }: PageSEOConfig) {
   useEffect(() => {
+    // If canonical is not yet resolved (empty string or undefined), skip setting
+    // the tag entirely to avoid writing the wrong URL (e.g. "/" during async loading)
+    const resolvedCanonical = canonical || "";
+
     document.title = title;
     setMetaTag("description", description);
     setMetaTag("robots", robots);
-    setCanonical(canonical || `${BASE_URL}${window.location.pathname}`);
+
+    if (resolvedCanonical) {
+      setCanonical(resolvedCanonical);
+    }
 
     // Open Graph
     setMetaTag("og:title", ogTitle || title, "property");
     setMetaTag("og:description", ogDescription || description, "property");
-    setMetaTag("og:url", canonical || `${BASE_URL}${window.location.pathname}`, "property");
+    if (resolvedCanonical) {
+      setMetaTag("og:url", resolvedCanonical, "property");
+    }
     setMetaTag("og:image", ogImage || DEFAULT_OG_IMAGE, "property");
 
     // Twitter
