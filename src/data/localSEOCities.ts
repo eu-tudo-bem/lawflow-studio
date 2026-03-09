@@ -901,7 +901,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "cafelandia", name: "Cafelândia", region: "Oeste", variationIndex: 3 },
   { slug: "iguatu", name: "Iguatu", region: "Oeste", variationIndex: 4 },
   { slug: "ibema", name: "Ibema", region: "Oeste", variationIndex: 2 },
-  { slug: "guaraniaçu", name: "Guaraniaçu", region: "Oeste", variationIndex: 4 },
+  { slug: "guaraniacu", name: "Guaraniaçu", region: "Oeste", variationIndex: 4 },
   { slug: "mariluz", name: "Mariluz", region: "Noroeste", variationIndex: 1 },
   { slug: "moreira-sales", name: "Moreira Sales", region: "Noroeste", variationIndex: 2 },
   { slug: "tuneiras-do-oeste", name: "Tuneiras do Oeste", region: "Noroeste", variationIndex: 3 },
