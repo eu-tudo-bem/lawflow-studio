@@ -49,14 +49,9 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // ── Fetch cities and services from DB (dynamic) ───────────────────
-    const [
-      { data: cities },
-      { data: services },
-      { data: posts },
-      { data: questions },
-    ] = await Promise.all([
+    const [{ data: cities }, { data: services }, { data: posts }, { data: questions }] = await Promise.all([
       supabase.from("seo_cities").select("slug").eq("active", true),
-      supabase.from("seo_services").select("slug").eq("active", true),
+      supabase.from("seo_services").select("slug, keyword").eq("active", true),
       supabase
         .from("blog_posts")
         .select("slug, updated_at, published_at")
@@ -84,14 +79,10 @@ Deno.serve(async (req) => {
         loc: `/advogado-${svc}-${city}`,
         changefreq: "monthly",
         priority: "0.85",
-      }))
+      })),
     );
 
-    const allStaticPages = [
-      ...staticPages,
-      ...hyperlocalCityPages,
-      ...hyperlocalServicePages,
-    ];
+    const allStaticPages = [...staticPages, ...hyperlocalCityPages, ...hyperlocalServicePages];
 
     // ── Build XML ─────────────────────────────────────────────────────
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -137,19 +128,16 @@ Deno.serve(async (req) => {
 
     // ── Save to storage bucket ────────────────────────────────────────
     const xmlBlob = new Blob([xml], { type: "application/xml" });
-    await supabase.storage
-      .from("sitemap")
-      .upload("sitemap.xml", xmlBlob, {
-        contentType: "application/xml",
-        upsert: true,
-        cacheControl: "3600",
-      });
+    await supabase.storage.from("sitemap").upload("sitemap.xml", xmlBlob, {
+      contentType: "application/xml",
+      upsert: true,
+      cacheControl: "3600",
+    });
 
-    const totalPages =
-      allStaticPages.length + (posts?.length || 0) + (questions?.length || 0);
+    const totalPages = allStaticPages.length + (posts?.length || 0) + (questions?.length || 0);
 
     console.log(
-      `Sitemap updated: ${allStaticPages.length} static (${citySlugs.length} cities × ${serviceSlugs.length} services) | ${posts?.length || 0} blog posts | ${questions?.length || 0} legal questions | total: ${totalPages} URLs`
+      `Sitemap updated: ${allStaticPages.length} static (${citySlugs.length} cities × ${serviceSlugs.length} services) | ${posts?.length || 0} blog posts | ${questions?.length || 0} legal questions | total: ${totalPages} URLs`,
     );
 
     return new Response(xml, {
