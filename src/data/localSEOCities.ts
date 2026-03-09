@@ -883,7 +883,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "cambara", name: "Cambará", region: "Norte Pioneiro", variationIndex: 0 },
   { slug: "cambira", name: "Cambira", region: "Norte", variationIndex: 1 },
   { slug: "campina-da-lagoa", name: "Campina da Lagoa", region: "Centro-Oeste", variationIndex: 2 },
-  { slug: "campina-do-simão", name: "Campina do Simão", region: "Centro-Sul", variationIndex: 3 },
+  { slug: "campina-do-simao", name: "Campina do Simão", region: "Centro-Sul", variationIndex: 3 },
   { slug: "campo-bonito", name: "Campo Bonito", region: "Oeste", variationIndex: 4 },
   { slug: "campo-do-tenente", name: "Campo do Tenente", region: "Sudeste", variationIndex: 0 },
   { slug: "campo-magro", name: "Campo Magro", region: "Grande Curitiba", variationIndex: 1 },
