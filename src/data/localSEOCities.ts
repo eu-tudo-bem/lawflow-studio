@@ -918,7 +918,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "santa-monica", name: "Santa Mônica", region: "Noroeste", variationIndex: 2 },
   { slug: "santo-antonio-do-caiua", name: "Santo Antônio do Caiuá", region: "Noroeste", variationIndex: 3 },
   { slug: "sao-joao-do-caiua", name: "São João do Caiuá", region: "Noroeste", variationIndex: 4 },
-  { slug: "guairaçá", name: "Guairaçá", region: "Noroeste", variationIndex: 0 },
+  { slug: "guairaca", name: "Guairaçá", region: "Noroeste", variationIndex: 0 },
   { slug: "terra-rica", name: "Terra Rica", region: "Noroeste", variationIndex: 1 },
   { slug: "itauna-do-sul", name: "Itaúna do Sul", region: "Noroeste", variationIndex: 3 },
   { slug: "nova-londrina", name: "Nova Londrina", region: "Noroeste", variationIndex: 4 },
