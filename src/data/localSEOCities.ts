@@ -888,7 +888,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "campo-do-tenente", name: "Campo do Tenente", region: "Sudeste", variationIndex: 0 },
   { slug: "campo-magro", name: "Campo Magro", region: "Grande Curitiba", variationIndex: 1 },
   { slug: "candido-de-abreu", name: "Cândido de Abreu", region: "Centro", variationIndex: 2 },
-  { slug: "candói", name: "Candói", region: "Centro-Sul", variationIndex: 3 },
+  { slug: "candoi", name: "Candói", region: "Centro-Sul", variationIndex: 3 },
   { slug: "cantagalo", name: "Cantagalo", region: "Centro-Sul", variationIndex: 4 },
   { slug: "formosa-do-oeste", name: "Formosa do Oeste", region: "Oeste", variationIndex: 0 },
   { slug: "jesuitas", name: "Jesuítas", region: "Oeste", variationIndex: 1 },
