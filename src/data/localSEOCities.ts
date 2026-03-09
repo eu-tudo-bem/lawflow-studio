@@ -860,7 +860,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "araruna", name: "Araruna", region: "Centro-Oeste", variationIndex: 1 },
   { slug: "ariranha-do-ivai", name: "Ariranha do Ivaí", region: "Vale do Ivaí", variationIndex: 3 },
   { slug: "atalaia", name: "Atalaia", region: "Norte", variationIndex: 2 },
-  { slug: "balza-nova", name: "Balsa Nova", region: "Grande Curitiba", variationIndex: 3 },
+  { slug: "balsa-nova", name: "Balsa Nova", region: "Grande Curitiba", variationIndex: 3 },
   { slug: "barbosa-ferraz", name: "Barbosa Ferraz", region: "Centro-Oeste", variationIndex: 0 },
   { slug: "barra-do-jacare", name: "Barra do Jacaré", region: "Norte Pioneiro", variationIndex: 1 },
   { slug: "barracao", name: "Barracão", region: "Sudoeste", variationIndex: 2 },
