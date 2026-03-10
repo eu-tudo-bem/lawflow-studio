@@ -60,23 +60,20 @@
       *,::before,::after{box-sizing:border-box}
       html{line-height:1.5;-webkit-text-size-adjust:100%}
       body{margin:0;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#0d1a2d;color:#f5f0e8}
-      #root{min-height:100vh}
-      /* Static hero shell — reserves exact space before React hydrates, eliminating CLS */
-      #hero-shell{
-        position:relative;min-height:100vh;display:flex;align-items:center;
-        justify-content:center;padding-top:5rem;overflow:hidden;
-      }
-      #hero-shell-bg{
-        position:absolute;inset:0;z-index:0;
+      /* Root fills viewport immediately so document height is stable before React mounts */
+      #root{min-height:100vh;position:relative;z-index:2}
+      /* Static hero shell: fixed overlay that shows the background image while JS loads.
+         position:fixed means it contributes ZERO to document layout flow — no CLS.
+         Removed by MutationObserver the moment React inserts into #root. */
+      #hero-shell-static{
+        position:fixed;inset:0;z-index:1;pointer-events:none;
         background-image:url('/hero-bg.webp');
         background-size:cover;background-position:center;
       }
-      #hero-shell-overlay{
-        position:absolute;inset:0;
+      #hero-shell-static::after{
+        content:'';position:absolute;inset:0;
         background:linear-gradient(to right,rgba(13,17,32,0.95) 0%,rgba(13,17,32,0.85) 50%,rgba(13,17,32,0.70) 100%);
       }
-      /* Hide shell once React mounts (#root has children) — avoids double-render flash */
-      #root:not(:empty) ~ #hero-shell-static{display:none}
       header{position:fixed;top:0;left:0;right:0;z-index:50;background:hsl(220,50%,12%);border-bottom:1px solid hsl(220,30%,20%)}
       .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}
       @media(min-width:1280px){.container{max-width:1280px}}
