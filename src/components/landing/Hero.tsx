@@ -73,7 +73,7 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center pt-20"
     >
-      {/* Background Image with Overlay */}
+      {/* Background Image with Overlay — position:absolute so it never contributes to layout flow */}
       <div className="absolute inset-0 z-0">
         <img
           src={heroBg}
@@ -87,48 +87,38 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/95 via-navy-dark/85 to-navy-dark/70" />
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 relative z-10" style={{ willChange: "transform" }}>
+      {/* Content — rendered immediately visible; NO opacity-0 animations on the container or children
+          to prevent CLS. Only the typing cursor uses animation (opacity blink, no layout impact). */}
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl">
-          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium bg-accent/20 text-gold-light rounded-full animate-fade-up" style={{ willChange: "transform, opacity" }}>
+          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium bg-accent/20 text-gold-light rounded-full">
             Excelência Jurídica há mais de 20 anos
           </span>
 
-          <h1
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight animate-fade-up"
-            style={{ animationDelay: "0.1s", willChange: "transform, opacity" }}
-          >
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
             Defendemos seus direitos
             <br />
             em casos de{" "}
-            {/* contain:layout isolates the typing effect so width changes don't cause CLS upstream */}
+            {/* contain:layout isolates width changes from the typing effect */}
             <span className="inline-block relative pr-4" style={{ contain: "layout", minWidth: "2ch" }}>
               <span className="text-gold">{displayed}</span>
               <span
                 aria-hidden="true"
                 className="absolute top-0 right-0 w-[3px] h-full bg-gold rounded-sm"
                 style={{
-                  willChange: "opacity",
-                  animation: isErasing ? "none" : "blink 1s step-end infinite",
-                  opacity: isErasing ? 1 : undefined,
+                  animation: "blink 1s step-end infinite",
                 }}
               />
             </span>
           </h1>
 
-          <p
-            className="text-lg md:text-xl text-primary-foreground/80 mb-8 leading-relaxed animate-fade-up"
-            style={{ animationDelay: "0.2s", willChange: "transform, opacity" }}
-          >
+          <p className="text-lg md:text-xl text-primary-foreground/80 mb-8 leading-relaxed">
             Nossa equipe de advogados especializados está pronta para oferecer
             soluções jurídicas personalizadas, com ética, transparência e
             comprometimento com seu caso.
           </p>
 
-          <div
-            className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-up"
-            style={{ animationDelay: "0.3s", willChange: "transform, opacity" }}
-          >
+          <div className="flex flex-col sm:flex-row gap-4 mb-12">
             <Button
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold"
@@ -151,10 +141,7 @@ const Hero = () => {
           </div>
 
           {/* Stats */}
-          <div
-            className="grid grid-cols-3 gap-8 animate-fade-up"
-            style={{ animationDelay: "0.4s", willChange: "transform, opacity" }}
-          >
+          <div className="grid grid-cols-3 gap-8">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-accent/20 rounded-lg">
                 <Users className="h-6 w-6 text-gold" />
