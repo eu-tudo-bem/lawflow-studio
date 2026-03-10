@@ -88,33 +88,37 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10" style={{ willChange: "transform" }}>
         <div className="max-w-3xl">
-          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium bg-accent/20 text-gold-light rounded-full animate-fade-up">
+          <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium bg-accent/20 text-gold-light rounded-full animate-fade-up" style={{ willChange: "transform, opacity" }}>
             Excelência Jurídica há mais de 20 anos
           </span>
 
           <h1
             className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight animate-fade-up"
-            style={{ animationDelay: "0.1s" }}
+            style={{ animationDelay: "0.1s", willChange: "transform, opacity" }}
           >
             Defendemos seus direitos
             <br />
             em casos de{" "}
-            <span className="inline-block relative pr-1">
+            {/* contain:layout isolates the typing effect so width changes don't cause CLS upstream */}
+            <span className="inline-block relative pr-4" style={{ contain: "layout", minWidth: "2ch" }}>
               <span className="text-gold">{displayed}</span>
               <span
                 aria-hidden="true"
-                className={`absolute top-0 right-[-4px] w-[3px] h-full bg-gold rounded-sm ${
-                  isErasing ? "opacity-100" : "animate-[blink_1s_step-end_infinite]"
-                }`}
+                className="absolute top-0 right-0 w-[3px] h-full bg-gold rounded-sm"
+                style={{
+                  willChange: "opacity",
+                  animation: isErasing ? "none" : "blink 1s step-end infinite",
+                  opacity: isErasing ? 1 : undefined,
+                }}
               />
             </span>
           </h1>
 
           <p
             className="text-lg md:text-xl text-primary-foreground/80 mb-8 leading-relaxed animate-fade-up"
-            style={{ animationDelay: "0.2s" }}
+            style={{ animationDelay: "0.2s", willChange: "transform, opacity" }}
           >
             Nossa equipe de advogados especializados está pronta para oferecer
             soluções jurídicas personalizadas, com ética, transparência e
@@ -123,7 +127,7 @@ const Hero = () => {
 
           <div
             className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-up"
-            style={{ animationDelay: "0.3s" }}
+            style={{ animationDelay: "0.3s", willChange: "transform, opacity" }}
           >
             <Button
               size="lg"
@@ -149,7 +153,7 @@ const Hero = () => {
           {/* Stats */}
           <div
             className="grid grid-cols-3 gap-8 animate-fade-up"
-            style={{ animationDelay: "0.4s" }}
+            style={{ animationDelay: "0.4s", willChange: "transform, opacity" }}
           >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-accent/20 rounded-lg">
