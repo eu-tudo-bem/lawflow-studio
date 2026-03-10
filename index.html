@@ -60,12 +60,23 @@
       *,::before,::after{box-sizing:border-box}
       html{line-height:1.5;-webkit-text-size-adjust:100%}
       body{margin:0;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#0d1a2d;color:#f5f0e8}
-      #root{min-height:100vh}
-      header{position:fixed;top:0;left:0;right:0;z-index:50;background:hsl(220 50% 12%);border-bottom:1px solid hsl(220 30% 20%)}
+      /* Root fills viewport immediately so document height is stable before React mounts */
+      #root{min-height:100vh;position:relative;z-index:2}
+      /* Static hero shell: fixed overlay that shows the background image while JS loads.
+         position:fixed means it contributes ZERO to document layout flow — no CLS.
+         Removed by MutationObserver the moment React inserts into #root. */
+      #hero-shell-static{
+        position:fixed;inset:0;z-index:1;pointer-events:none;
+        background-image:url('/hero-bg.webp');
+        background-size:cover;background-position:center;
+      }
+      #hero-shell-static::after{
+        content:'';position:absolute;inset:0;
+        background:linear-gradient(to right,rgba(13,17,32,0.95) 0%,rgba(13,17,32,0.85) 50%,rgba(13,17,32,0.70) 100%);
+      }
+      header{position:fixed;top:0;left:0;right:0;z-index:50;background:hsl(220,50%,12%);border-bottom:1px solid hsl(220,30%,20%)}
       .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}
       @media(min-width:1280px){.container{max-width:1280px}}
-      /* Reserve hero viewport height immediately to prevent CLS from font/image load */
-      section#home{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
       /* Fallback font metrics matching Playfair Display to eliminate font-swap CLS */
       @font-face{font-family:'Playfair Display Fallback';src:local('Georgia'),local('Times New Roman');size-adjust:108%;ascent-override:90%;descent-override:25%;line-gap-override:0%}
       h1,h2,h3,h4,h5,h6{font-family:'Playfair Display','Playfair Display Fallback',Georgia,serif}
@@ -148,7 +159,29 @@
   <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQPK93BQ"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- Static hero shell: position:fixed overlay showing the hero BG while JS loads.
+         Adds zero document layout — no CLS contribution.
+         Removed by MutationObserver the instant React inserts into #root. -->
+    <div id="hero-shell-static" aria-hidden="true"></div>
+
     <div id="root"></div>
+
+    <script>
+      // Remove the static shell as soon as React mounts (first mutation inside #root)
+      (function(){
+        var root = document.getElementById('root');
+        var shell = document.getElementById('hero-shell-static');
+        if(!root || !shell) return;
+        var obs = new MutationObserver(function(){
+          shell.style.display = 'none';
+          obs.disconnect();
+        });
+        obs.observe(root, {childList: true});
+      })();
+    </script>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
