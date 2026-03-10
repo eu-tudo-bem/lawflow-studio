@@ -160,15 +160,10 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQPK93BQ"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <!-- Static hero shell: renders immediately with background image to reserve layout space.
-         Prevents the CLS caused by React mounting content after JS execution (3s FCP gap).
-         Hidden via JS once React hydrates #root. -->
-    <div id="hero-shell-static" aria-hidden="true">
-      <div id="hero-shell">
-        <div id="hero-shell-bg"></div>
-        <div id="hero-shell-overlay"></div>
-      </div>
-    </div>
+    <!-- Static hero shell: position:fixed overlay showing the hero BG while JS loads.
+         Adds zero document layout — no CLS contribution.
+         Removed by MutationObserver the instant React inserts into #root. -->
+    <div id="hero-shell-static" aria-hidden="true"></div>
 
     <div id="root"></div>
 
@@ -189,3 +184,4 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
