@@ -66,6 +66,9 @@
       @media(min-width:1280px){.container{max-width:1280px}}
       /* Reserve hero viewport height immediately to prevent CLS from font/image load */
       section#home{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+      /* Fallback font metrics matching Playfair Display to eliminate font-swap CLS */
+      @font-face{font-family:'Playfair Display Fallback';src:local('Georgia'),local('Times New Roman');size-adjust:108%;ascent-override:90%;descent-override:25%;line-gap-override:0%}
+      h1,h2,h3,h4,h5,h6{font-family:'Playfair Display','Playfair Display Fallback',Georgia,serif}
     </style>
     <title>Fernandez &amp; Fernandes | Advocacia Estratégica</title>
     <meta name="description" content="Escritório de advocacia com mais de 20 anos de experiência. Atuação em direito trabalhista, família, empresarial, tributário e mais. Agende sua consulta.">
