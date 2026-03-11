@@ -41,9 +41,9 @@ function cleanJSON(raw: string): string {
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflight = handleOptions(req);
+  if (preflight) return preflight;
+  const corsHeaders = getCorsHeaders(req);
 
   const startTime = Date.now();
 

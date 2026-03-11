@@ -34,9 +34,9 @@ async function callAI(apiKey: string, prompt: string, model = "google/gemini-3-f
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflight = handleOptions(req);
+  if (preflight) return preflight;
+  const corsHeaders = getCorsHeaders(req);
 
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;

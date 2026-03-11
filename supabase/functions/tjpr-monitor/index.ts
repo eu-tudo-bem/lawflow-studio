@@ -5,9 +5,9 @@ const TJPR_ENDPOINT =
   "https://www.tjpr.jus.br/documents/d/planejamento/processos_tjpr?download=true";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflight = handleOptions(req);
+  if (preflight) return preflight;
+  const corsHeaders = getCorsHeaders(req);
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;

@@ -197,8 +197,10 @@ Retorne um JSON com esta estrutura exata:
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
-
+serve(async (req) => {
+  const preflight = handleOptions(req);
+  if (preflight) return preflight;
+  const corsHeaders = getCorsHeaders(req);
   const startTime = Date.now();
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
