@@ -1,11 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const LEGAL_AREAS = [
   { id: "trabalhista", name: "Direito do Trabalho", topics: ["rescisão, FGTS, horas extras, férias, assédio moral, demissão, carteira assinada, salário atrasado, acidente de trabalho, estabilidade"] },
@@ -39,9 +34,9 @@ async function callAI(apiKey: string, prompt: string, model = "google/gemini-3-f
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflight = handleOptions(req);
+  if (preflight) return preflight;
+  const corsHeaders = getCorsHeaders(req);
 
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
