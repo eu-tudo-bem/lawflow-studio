@@ -197,7 +197,6 @@ Retorne um JSON com esta estrutura exata:
 }
 
 serve(async (req) => {
-serve(async (req) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
   const corsHeaders = getCorsHeaders(req);
