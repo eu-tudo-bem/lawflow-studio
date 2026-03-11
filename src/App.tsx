@@ -1,9 +1,18 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useParams, Navigate } from "react-router-dom";
+
+// Redirect www → non-www as a client-side safety net (DNS/server-side is preferred)
+if (typeof window !== "undefined" && window.location.hostname.startsWith("www.")) {
+  const canonical = window.location.href.replace(
+    `://${window.location.hostname}`,
+    `://${window.location.hostname.replace(/^www\./, "")}`
+  );
+  window.location.replace(canonical);
+}
 import Index from "./pages/Index";
 import { LEGAL_SERVICES, PARANA_CITIES } from "@/data/localSEOCities";
 
