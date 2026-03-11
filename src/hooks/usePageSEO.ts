@@ -37,6 +37,11 @@ function setCanonical(href: string) {
   }
 }
 
+/** Strip www. from any URL to enforce the canonical non-www domain */
+function stripWww(url: string): string {
+  return url.replace(/^(https?:\/\/)www\./i, "$1");
+}
+
 export function usePageSEO({
   title,
   description,
@@ -47,9 +52,8 @@ export function usePageSEO({
   robots = "index, follow",
 }: PageSEOConfig) {
   useEffect(() => {
-    // If canonical is not yet resolved (empty string or undefined), skip setting
-    // the tag entirely to avoid writing the wrong URL (e.g. "/" during async loading)
-    const resolvedCanonical = canonical || "";
+    // Sanitize: strip www and skip if not yet resolved (avoids wrong "/" during async loading)
+    const resolvedCanonical = canonical ? stripWww(canonical) : "";
 
     document.title = title;
     setMetaTag("description", description);
