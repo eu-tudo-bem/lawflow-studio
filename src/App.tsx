@@ -279,6 +279,14 @@ const App = () => (
               }
             />
             <Route path="/dashboard/seo-local" element={<Navigate to="/dashboard/legal-monitor" replace />} />
+            <Route
+              path="/dashboard/web-vitals"
+              element={
+                <ProtectedRoute requiredRole="staff">
+                  <WebVitalsDashboard />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Client Portal Routes */}
             <Route path="/client-login" element={<ClientLogin />} />
