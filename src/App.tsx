@@ -108,6 +108,11 @@ const DynamicServiceCityRoute = () => {
   );
 };
 
+// Initialise Web Vitals collection once (outside React tree, after module load)
+if (typeof window !== "undefined") {
+  initWebVitals();
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
