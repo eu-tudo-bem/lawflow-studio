@@ -1,0 +1,54 @@
+/*
+  # ── Clickjacking protection ─────────────────────────────────────────────────
+  X-Frame-Options: DENY
+
+  # ── MIME-type sniffing protection ───────────────────────────────────────────
+  X-Content-Type-Options: nosniff
+
+  # ── Legacy XSS filter (IE/Edge) ─────────────────────────────────────────────
+  X-XSS-Protection: 1; mode=block
+
+  # ── Referrer policy: send origin only on same-site, full URL cross-origin ──
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # ── Permissions policy: disable unused powerful features ────────────────────
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), interest-cohort=()
+
+  # ── Content Security Policy ──────────────────────────────────────────────────
+  # Breakdown of allowed origins:
+  #   script-src:
+  #     - 'self' (own JS bundles)
+  #     - 'unsafe-inline' (required by inline GTM bootstrap + React hydration)
+  #     - www.googletagmanager.com (GTM + gtag.js)
+  #     - www.google-analytics.com (GA4)
+  #     - www.clarity.ms (Microsoft Clarity)
+  #     - js.hs-scripts.com (if HubSpot is ever added — safe to keep)
+  #     - connect.facebook.net (Meta pixel, referenced in Clarity/GTM)
+  #     - *.flock.com (Flock script loaded by the platform)
+  #
+  #   style-src:
+  #     - 'self' + 'unsafe-inline' (Tailwind CSS + shadcn inline styles)
+  #     - fonts.googleapis.com (Google Fonts CSS)
+  #
+  #   font-src:
+  #     - 'self'
+  #     - fonts.gstatic.com (Google Fonts woff2)
+  #
+  #   img-src:
+  #     - 'self' data: blob: https: (cover images, OG images, CDN assets)
+  #
+  #   connect-src:
+  #     - 'self'
+  #     - *.supabase.co wss://*.supabase.co (Supabase REST + Realtime)
+  #     - www.google-analytics.com *.analytics.google.com (GA4 beacons)
+  #     - www.googletagmanager.com (GTM data push)
+  #     - *.clarity.ms (Clarity telemetry)
+  #     - region1.google-analytics.com (GA4 regional endpoint)
+  #
+  #   frame-src:
+  #     - www.googletagmanager.com/ns.html (GTM noscript iframe)
+  #     - 'none' otherwise
+  #
+  #   object-src / base-uri:
+  #     - 'none' (prevent plugin injection & base-tag hijacking)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://connect.facebook.net https://*.flock.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://region1.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms; frame-src https://www.googletagmanager.com; object-src 'none'; base-uri 'self';
