@@ -387,7 +387,7 @@ IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem 
   } catch (e) {
     console.error("generate-blog-post error:", e);
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
+      JSON.stringify({ error: "Não foi possível gerar o artigo. Tente novamente mais tarde." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
