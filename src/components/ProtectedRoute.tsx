@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactNode } from "react";
+import { useEffect, useRef, useState, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,18 +8,40 @@ interface ProtectedRouteProps {
   requiredRole: "admin" | "staff" | "client";
 }
 
+// Module-level cache: maps "userId:role" → authorized boolean
+// Cleared automatically when the user logs out (user becomes null).
+const roleCache = new Map<string, boolean>();
+
 const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [authorized, setAuthorized] = useState<boolean | null>(null);
+  // Track the user+role pair currently being verified to avoid duplicate calls
+  const verifyingRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (loading) return;
 
     if (!user) {
+      // Clear cache on logout
+      roleCache.clear();
       navigate(requiredRole === "client" ? "/client-login" : "/login", { replace: true });
       return;
     }
+
+    const cacheKey = `${user.id}:${requiredRole}`;
+
+    // Return cached result immediately — no flash, no extra network call
+    if (roleCache.has(cacheKey)) {
+      const cached = roleCache.get(cacheKey)!;
+      setAuthorized(cached);
+      if (!cached) navigate("/unauthorized", { replace: true });
+      return;
+    }
+
+    // Prevent duplicate in-flight calls for the same key
+    if (verifyingRef.current === cacheKey) return;
+    verifyingRef.current = cacheKey;
 
     const checkRole = async () => {
       try {
@@ -27,15 +49,19 @@ const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
           body: { expected_role: requiredRole },
         });
 
-        if (error || !data?.authorized) {
-          setAuthorized(false);
+        const isAuthorized = !error && !!data?.authorized;
+        roleCache.set(cacheKey, isAuthorized);
+        setAuthorized(isAuthorized);
+
+        if (!isAuthorized) {
           navigate("/unauthorized", { replace: true });
-        } else {
-          setAuthorized(true);
         }
       } catch {
+        roleCache.set(cacheKey, false);
         setAuthorized(false);
         navigate("/unauthorized", { replace: true });
+      } finally {
+        verifyingRef.current = null;
       }
     };
 
