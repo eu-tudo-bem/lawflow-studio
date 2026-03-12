@@ -998,6 +998,54 @@ export type Database = {
         }
         Relationships: []
       }
+      web_vitals: {
+        Row: {
+          city_slug: string | null
+          connection_type: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          metric_delta: number | null
+          metric_id: string | null
+          metric_name: string
+          metric_rating: string
+          metric_value: number
+          navigation_type: string | null
+          page_path: string
+          page_url: string
+        }
+        Insert: {
+          city_slug?: string | null
+          connection_type?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          metric_delta?: number | null
+          metric_id?: string | null
+          metric_name: string
+          metric_rating: string
+          metric_value: number
+          navigation_type?: string | null
+          page_path: string
+          page_url: string
+        }
+        Update: {
+          city_slug?: string | null
+          connection_type?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          metric_delta?: number | null
+          metric_id?: string | null
+          metric_name?: string
+          metric_rating?: string
+          metric_value?: number
+          navigation_type?: string | null
+          page_path?: string
+          page_url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

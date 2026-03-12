@@ -15,8 +15,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useParams, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 import { LEGAL_SERVICES, PARANA_CITIES } from "@/data/localSEOCities";
+import { initWebVitals } from "@/lib/webVitals";
 
 // Lazy-load auth/utility components so they don't block FCP on the homepage
 const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
@@ -62,6 +64,7 @@ const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
 const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
 const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
 const PerguntaJuridica = lazy(() => import("./pages/PerguntaJuridica"));
+const WebVitalsDashboard = lazy(() => import("./pages/WebVitalsDashboard"));
 
 const queryClient = new QueryClient();
 
@@ -104,6 +107,11 @@ const DynamicServiceCityRoute = () => {
     </Suspense>
   );
 };
+
+// Initialise Web Vitals collection once (outside React tree, after module load)
+if (typeof window !== "undefined") {
+  initWebVitals();
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -271,6 +279,14 @@ const App = () => (
               }
             />
             <Route path="/dashboard/seo-local" element={<Navigate to="/dashboard/legal-monitor" replace />} />
+            <Route
+              path="/dashboard/web-vitals"
+              element={
+                <ProtectedRoute requiredRole="staff">
+                  <WebVitalsDashboard />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Client Portal Routes */}
             <Route path="/client-login" element={<ClientLogin />} />
