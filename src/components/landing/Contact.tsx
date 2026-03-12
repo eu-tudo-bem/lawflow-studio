@@ -38,6 +38,10 @@ const Contact = () => {
     try {
       const validatedData = contactSchema.parse(formData);
 
+      // Dynamically import the Supabase client only when the form is submitted,
+      // keeping it out of the initial JS parse on page load.
+      const { supabase } = await import("@/integrations/supabase/client");
+
       const { error } = await supabase
         .from("contact_submissions")
         .insert({
