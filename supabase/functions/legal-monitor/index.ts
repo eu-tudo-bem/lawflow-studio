@@ -379,7 +379,7 @@ IMPORTANTE: Escreva APENAS o HTML + linha de JSON no final. Comece com <h1>.`;
     } catch { /* ignore logging error */ }
 
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
+      JSON.stringify({ error: "Não foi possível executar o monitor. Tente novamente mais tarde." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
