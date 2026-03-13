@@ -72,6 +72,7 @@ const Hero = () => {
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center pt-20"
+      style={{ contain: "layout", willChange: "transform" }}
     >
       {/* Background Image with Overlay — position:absolute so it never contributes to layout flow */}
       <div className="absolute inset-0 z-0">
@@ -107,6 +108,8 @@ const Hero = () => {
                 className="absolute top-0 right-0 w-[3px] h-full bg-gold rounded-sm"
                 style={{
                   animation: "blink 1s step-end infinite",
+                  willChange: "opacity",
+                  contain: "strict",
                 }}
               />
             </span>
