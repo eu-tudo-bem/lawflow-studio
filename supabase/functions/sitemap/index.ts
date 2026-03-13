@@ -139,13 +139,14 @@ Deno.serve(async (req) => {
 
     // ── Save to storage bucket ────────────────────────────────────────
     const xmlBlob = new Blob([xml], { type: "application/xml" });
-    await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("sitemap")
       .upload("sitemap.xml", xmlBlob, {
         contentType: "application/xml",
         upsert: true,
         cacheControl: "3600",
       });
+    if (uploadError) console.error("[sitemap] Failed to save sitemap.xml to storage:", uploadError.message);
 
     const totalPages =
       allStaticPages.length + (posts?.length || 0) + (questions?.length || 0);
