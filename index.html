@@ -79,6 +79,9 @@
         position:fixed;inset:0;z-index:1;pointer-events:none;
         background-image:url('/hero-bg.webp');
         background-size:cover;background-position:center;
+        /* Smooth fade-out avoids layout recalculation → no CLS when React mounts */
+        transition:opacity 0.25s ease;
+        will-change:opacity;
       }
       #hero-shell-static::after{
         content:'';position:absolute;inset:0;
