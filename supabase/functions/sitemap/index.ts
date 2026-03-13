@@ -46,10 +46,10 @@ Deno.serve(async (req) => {
 
     // ── Fetch cities and services from DB (dynamic) ───────────────────
     const [
-      { data: cities },
-      { data: services },
-      { data: posts },
-      { data: questions },
+      { data: cities, error: citiesError },
+      { data: services, error: servicesError },
+      { data: posts, error: postsError },
+      { data: questions, error: questionsError },
     ] = await Promise.all([
       supabase.from("seo_cities").select("slug").eq("active", true),
       supabase.from("seo_services").select("slug").eq("active", true),
@@ -64,6 +64,12 @@ Deno.serve(async (req) => {
         .eq("status", "published")
         .order("published_at", { ascending: false }),
     ]);
+
+    // ── Log data fetch errors (non-fatal: fall back to empty arrays) ───
+    if (citiesError) console.error("[sitemap] Failed to fetch seo_cities:", citiesError.message);
+    if (servicesError) console.error("[sitemap] Failed to fetch seo_services:", servicesError.message);
+    if (postsError) console.error("[sitemap] Failed to fetch blog_posts:", postsError.message);
+    if (questionsError) console.error("[sitemap] Failed to fetch legal_questions:", questionsError.message);
 
     const citySlugs = (cities || []).map((c) => c.slug);
     const serviceSlugs = (services || []).map((s) => s.slug);
@@ -133,13 +139,14 @@ Deno.serve(async (req) => {
 
     // ── Save to storage bucket ────────────────────────────────────────
     const xmlBlob = new Blob([xml], { type: "application/xml" });
-    await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("sitemap")
       .upload("sitemap.xml", xmlBlob, {
         contentType: "application/xml",
         upsert: true,
         cacheControl: "3600",
       });
+    if (uploadError) console.error("[sitemap] Failed to save sitemap.xml to storage:", uploadError.message);
 
     const totalPages =
       allStaticPages.length + (posts?.length || 0) + (questions?.length || 0);
