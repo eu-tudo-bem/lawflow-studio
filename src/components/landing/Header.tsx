@@ -59,7 +59,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10" width={40} height={40} fetchPriority="high" decoding="sync" />
+            <img src={logoImg} alt="Fernandez & Fernandes Logo" className="h-10 w-10" width={40} height={40} fetchPriority="high" decoding="async" style={{ imageRendering: "auto" }} />
             <div>
               <span className="font-serif text-xl font-semibold text-[hsl(45_20%_95%)]">
                 Fernandez & Fernandes
