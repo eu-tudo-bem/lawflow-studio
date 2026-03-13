@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Gauge, MapPin, Monitor } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Activity, Gauge, MapPin, Monitor, TrendingUp } from "lucide-react";
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
