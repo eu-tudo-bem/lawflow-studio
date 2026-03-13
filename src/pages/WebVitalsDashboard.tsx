@@ -152,6 +152,50 @@ const WebVitalsDashboard = () => {
 
   const totalSamples = rows.length;
 
+  // ── Core Web Vitals overall "good sessions" score (LCP + CLS + INP all good) ─
+  // A session page-view is "good" if all three CWV metrics for that page load are good.
+  // We approximate by checking the intersection of good-rated rows per metric.
+  const cwvMetrics = ["LCP", "CLS", "INP"] as const;
+  const totalCwvSessions = (() => {
+    // Use LCP as session count proxy (every page load that reports LCP)
+    const lcpRows = rows.filter((r) => r.metric_name === "LCP");
+    return lcpRows.length;
+  })();
+
+  const goodCwvPct = (() => {
+    if (!totalCwvSessions) return 0;
+    // % of sessions where ALL three CWV are rated "good"
+    // Since we don't have per-session IDs, use per-metric good% and multiply (independence assumption)
+    const perMetricGoodPct = cwvMetrics.map((name) => {
+      const subset = rows.filter((r) => r.metric_name === name);
+      if (!subset.length) return 1; // no data → don't penalise
+      const good = subset.filter((r) => r.metric_rating === "good").length;
+      return good / subset.length;
+    });
+    return Math.round(perMetricGoodPct.reduce((acc, p) => acc * p, 1) * 100);
+  })();
+
+  const needsImprovementCwvPct = (() => {
+    if (!totalCwvSessions) return 0;
+    const perMetricNIPct = cwvMetrics.map((name) => {
+      const subset = rows.filter((r) => r.metric_name === name);
+      if (!subset.length) return 0;
+      const ni = subset.filter((r) => r.metric_rating === "needs-improvement").length;
+      return ni / subset.length;
+    });
+    const avgNI = Math.round((perMetricNIPct.reduce((a, b) => a + b, 0) / perMetricNIPct.length) * 100);
+    return Math.min(avgNI, 100 - goodCwvPct);
+  })();
+
+  const poorCwvPct = Math.max(0, 100 - goodCwvPct - needsImprovementCwvPct);
+
+  const cwvScoreLabel =
+    goodCwvPct >= 75 ? "Bom" : goodCwvPct >= 50 ? "Precisa Melhorar" : "Fraco";
+  const cwvScoreColor =
+    goodCwvPct >= 75 ? "text-emerald-600" : goodCwvPct >= 50 ? "text-amber-600" : "text-red-600";
+  const cwvRingColor =
+    goodCwvPct >= 75 ? "stroke-emerald-500" : goodCwvPct >= 50 ? "stroke-amber-500" : "stroke-red-500";
+
   return (
     <DashboardLayout title="Performance Real (Web Vitals)">
       {/* Header controls */}
