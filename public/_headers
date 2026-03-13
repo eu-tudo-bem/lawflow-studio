@@ -1,3 +1,12 @@
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/hero-bg.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/logo-*.png
+  Cache-Control: public, max-age=31536000, immutable
+
 /*
   # ── Clickjacking protection ─────────────────────────────────────────────────
   X-Frame-Options: DENY
