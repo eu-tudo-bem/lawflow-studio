@@ -79,6 +79,9 @@
         position:fixed;inset:0;z-index:1;pointer-events:none;
         background-image:url('/hero-bg.webp');
         background-size:cover;background-position:center;
+        /* Smooth fade-out avoids layout recalculation → no CLS when React mounts */
+        transition:opacity 0.25s ease;
+        will-change:opacity;
       }
       #hero-shell-static::after{
         content:'';position:absolute;inset:0;
@@ -178,13 +181,18 @@
     <div id="root"></div>
 
     <script>
-      // Remove the static shell as soon as React mounts (first mutation inside #root)
+      // Fade out the static shell as soon as React mounts (first mutation inside #root).
+      // Using opacity:0 + pointer-events:none instead of display:none avoids triggering
+      // a layout recalculation that would cause a CLS shift on the hero section.
       (function(){
         var root = document.getElementById('root');
         var shell = document.getElementById('hero-shell-static');
         if(!root || !shell) return;
         var obs = new MutationObserver(function(){
-          shell.style.display = 'none';
+          shell.style.opacity = '0';
+          shell.style.pointerEvents = 'none';
+          // Fully remove from paint after transition completes (no layout impact)
+          setTimeout(function(){ shell.style.visibility = 'hidden'; }, 300);
           obs.disconnect();
         });
         obs.observe(root, {childList: true});
