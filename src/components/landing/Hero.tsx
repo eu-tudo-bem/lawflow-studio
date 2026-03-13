@@ -72,7 +72,7 @@ const Hero = () => {
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center pt-20"
-      style={{ contain: "layout", willChange: "transform" }}
+      style={{ contain: "layout", willChange: "transform", minHeight: "100vh" }}
     >
       {/* Background Image with Overlay — position:absolute so it never contributes to layout flow */}
       <div className="absolute inset-0 z-0">
@@ -90,7 +90,7 @@ const Hero = () => {
 
       {/* Content — rendered immediately visible; NO opacity-0 animations on the container or children
           to prevent CLS. Only the typing cursor uses animation (opacity blink, no layout impact). */}
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10" style={{ contain: "layout style" }}>
         <div className="max-w-3xl">
           <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium bg-accent/20 text-gold-light rounded-full">
             Excelência Jurídica há mais de 20 anos
