@@ -227,6 +227,89 @@ const WebVitalsDashboard = () => {
         </div>
       ) : (
         <>
+          {/* ── Core Web Vitals Scorecard (à la Google Search Console) ─────── */}
+          <Card className="border-0 shadow-card mb-8">
+            <CardHeader className="pb-2">
+              <CardTitle className="font-serif text-base flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-accent" />
+                Core Web Vitals — Sessões com Boa Experiência
+                <span className="ml-auto text-xs font-normal text-muted-foreground">
+                  Baseado em LCP · CLS · INP
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {totalCwvSessions === 0 ? (
+                <p className="text-sm text-muted-foreground py-2">
+                  Sem dados suficientes neste período. As métricas aparecerão assim que os utilizadores visitarem o site.
+                </p>
+              ) : (
+                <div className="flex flex-col md:flex-row items-center gap-8 py-2">
+                  {/* Gauge circle */}
+                  <div className="relative shrink-0 flex items-center justify-center">
+                    <svg width="120" height="120" viewBox="0 0 120 120" className="-rotate-90">
+                      <circle cx="60" cy="60" r="50" fill="none" stroke="hsl(var(--muted))" strokeWidth="10" />
+                      <circle
+                        cx="60" cy="60" r="50"
+                        fill="none"
+                        strokeWidth="10"
+                        strokeLinecap="round"
+                        strokeDasharray={`${2 * Math.PI * 50}`}
+                        strokeDashoffset={`${2 * Math.PI * 50 * (1 - goodCwvPct / 100)}`}
+                        className={`transition-all duration-700 ${cwvRingColor}`}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className={`text-3xl font-bold ${cwvScoreColor}`}>{goodCwvPct}%</span>
+                      <span className={`text-xs font-semibold ${cwvScoreColor}`}>{cwvScoreLabel}</span>
+                    </div>
+                  </div>
+
+                  {/* Distribution bars */}
+                  <div className="flex-1 w-full space-y-3">
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-emerald-700 font-medium">Bom</span>
+                        <span className="text-muted-foreground">{goodCwvPct}%</span>
+                      </div>
+                      <Progress value={goodCwvPct} className="h-3 [&>div]:bg-emerald-500" />
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-amber-700 font-medium">Precisa Melhorar</span>
+                        <span className="text-muted-foreground">{needsImprovementCwvPct}%</span>
+                      </div>
+                      <Progress value={needsImprovementCwvPct} className="h-3 [&>div]:bg-amber-500" />
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-red-700 font-medium">Fraco</span>
+                        <span className="text-muted-foreground">{poorCwvPct}%</span>
+                      </div>
+                      <Progress value={poorCwvPct} className="h-3 [&>div]:bg-red-500" />
+                    </div>
+                  </div>
+
+                  {/* Summary stats */}
+                  <div className="grid grid-cols-3 md:grid-cols-1 gap-4 shrink-0 text-center md:text-right">
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">{totalCwvSessions.toLocaleString("pt-BR")}</p>
+                      <p className="text-xs text-muted-foreground">Sessões analisadas</p>
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">{days}d</p>
+                      <p className="text-xs text-muted-foreground">Período</p>
+                    </div>
+                    <div>
+                      <p className={`text-2xl font-bold ${cwvScoreColor}`}>{goodCwvPct}%</p>
+                      <p className="text-xs text-muted-foreground">URL boas</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           {/* Global metric cards */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             {metricSummaries.map((m) => {
