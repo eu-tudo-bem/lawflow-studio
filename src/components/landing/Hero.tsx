@@ -108,6 +108,8 @@ const Hero = () => {
                 className="absolute top-0 right-0 w-[3px] h-full bg-gold rounded-sm"
                 style={{
                   animation: "blink 1s step-end infinite",
+                  willChange: "opacity",
+                  contain: "strict",
                 }}
               />
             </span>
