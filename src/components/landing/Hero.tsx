@@ -71,8 +71,8 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-20"
-      style={{ contain: "layout", willChange: "transform", minHeight: "100vh" }}
+      className="relative flex items-center justify-center pt-20"
+      style={{ contain: "layout", height: "100vh", minHeight: "600px" }}
     >
       {/* Background Image with Overlay — position:absolute so it never contributes to layout flow */}
       <div className="absolute inset-0 z-0">
