@@ -111,7 +111,6 @@ const Hero = () => {
                 style={{
                   animation: "blink 1s step-end infinite",
                   willChange: "opacity",
-                  contain: "strict",
                 }}
               />
             </span>
