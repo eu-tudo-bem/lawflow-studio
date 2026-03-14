@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useParams, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
-import { LEGAL_SERVICES, PARANA_CITIES } from "@/data/localSEOCities";
+import { LEGAL_SERVICES } from "@/data/localSEOCities";
 import { initWebVitals } from "@/lib/webVitals";
 
 // Lazy-load auth/utility components so they don't block FCP on the homepage
