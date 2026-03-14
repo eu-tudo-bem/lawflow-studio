@@ -131,30 +131,10 @@ const App = () => (
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
 
-            {/* Hyper-local SEO Pages – ESCRITÓRIO POR CIDADE (GERAÇÃO AUTOMÁTICA) */}
-            {PARANA_CITIES.map((city) => (
-              <Route
-                key={city.slug}
-                path={`/escritorio-advocacia-${city.slug}`}
-                element={<LocalAdvocaciaPage citySlugOverride={city.slug} />}
-              />
-            ))}
-
-            {/* Catch-all para cidades dinâmicas: /escritorio-advocacia-{qualquer-cidade} */}
+            {/* Hyper-local SEO – catch-all único para /escritorio-advocacia-{cidade} */}
             <Route path="/escritorio-advocacia-*" element={<DynamicCityRoute />} />
 
-            {/* Hyper-local SEO Pages – SERVIÇO + CIDADE (GERAÇÃO AUTOMÁTICA PARA OS 5 SERVIÇOS) */}
-            {LEGAL_SERVICES.flatMap((svc) =>
-              PARANA_CITIES.map((city) => (
-                <Route
-                  key={`${svc.slug}-${city.slug}`}
-                  path={`/advogado-${svc.keyword}-${city.slug}`}
-                  element={<ServiceLocalPage serviceSlug={svc.slug} citySlug={city.slug} />}
-                />
-              )),
-            )}
-
-            {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
+            {/* Hyper-local SEO – catch-all único para /advogado-{servico}-{cidade} */}
             <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
 
             {/* Gerador de Documentos Jurídicos */}
