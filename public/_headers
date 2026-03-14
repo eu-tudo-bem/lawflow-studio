@@ -1,3 +1,7 @@
+# ── www → non-www permanent redirect (fires before any JS is downloaded) ──────
+https://www.fernandezefernandes.adv.br/*
+  Redirect: 301 https://fernandezefernandes.adv.br/:splat
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 

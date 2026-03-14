@@ -1,13 +1,5 @@
-// ── www → non-www redirect (client-side safety net; DNS/server is preferred) ──
-// Runs before React mounts so no content is ever rendered on the www version.
-if (typeof window !== "undefined" && window.location.hostname.startsWith("www.")) {
-  window.location.replace(
-    window.location.href.replace(
-      `://${window.location.hostname}`,
-      `://${window.location.hostname.replace(/^www\./, "")}`
-    )
-  );
-}
+// www → non-www redirect is handled at the server level via _headers (301 permanent redirect).
+// No client-side JS needed — browser never fetches JS before the redirect fires.
 
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
