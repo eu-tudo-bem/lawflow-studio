@@ -78,6 +78,8 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <img
           src={heroBg}
+          srcSet="/hero-bg-mobile.webp 640w, /hero-bg-tablet.webp 1280w, /hero-bg.webp 1920w"
+          sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
           alt="Escritório de Advocacia"
           className="w-full h-full object-cover"
           width={1920}
