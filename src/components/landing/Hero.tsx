@@ -98,12 +98,20 @@ const Hero = () => {
             Excelência Jurídica há mais de 20 anos
           </span>
 
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight">
+          {/* min-height based on 2 lines (the longest TYPING_WORD can wrap) prevents height shifts */}
+          <h1
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 leading-tight"
+            style={{ minHeight: "3.6em" }}
+          >
             Defendemos seus direitos
             <br />
             em casos de{" "}
-            {/* contain:layout isolates width changes from the typing effect */}
-            <span className="inline-block relative pr-4" style={{ contain: "layout", minWidth: "2ch" }}>
+            {/* Fixed width = longest word "Divórcio Consensual" / "Direito Empresarial" (~19 ch).
+                contain:layout isolates reflows to this subtree only. */}
+            <span
+              className="inline-block relative pr-4"
+              style={{ contain: "layout", minWidth: "min(19ch, 100%)" }}
+            >
               <span className="text-gold">{displayed}</span>
               <span
                 aria-hidden="true"
