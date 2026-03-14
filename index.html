@@ -84,12 +84,14 @@
          Removed by MutationObserver the moment React inserts into #root. */
       #hero-shell-static{
         position:fixed;inset:0;z-index:1;pointer-events:none;
-        background-image:url('/hero-bg.webp');
+        background-image:url('/hero-bg-mobile.webp');
         background-size:cover;background-position:center;
         /* Smooth fade-out avoids layout recalculation → no CLS when React mounts */
         transition:opacity 0.25s ease;
         will-change:opacity;
       }
+      @media(min-width:641px){#hero-shell-static{background-image:url('/hero-bg-tablet.webp')}}
+      @media(min-width:1281px){#hero-shell-static{background-image:url('/hero-bg.webp')}}
       #hero-shell-static::after{
         content:'';position:absolute;inset:0;
         background:linear-gradient(to right,rgba(13,17,32,0.95) 0%,rgba(13,17,32,0.85) 50%,rgba(13,17,32,0.70) 100%);
