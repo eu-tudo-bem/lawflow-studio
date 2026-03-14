@@ -92,7 +92,7 @@ const Hero = () => {
 
       {/* Content — rendered immediately visible; NO opacity-0 animations on the container or children
           to prevent CLS. Only the typing cursor uses animation (opacity blink, no layout impact). */}
-      <div className="container mx-auto px-4 relative z-10" style={{ contain: "layout style" }}>
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl">
           <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium bg-accent/20 text-gold-light rounded-full">
             Excelência Jurídica há mais de 20 anos
