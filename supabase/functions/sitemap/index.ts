@@ -3,6 +3,15 @@ import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
+/** Remove accents/diacritics and ensure a clean ASCII slug */
+function sanitizeSlug(slug: string): string {
+  return slug
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // strip combining diacritical marks
+    .replace(/[^\w-]/g, "")           // remove any remaining non-ASCII
+    .toLowerCase();
+}
+
 const DOCUMENT_GENERATOR_SLUGS = [
   "notificacao-cobranca-aluguel",
   "notificacao-divida",
@@ -71,8 +80,8 @@ Deno.serve(async (req) => {
     if (postsError) console.error("[sitemap] Failed to fetch blog_posts:", postsError.message);
     if (questionsError) console.error("[sitemap] Failed to fetch legal_questions:", questionsError.message);
 
-    const citySlugs = (cities || []).map((c) => c.slug);
-    const serviceSlugs = (services || []).map((s) => s.slug);
+    const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
+    const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
     // ── Hyper-local pages built from DB ───────────────────────────────
     const hyperlocalCityPages = citySlugs.map((slug) => ({
