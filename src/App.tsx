@@ -50,6 +50,7 @@ const DivorcioConsensual = lazy(() => import("./pages/DivorcioConsensual"));
 const CobrancaAluguel = lazy(() => import("./pages/CobrancaAluguel"));
 const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
+const RecuperacaoVeiculos = lazy(() => import("./pages/RecuperacaoVeiculos"));
 const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
 const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
@@ -57,7 +58,6 @@ const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
 const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
 const PerguntaJuridica = lazy(() => import("./pages/PerguntaJuridica"));
 const WebVitalsDashboard = lazy(() => import("./pages/WebVitalsDashboard"));
-const RecuperacaoVeiculos = lazy(() => import("./pages/RecuperacaoVeiculos"));
 
 const queryClient = new QueryClient();
 
@@ -131,6 +131,7 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
+            <Route path="/recuperacao-veiculos" element={<RecuperacaoVeiculos />} />
 
             {/* Hyper-local SEO Pages – ESCRITÓRIO POR CIDADE (GERAÇÃO AUTOMÁTICA) */}
             {PARANA_CITIES.map((city) => (
