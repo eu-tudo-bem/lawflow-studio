@@ -49,6 +49,7 @@ const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
 const RecuperacaoVeiculos = lazy(() => import("./pages/RecuperacaoVeiculos"));
 const DefesaAgraria = lazy(() => import("./pages/DefesaAgraria"));
+const Naturalizacao = lazy(() => import("./pages/Naturalizacao"));
 const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
 const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
@@ -127,9 +128,10 @@ const App = () => (
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
             <Route path="/recuperacao-veiculos" element={<RecuperacaoVeiculos />} />
+            <Route path="/defesa-agraria" element={<DefesaAgraria />} />
 
             {/* NOVA ROTA AQUI */}
-            <Route path="/defesa-agraria" element={<DefesaAgraria />} />
+            <Route path="/naturalizacao" element={<Naturalizacao />} />
 
             {/* Rotas SEO Dinâmicas (Devem ficar abaixo das rotas fixas) */}
             {PARANA_CITIES.map((city) => (
