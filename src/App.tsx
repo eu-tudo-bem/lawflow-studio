@@ -57,6 +57,7 @@ const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
 const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
 const PerguntaJuridica = lazy(() => import("./pages/PerguntaJuridica"));
 const WebVitalsDashboard = lazy(() => import("./pages/WebVitalsDashboard"));
+const RecuperacaoVeiculos = lazy(() => import("./pages/RecuperacaoVeiculos"));
 
 const queryClient = new QueryClient();
 
