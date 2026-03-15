@@ -3,6 +3,15 @@ import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
+/** Remove accents/diacritics and ensure a clean ASCII slug */
+function sanitizeSlug(slug: string): string {
+  return slug
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // strip combining diacritical marks
+    .replace(/[^\w-]/g, "")           // remove any remaining non-ASCII
+    .toLowerCase();
+}
+
 const DOCUMENT_GENERATOR_SLUGS = [
   "notificacao-cobranca-aluguel",
   "notificacao-divida",
