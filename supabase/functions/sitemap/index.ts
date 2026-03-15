@@ -80,8 +80,8 @@ Deno.serve(async (req) => {
     if (postsError) console.error("[sitemap] Failed to fetch blog_posts:", postsError.message);
     if (questionsError) console.error("[sitemap] Failed to fetch legal_questions:", questionsError.message);
 
-    const citySlugs = (cities || []).map((c) => c.slug);
-    const serviceSlugs = (services || []).map((s) => s.slug);
+    const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
+    const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
     // ── Hyper-local pages built from DB ───────────────────────────────
     const hyperlocalCityPages = citySlugs.map((slug) => ({
