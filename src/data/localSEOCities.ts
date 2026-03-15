@@ -853,7 +853,7 @@ export const PARANA_CITIES: CityData[] = [
   { slug: "adrianopolis", name: "Adrianópolis", region: "Vale do Ribeira", variationIndex: 1 },
   { slug: "agudos-do-sul", name: "Agudos do Sul", region: "Sudeste", variationIndex: 2 },
   { slug: "alvorada-do-sul", name: "Alvorada do Sul", region: "Norte", variationIndex: 3 },
-  { slug: "amaporã", name: "Amaporã", region: "Noroeste", variationIndex: 4 },
+  { slug: "amapore", name: "Amaporã", region: "Noroeste", variationIndex: 4 },
   { slug: "anahy", name: "Anahy", region: "Oeste", variationIndex: 1 },
   { slug: "andira", name: "Andirá", region: "Norte Pioneiro", variationIndex: 2 },
   { slug: "angulo", name: "Ângulo", region: "Norte", variationIndex: 3 },
