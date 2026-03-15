@@ -14,7 +14,7 @@ const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
 const ExitIntentPopup = lazy(() => import("./components/ExitIntentPopup"));
 const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
 
-// Imports de páginas (Adicionei a RecuperacaoVeiculos aqui)
+// Imports de páginas
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -48,6 +48,7 @@ const CobrancaAluguel = lazy(() => import("./pages/CobrancaAluguel"));
 const DireitoAgrario = lazy(() => import("./pages/DireitoAgrario"));
 const TransferenciaVeiculos = lazy(() => import("./pages/TransferenciaVeiculos"));
 const RecuperacaoVeiculos = lazy(() => import("./pages/RecuperacaoVeiculos"));
+const DefesaAgraria = lazy(() => import("./pages/DefesaAgraria"));
 const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
 const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
@@ -125,9 +126,10 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
-
-            {/* NOVA ROTA AQUI - ANTES DAS DINÂMICAS */}
             <Route path="/recuperacao-veiculos" element={<RecuperacaoVeiculos />} />
+
+            {/* NOVA ROTA AQUI */}
+            <Route path="/defesa-agraria" element={<DefesaAgraria />} />
 
             {/* Rotas SEO Dinâmicas (Devem ficar abaixo das rotas fixas) */}
             {PARANA_CITIES.map((city) => (
