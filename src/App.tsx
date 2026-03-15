@@ -1,6 +1,3 @@
-// www → non-www redirect is handled at the server level via _headers (301 permanent redirect).
-// No client-side JS needed — browser never fetches JS before the redirect fires.
-
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -12,12 +9,12 @@ import Index from "./pages/Index";
 import { LEGAL_SERVICES, PARANA_CITIES } from "@/data/localSEOCities";
 import { initWebVitals } from "@/lib/webVitals";
 
-// Lazy-load auth/utility components so they don't block FCP on the homepage
+// Imports de componentes e proteção
 const WhatsAppButton = lazy(() => import("./components/WhatsAppButton"));
 const ExitIntentPopup = lazy(() => import("./components/ExitIntentPopup"));
 const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
 
-// Lazy-loaded pages for code splitting
+// Imports de páginas (Adicionei a RecuperacaoVeiculos aqui)
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -67,7 +64,6 @@ const PageLoader = () => (
   </div>
 );
 
-// Resolve /escritorio-advocacia-{city} for dynamic cities (not in the static list)
 const DynamicCityRoute = () => {
   const { "*": rest } = useParams<{ "*": string }>();
   const citySlug = rest ?? "";
@@ -79,11 +75,9 @@ const DynamicCityRoute = () => {
   );
 };
 
-// Resolve /advogado-{service}-{city} for dynamic cities (not in the static list)
 const DynamicServiceCityRoute = () => {
   const { "*": rest } = useParams<{ "*": string }>();
   if (!rest) return <Navigate to="/404" replace />;
-
   const sortedServices = [...LEGAL_SERVICES].sort((a, b) => b.keyword.length - a.keyword.length);
   const match = sortedServices
     .map((s) => {
@@ -91,7 +85,6 @@ const DynamicServiceCityRoute = () => {
       return rest.startsWith(prefix) ? { service: s, city: rest.slice(prefix.length) } : null;
     })
     .find((m) => m !== null && m.city.length > 0);
-
   if (!match) return <Navigate to="/404" replace />;
   return (
     <Suspense fallback={<PageLoader />}>
@@ -101,7 +94,6 @@ const DynamicServiceCityRoute = () => {
   );
 };
 
-// Initialise Web Vitals collection once (outside React tree, after module load)
 if (typeof window !== "undefined") {
   initWebVitals();
 }
@@ -121,6 +113,8 @@ const App = () => (
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
+
+            {/* Rotas Estáticas de Serviços */}
             <Route path="/calculadora" element={<Calculadora />} />
             <Route path="/simulador-pensao" element={<SimuladorPensao />} />
             <Route path="/simulador-juros" element={<SimuladorJuros />} />
@@ -131,9 +125,11 @@ const App = () => (
             <Route path="/cobranca-aluguel" element={<CobrancaAluguel />} />
             <Route path="/direito-agrario" element={<DireitoAgrario />} />
             <Route path="/transferencia-veiculos" element={<TransferenciaVeiculos />} />
+
+            {/* NOVA ROTA AQUI - ANTES DAS DINÂMICAS */}
             <Route path="/recuperacao-veiculos" element={<RecuperacaoVeiculos />} />
 
-            {/* Hyper-local SEO Pages – ESCRITÓRIO POR CIDADE (GERAÇÃO AUTOMÁTICA) */}
+            {/* Rotas SEO Dinâmicas (Devem ficar abaixo das rotas fixas) */}
             {PARANA_CITIES.map((city) => (
               <Route
                 key={city.slug}
@@ -141,11 +137,7 @@ const App = () => (
                 element={<LocalAdvocaciaPage citySlugOverride={city.slug} />}
               />
             ))}
-
-            {/* Catch-all para cidades dinâmicas: /escritorio-advocacia-{qualquer-cidade} */}
             <Route path="/escritorio-advocacia-*" element={<DynamicCityRoute />} />
-
-            {/* Hyper-local SEO Pages – SERVIÇO + CIDADE (GERAÇÃO AUTOMÁTICA PARA OS 5 SERVIÇOS) */}
             {LEGAL_SERVICES.flatMap((svc) =>
               PARANA_CITIES.map((city) => (
                 <Route
@@ -155,11 +147,9 @@ const App = () => (
                 />
               )),
             )}
-
-            {/* Catch-all para cidades/serviços dinâmicos adicionados via dashboard */}
             <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
 
-            {/* Gerador de Documentos Jurídicos */}
+            {/* Gerador de Documentos */}
             <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
             {[
               "notificacao-cobranca-aluguel",
@@ -173,10 +163,7 @@ const App = () => (
               <Route key={slug} path={`/gerador-${slug}`} element={<GeradorDocumentoPage docTypeSlug={slug} />} />
             ))}
 
-            {/* Perguntas Jurídicas — Agente de Descoberta */}
             <Route path="/pergunta/:slug" element={<PerguntaJuridica />} />
-
-            {/* Blog */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
 
@@ -282,7 +269,7 @@ const App = () => (
               }
             />
 
-            {/* Client Portal Routes */}
+            {/* Client Portal */}
             <Route path="/client-login" element={<ClientLogin />} />
             <Route
               path="/client-portal"
