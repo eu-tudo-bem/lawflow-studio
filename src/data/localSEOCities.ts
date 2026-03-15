@@ -845,7 +845,7 @@ export const PARANA_CITIES: CityData[] = [
   },
   { slug: "palmital", name: "Palmital", region: "Centro-Sul", variationIndex: 1, nearbySlug: ["pitanga"] },
   { slug: "bituruna", name: "Bituruna", region: "Sudeste", variationIndex: 2, nearbySlug: ["uniao-da-vitoria"] },
-  { slug: "pinhão", name: "Pinhão", region: "Centro-Sul", variationIndex: 3, nearbySlug: ["guarapuava", "bituruna"] },
+  // pinhão duplicate removed — "pinhao" already defined above with correct slug
   { slug: "chopinzinho", name: "Chopinzinho", region: "Sudoeste", variationIndex: 4, nearbySlug: ["coronel-vivida"] },
   { slug: "laranjal", name: "Laranjal", region: "Centro-Sul", variationIndex: 0, nearbySlug: ["palmital"] },
   // Lote 5 - Rumo aos 399 municípios
