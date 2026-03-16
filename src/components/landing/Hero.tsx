@@ -86,6 +86,7 @@ const Hero = () => {
           height={1080}
           fetchPriority="high"
           decoding="async"
+          style={{ aspectRatio: "16/9", display: "block" }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/95 via-navy-dark/85 to-navy-dark/70" />
       </div>
