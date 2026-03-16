@@ -48,12 +48,12 @@
     <!-- ── Security headers (meta fallback; real headers served via _headers / CDN) ── -->
     <!-- Prevents MIME-type sniffing -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <!-- Clickjacking protection -->
-    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <!-- NOTE: X-Frame-Options must be set via HTTP headers only (browser ignores meta tag).
+         It is already set in public/_headers as X-Frame-Options: DENY. -->
     <!-- Referrer policy -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <!-- Content Security Policy — mirrors public/_headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://connect.facebook.net https://*.flock.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://region1.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms; frame-src https://www.googletagmanager.com; object-src 'none'; base-uri 'self';" />
+    <!-- Content Security Policy — mirrors public/_headers (expanded for analytics) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://connect.facebook.net https://*.flock.com https://*.doubleclick.net https://*.googleadservices.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.analytics.google.com https://region1.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://*.google.com https://*.doubleclick.net https://*.googleadservices.com; frame-src https://www.googletagmanager.com https://*.doubleclick.net; object-src 'none'; base-uri 'self';" />
     <!-- Preload LCP hero image — browser starts download before JS executes -->
     <!-- Responsive preload: mobile gets the small variant, larger screens get the full image -->
     <link rel="preload" as="image" href="/hero-bg.webp" type="image/webp"
