@@ -81,22 +81,46 @@ async function sendMetric(metric: Metric) {
  * so that registering observers doesn't compete with first render.
  */
 export function initWebVitals() {
-  const register = () => {
-    // Dynamically import web-vitals so it's completely off the critical path
-    import("web-vitals").then(({ onCLS, onFCP, onLCP, onTTFB, onINP }) => {
-      onCLS(sendMetric, { reportAllChanges: false });
-      onFCP(sendMetric);
-      onLCP(sendMetric, { reportAllChanges: false });
-      onTTFB(sendMetric);
-      onINP(sendMetric, { reportAllChanges: false });
-    });
-  };
-
   if (typeof window === "undefined") return;
 
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(register, { timeout: 3000 });
+  // Delay until well after the page is fully interactive to avoid blocking TTI.
+  // We wait for the `load` event + 5 s idle so the Supabase client bundle and
+  // the subsequent DB round-trips never appear on the critical path.
+  const register = () => {
+    const schedule = () => {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(
+          () => {
+            import("web-vitals").then(({ onCLS, onFCP, onLCP, onTTFB, onINP }) => {
+              onCLS(sendMetric, { reportAllChanges: false });
+              onFCP(sendMetric);
+              onLCP(sendMetric, { reportAllChanges: false });
+              onTTFB(sendMetric);
+              onINP(sendMetric, { reportAllChanges: false });
+            });
+          },
+          { timeout: 5000 }
+        );
+      } else {
+        setTimeout(() => {
+          import("web-vitals").then(({ onCLS, onFCP, onLCP, onTTFB, onINP }) => {
+            onCLS(sendMetric, { reportAllChanges: false });
+            onFCP(sendMetric);
+            onLCP(sendMetric, { reportAllChanges: false });
+            onTTFB(sendMetric);
+            onINP(sendMetric, { reportAllChanges: false });
+          });
+        }, 5000);
+      }
+    };
+
+    // Extra 2 s buffer after load to ensure the main thread is free
+    setTimeout(schedule, 2000);
+  };
+
+  if (document.readyState === "complete") {
+    register();
   } else {
-    setTimeout(register, 0);
+    window.addEventListener("load", register, { once: true });
   }
 }
