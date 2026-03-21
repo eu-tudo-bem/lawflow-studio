@@ -19,7 +19,7 @@ import { generateDocumentPDF } from "@/lib/pdfGenerator";
 import { leadCaptureSchema, getDocumentTypeBySlug, type DocumentType } from "@/data/documentTypes";
 import { trackConversion } from "@/lib/trackConversion";
 
-const WHATSAPP_BASE = "https://wa.me/5541995808145?text=";
+const WHATSAPP_BASE = `https://wa.me/${WHATSAPP_NUMBER}?text=`;
 
 interface Props { docTypeSlug: string; }
 
