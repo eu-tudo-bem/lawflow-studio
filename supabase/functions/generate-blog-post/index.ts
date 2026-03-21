@@ -93,159 +93,74 @@ serve(async (req) => {
     );
     const chosenArea = sortedAreas[0];
 
-    // 3. STEP 1 - Identify trending Google search topics and connect to legal themes
-    const trendingPrompt = `Você é um analista de tendências de busca do Google especializado no mercado brasileiro.
-
-TAREFA: Identifique 5 assuntos que estão em alta no Google Trends Brasil AGORA (notícias recentes, mudanças em leis, eventos atuais, virais nas redes sociais, decisões judiciais, mudanças econômicas, novas regulamentações).
-
-Pense em:
-- Notícias recentes do Brasil que geram dúvidas jurídicas
-- Mudanças em legislação ou decisões do STF/TST/STJ recentes
-- Temas virais nas redes sociais que envolvem questões legais
-- Problemas econômicos atuais (inflação, desemprego, crédito)
-- Eventos sazonais (IRPF, 13º salário, férias coletivas, volta às aulas)
-- Tendências de comportamento (trabalho remoto, apps de transporte, compras online)
+    // 3. SINGLE AI CALL — gera trend, tópico e artigo completo de uma vez (economiza cota free tier)
+    const unifiedPrompt = `Você é um especialista em SEO jurídico brasileiro e redator de conteúdo informativo.
 
 DATA ATUAL: ${new Date().toLocaleDateString("pt-BR")}
-
-Para cada assunto trending, conecte-o a uma questão jurídica prática na área de ${chosenArea.name}.
-Subtemas da área: ${chosenArea.topics.join(", ")}
-
-Responda APENAS com JSON válido (sem markdown, sem code blocks):
-{
-  "trending_topics": [
-    {
-      "trend": "assunto em alta no Google",
-      "legal_angle": "como isso se conecta a ${chosenArea.name}",
-      "search_query": "pergunta real que as pessoas fariam no Google sobre isso"
-    }
-  ]
-}`;
-
-    const trendingRaw = await callAI(GEMINI_API_KEY, trendingPrompt);
-    const cleanedTrending = trendingRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-    
-    let trendingData;
-    try {
-      trendingData = JSON.parse(cleanedTrending);
-    } catch {
-      console.error("Failed to parse trending data, using fallback");
-      trendingData = { trending_topics: [] };
-    }
-
-    const trendingContext = trendingData.trending_topics
-      ?.map((t: any) => `- Trend: "${t.trend}" → Ângulo jurídico: "${t.legal_angle}" → Busca: "${t.search_query}"`)
-      .join("\n") || "Sem dados de tendências disponíveis";
-
-    // 4. STEP 2 - Generate topic based on trends + legal expertise
-    const topicPrompt = `Você é um estrategista de conteúdo jurídico brasileiro que combina tendências do Google Trends com expertise em ${chosenArea.name}.
-
-TENDÊNCIAS ATUAIS IDENTIFICADAS:
-${trendingContext}
-
 ÁREA DO DIREITO: ${chosenArea.name}
 SUBTEMAS: ${chosenArea.topics.join(", ")}
+TEMAS JÁ USADOS (NÃO REPITA): ${usedKeywords.length > 0 ? usedKeywords.join(", ") : "(nenhum ainda)"}
 
-TEMAS JÁ USADOS (NÃO REPITA nenhum destes nem temas muito similares):
-${usedKeywords.length > 0 ? usedKeywords.join("\n") : "(nenhum ainda)"}
+TAREFA EM 2 PARTES — responda APENAS com JSON válido (sem markdown, sem code blocks):
 
-TAREFA: Com base nas tendências acima, escolha 1 tema NOVO que:
-1. Aproveite uma tendência real de busca do Google Trends
-2. Conecte essa tendência a uma questão prática de ${chosenArea.name}
-3. Use linguagem de busca real (como as pessoas pesquisam no Google)
-4. Tenha alto potencial de cliques e engajamento
-5. Seja relevante e atual
+PARTE 1 — Metadados SEO:
+Identifique 1 tendência atual do Google Trends Brasil relacionada a ${chosenArea.name} e defina os metadados do artigo.
 
-EXEMPLO: Se "Pix" está trending e a área é Consumidor → "Golpe do Pix: Seus Direitos e Como Recuperar o Dinheiro"
-EXEMPLO: Se "demissão em massa" está trending e a área é Trabalhista → "Demissão em Massa: Quais São Seus Direitos Trabalhistas?"
+PARTE 2 — Artigo HTML completo:
+Escreva um artigo de 900 a 1200 palavras seguindo o Provimento 205/2021 da OAB (informativo, sem promessa de resultado, sem sensacionalismo).
 
-Responda APENAS com JSON válido (sem markdown, sem code blocks):
+ESTRUTURA DO ARTIGO:
+- <h1> com o título SEO exato
+- Introdução (2-3 parágrafos) contextualizando a tendência e conectando à questão jurídica. Keyword no 1º parágrafo.
+- 3-4 subtítulos <h2> com conteúdo rico (2-3 parágrafos cada)
+- <h2>Perguntas Frequentes</h2> com 4 perguntas no formato <h3>Pergunta?</h3><p>Resposta.</p>
+- <h2>Conclusão</h2> com CTA informativo
+- UM link interno: <a href="${BASE_URL}/#servicos">conheça nossos serviços</a>
+
+RESPONDA APENAS com este JSON (sem texto extra, sem markdown):
 {
-  "trend_used": "qual tendência do Google inspirou este tema",
-  "keyword": "palavra-chave principal (frase de busca real do Google)",
+  "trend_used": "tendência identificada no Google Trends Brasil",
+  "keyword": "palavra-chave principal (frase real de busca)",
   "secondary_keywords": ["kw2", "kw3", "kw4"],
-  "title_seo": "Título SEO até 60 caracteres com a keyword",
-  "meta_description": "Meta descrição até 160 caracteres, persuasiva e com keyword",
-  "slug": "slug-otimizado-sem-acentos"
+  "title_seo": "Título SEO até 60 chars com a keyword",
+  "meta_description": "Meta descrição até 160 chars persuasiva",
+  "slug": "slug-otimizado-sem-acentos",
+  "content_html": "<h1>...</h1><p>...artigo completo em HTML...</p>"
 }`;
 
-    const topicRaw = await callAI(GEMINI_API_KEY, topicPrompt);
-    const cleanedTopic = topicRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    const unifiedRaw = await callAI(GEMINI_API_KEY, unifiedPrompt);
+    const cleanedUnified = unifiedRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
 
-    let topic;
+    let topic: any;
+    let content: string;
+
     try {
-      topic = JSON.parse(cleanedTopic);
+      const parsed = JSON.parse(cleanedUnified);
+      topic = {
+        trend_used: parsed.trend_used || "Tendência jurídica atual",
+        keyword: parsed.keyword,
+        secondary_keywords: parsed.secondary_keywords || [],
+        title_seo: parsed.title_seo,
+        meta_description: parsed.meta_description,
+        slug: parsed.slug,
+      };
+      content = (parsed.content_html || "").replace(/```html\s*/g, "").replace(/```\s*/g, "").trim();
     } catch {
-      // Retry once with explicit JSON-only instruction
-      console.warn("First topic parse failed, retrying with stricter prompt...");
-      const retryRaw = await callAI(GEMINI_API_KEY, topicPrompt + "\n\nIMPORTANT: Respond with ONLY raw JSON. No markdown. No backticks. No explanation. Start with { and end with }");
-      const retryClean = retryRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-      try {
-        topic = JSON.parse(retryClean);
-      } catch {
-        // Final fallback: generate a safe default topic from the area
-        console.error("Both topic parses failed, using area-based fallback");
-        const safeSlug = `${chosenArea.id}-direitos-${Date.now()}`;
-        topic = {
-          trend_used: "Busca recorrente no Google Brasil",
-          keyword: `${chosenArea.name.toLowerCase()} direitos`,
-          secondary_keywords: chosenArea.topics[0].split(", ").slice(0, 3),
-          title_seo: `Seus Direitos em ${chosenArea.name}: Guia Prático`,
-          meta_description: `Entenda seus direitos em ${chosenArea.name}. Tire suas dúvidas e saiba como agir.`,
-          slug: safeSlug,
-        };
-      }
+      console.error("Unified parse failed, using fallback");
+      const safeSlug = `${chosenArea.id}-direitos-${Date.now()}`;
+      topic = {
+        trend_used: "Busca recorrente no Google Brasil",
+        keyword: `${chosenArea.name.toLowerCase()} direitos`,
+        secondary_keywords: chosenArea.topics[0].split(", ").slice(0, 3),
+        title_seo: `Seus Direitos em ${chosenArea.name}: Guia Prático`,
+        meta_description: `Entenda seus direitos em ${chosenArea.name}. Tire suas dúvidas e saiba como agir.`,
+        slug: safeSlug,
+      };
+      content = `<h1>${topic.title_seo}</h1><p>Consulte nossa equipe para orientação em ${chosenArea.name}.</p>`;
     }
 
-    console.log(`📊 Trend used: "${topic.trend_used}" → Topic: "${topic.keyword}"`);
+    console.log(`📊 Trend: "${topic.trend_used}" → Topic: "${topic.keyword}"`);
 
-    // 5. Generate the full article
-    const articlePrompt = `Você é um redator jurídico brasileiro especializado em conteúdo informativo para blog.
-
-ÁREA: ${chosenArea.name}
-TENDÊNCIA DO GOOGLE TRENDS: ${topic.trend_used}
-PALAVRA-CHAVE PRINCIPAL: ${topic.keyword}
-PALAVRAS-CHAVE SECUNDÁRIAS: ${topic.secondary_keywords.join(", ")}
-TÍTULO SEO: ${topic.title_seo}
-
-REGRAS OBRIGATÓRIAS:
-- Conteúdo EXCLUSIVAMENTE informativo (Provimento 205/2021 da OAB)
-- Sem promessa de ganho de causa ou resultado
-- Sem linguagem sensacionalista
-- Linguagem clara, acessível e profissional
-- Entre 900 e 1200 palavras
-- A palavra-chave principal DEVE aparecer no primeiro parágrafo
-- Conecte o tema trending com a questão jurídica de forma natural e relevante
-- Comece o artigo contextualizando a tendência atual antes de entrar nos aspectos jurídicos
-
-ESTRUTURA OBRIGATÓRIA DO ARTIGO (use tags HTML):
-
-1. <h1>${topic.title_seo}</h1> (use exatamente este título)
-
-2. Introdução (2-3 parágrafos) - contextualize a tendência atual e conecte à questão jurídica. A palavra-chave deve estar no primeiro parágrafo.
-
-3. Desenvolvimento com 3-4 subtítulos <h2> estratégicos
-   - Cada seção com 2-3 parágrafos
-   - Use <h3> quando necessário para subdivisões
-   - Insira naturalmente palavras-chave secundárias
-
-4. Seção FAQ com exatamente 4 perguntas reais de busca:
-   <h2>Perguntas Frequentes</h2>
-   Formate cada FAQ assim:
-   <h3>Pergunta aqui?</h3>
-   <p>Resposta objetiva em 2-3 frases.</p>
-
-5. Conclusão com CTA informativo:
-   <h2>Conclusão</h2>
-   <p>Resumo + orientação para buscar assistência profissional. Inclua: "Se você tem dúvidas sobre ${topic.keyword}, consulte um advogado especializado para orientação personalizada."</p>
-
-6. Insira UM link interno estratégico no texto:
-   <a href="${BASE_URL}/#servicos">conheça nossos serviços</a>
-
-IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem explicações extras. Comece direto com <h1>.`;
-
-    const content_raw = await callAI(GEMINI_API_KEY, articlePrompt);
-    const content = content_raw.replace(/```html\s*/g, "").replace(/```\s*/g, "").trim();
 
     // 6. Get admin user for author_id
     const { data: adminRole } = await supabase
