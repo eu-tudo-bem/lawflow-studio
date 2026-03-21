@@ -46,7 +46,7 @@ const WhatsAppButton = () => {
 
       {/* WhatsApp button */}
       <a
-        href="https://wa.me/5541995808145?text=Olá! Gostaria de mais informações sobre os serviços jurídicos."
+        href={whatsappUrl("Olá! Gostaria de mais informações sobre os serviços jurídicos.")}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Fale conosco pelo WhatsApp"

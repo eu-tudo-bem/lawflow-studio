@@ -55,7 +55,7 @@ const ExitIntentPopup = () => {
   const handleWhatsApp = () => {
     trackConversion("whatsapp_click", "exit_intent");
     window.open(
-      `https://wa.me/5541995808145?text=Olá! Gostaria de uma análise gratuita do meu caso em ${city}.`,
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá! Gostaria de uma análise gratuita do meu caso em ${city}.`)}`,
       "_blank",
       "noopener,noreferrer",
     );
