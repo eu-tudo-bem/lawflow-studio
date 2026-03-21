@@ -16,15 +16,33 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    // Only prerender on production builds to keep dev server fast
+    // Prerender apenas em builds de produção (não impacta o dev server)
     mode === "production" &&
       vitePrerenderPlugin({
-        // The DOM element where React mounts
+        // Seletor do elemento onde o React monta no index.html
         renderTarget: "#root",
-        // The prerender script with the routes list and render function
+        // Script com a função prerender() exportada
         prerenderScript: path.resolve(__dirname, "src/prerender.tsx"),
-        // Extra routes not linked from the main page
-        additionalPrerenderRoutes: ["/blog", "/gerador-documentos"],
+        // Rotas extras não acessíveis via link interno do "/"
+        additionalPrerenderRoutes: [
+          "/blog",
+          "/gerador-documentos",
+          "/calculadora",
+          "/pensao-alimenticia",
+          "/divorcio-consensual",
+          "/cobranca-aluguel",
+          "/direito-agrario",
+          "/transferencia-veiculos",
+          "/recuperacao-veiculos",
+          "/defesa-agraria",
+          "/naturalizacao",
+          "/execucao-pensao",
+          "/reabilitacao-criminal",
+          "/simulador-pensao",
+          "/simulador-juros",
+          "/simulador-aposentadoria",
+          "/simulador-horas-extras",
+        ],
       }),
   ].filter(Boolean),
   resolve: {
