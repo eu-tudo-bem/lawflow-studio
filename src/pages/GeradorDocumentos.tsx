@@ -4,8 +4,9 @@ import { FileText, Scale, MessageCircle, ArrowRight, CheckCircle, Download } fro
 import { Button } from "@/components/ui/button";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { DOCUMENT_TYPES } from "@/data/documentTypes";
+import { whatsappUrl } from "@/lib/constants";
 
-const WHATSAPP = "https://wa.me/5541995808145?text=" + encodeURIComponent("Olá! Acessei o Gerador de Documentos e gostaria de falar com um advogado.");
+const WHATSAPP = whatsappUrl("Olá! Acessei o Gerador de Documentos e gostaria de falar com um advogado.");
 
 const GeradorDocumentos = () => {
   usePageSEO({

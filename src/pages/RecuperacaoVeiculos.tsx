@@ -1,3 +1,4 @@
+import { whatsappUrl } from "@/lib/constants";
 import {
   MessageCircle,
   ShieldCheck,

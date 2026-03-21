@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
+import { whatsappUrl } from "@/lib/constants";
 
 const WhatsAppButton = () => {
   const [showTooltip, setShowTooltip] = useState(false);

@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { X, MessageCircle, Shield } from "lucide-react";
 import { trackConversion } from "@/lib/trackConversion";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 // Map route paths to city labels (extracted from slug) or service context
 const getCityFromPath = (pathname: string): string => {

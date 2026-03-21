@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import {
   MessageCircle, Scale, Phone, ChevronRight, ArrowLeft,
   BookOpen, Gavel, HelpCircle, Users, AlertCircle

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { trackConversion as trackConversionUtil } from "@/lib/trackConversion";
+import { whatsappUrl, PHONE_NUMBER as WA_PHONE } from "@/lib/constants";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

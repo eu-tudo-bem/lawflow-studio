@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { buildBreadcrumbSchema, buildArticleSchema, buildFaqSchema, extractFaqsFromHtml } from "@/lib/seoSchemas";
