@@ -178,7 +178,7 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
     } catch {
       // Retry once with explicit JSON-only instruction
       console.warn("First topic parse failed, retrying with stricter prompt...");
-      const retryRaw = await callAI(LOVABLE_API_KEY, topicPrompt + "\n\nIMPORTANT: Respond with ONLY raw JSON. No markdown. No backticks. No explanation. Start with { and end with }");
+      const retryRaw = await callAI(GEMINI_API_KEY, topicPrompt + "\n\nIMPORTANT: Respond with ONLY raw JSON. No markdown. No backticks. No explanation. Start with { and end with }");
       const retryClean = retryRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
       try {
         topic = JSON.parse(retryClean);
