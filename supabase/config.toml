@@ -1,5 +1,8 @@
 project_id = "eojgjfefbjhslyeodcls"
 
+[functions.ads-offline-conversion]
+verify_jwt = false
+
 [functions.create-client-account]
 verify_jwt = false
 
