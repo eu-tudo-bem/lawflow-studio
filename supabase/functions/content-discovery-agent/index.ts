@@ -341,8 +341,8 @@ serve(async (req) => {
             }
           }
 
-          // Small delay to avoid rate limiting
-          await new Promise((r) => setTimeout(r, 800));
+          // Delay de 5s entre chamadas para respeitar 15 RPM do free tier (máx 12/min na prática)
+          await new Promise((r) => setTimeout(r, 5000));
         } catch (qErr: any) {
           console.error(`Error processing "${questionSeed}":`, qErr.message);
           errors.push(`${questionSeed}: ${qErr.message}`);
