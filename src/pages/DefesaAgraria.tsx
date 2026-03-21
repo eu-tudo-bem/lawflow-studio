@@ -29,7 +29,7 @@ const DefesaAgraria = () => {
   });
 
   const whatsappLink =
-    "https://wa.me/5541999999999?text=Olá, sou produtor rural e preciso de ajuda urgente com uma execução de dívida/contrato agrícola.";
+    "https://wa.me/5541995808145?text=Olá, sou produtor rural e preciso de ajuda urgente com uma execução de dívida/contrato agrícola.";
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-green-700/30">

@@ -25,7 +25,7 @@ const ExecucaoPensao = () => {
   });
 
   const whatsappLink =
-    "https://wa.me/5541999999999?text=Olá, preciso de ajuda urgente para cobrar pensão alimentícia atrasada.";
+    "https://wa.me/5541995808145?text=Olá, preciso de ajuda urgente para cobrar pensão alimentícia atrasada.";
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-rose-500/30">
