@@ -26,9 +26,8 @@ const RecuperacaoVeiculos = () => {
       "Veículo retido na fronteira, PRF ou Receita Federal por descaminho? Atuação jurídica urgente para evitar a Pena de Perdimento e leilão. Fale agora.",
   });
 
-  // Substitua pelo número real do seu escritório
   const whatsappLink =
-    "https://wa.me/5541999999999?text=Olá, tive meu veículo apreendido pela Receita/Polícia e preciso de ajuda com urgência para evitar o perdimento.";
+    "https://wa.me/5541995808145?text=Olá, tive meu veículo apreendido pela Receita/Polícia e preciso de ajuda com urgência para evitar o perdimento.";
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-yellow-500/30">

@@ -58,7 +58,7 @@ const AREA_TOOL_LINKS: Record<string, { label: string; href: string; cta: string
   ],
 };
 
-const WHATSAPP = "5541999999999";
+const WHATSAPP = "5541995808145";
 
 const PerguntaJuridica = () => {
   const { slug } = useParams<{ slug: string }>();

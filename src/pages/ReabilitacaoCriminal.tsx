@@ -22,7 +22,7 @@ const ReabilitacaoCriminal = () => {
     description: "Já cumpriu a sua pena? Tem o direito legal de limpar a sua ficha criminal. Volte ao mercado de trabalho com sigilo absoluto. Fale com um advogado.",
   });
 
-  const whatsappLink = "https://wa.me/5541999999999?text=Olá, cumpri a minha pena e quero dar entrada no pedido de Reabilitação Criminal para limpar o meu nome. Podem ajudar-me? (Garantia de sigilo)";
+  const whatsappLink = "https://wa.me/5541995808145?text=Olá, cumpri a minha pena e quero dar entrada no pedido de Reabilitação Criminal para limpar o meu nome. Podem ajudar-me? (Garantia de sigilo)";
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-slate-500/30">
