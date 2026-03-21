@@ -129,7 +129,7 @@ RESPONDA APENAS com este JSON (sem texto extra, sem markdown):
   "content_html": "<h1>...</h1><p>...artigo completo em HTML...</p>"
 }`;
 
-    const unifiedRaw = await callAI(GEMINI_API_KEY, unifiedPrompt);
+    const unifiedRaw = await callAI(LOVABLE_API_KEY, unifiedPrompt);
     const cleanedUnified = unifiedRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
 
     let topic: any;
