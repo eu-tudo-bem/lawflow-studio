@@ -11,18 +11,17 @@ const LEGAL_AREAS = [
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
-async function callAI(apiKey: string, prompt: string, model = "google/gemini-3-flash-preview") {
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
+async function callAI(apiKey: string, prompt: string) {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+      }),
+    }
+  );
 
   if (!response.ok) {
     const errText = await response.text();
@@ -30,7 +29,7 @@ async function callAI(apiKey: string, prompt: string, model = "google/gemini-3-f
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 }
 
 serve(async (req) => {
@@ -42,9 +41,9 @@ serve(async (req) => {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
 
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not configured");
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -123,7 +122,7 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
   ]
 }`;
 
-    const trendingRaw = await callAI(LOVABLE_API_KEY, trendingPrompt);
+    const trendingRaw = await callAI(GEMINI_API_KEY, trendingPrompt);
     const cleanedTrending = trendingRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
     
     let trendingData;
@@ -170,7 +169,7 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
   "slug": "slug-otimizado-sem-acentos"
 }`;
 
-    const topicRaw = await callAI(LOVABLE_API_KEY, topicPrompt);
+    const topicRaw = await callAI(GEMINI_API_KEY, topicPrompt);
     const cleanedTopic = topicRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
 
     let topic;
@@ -179,7 +178,7 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
     } catch {
       // Retry once with explicit JSON-only instruction
       console.warn("First topic parse failed, retrying with stricter prompt...");
-      const retryRaw = await callAI(LOVABLE_API_KEY, topicPrompt + "\n\nIMPORTANT: Respond with ONLY raw JSON. No markdown. No backticks. No explanation. Start with { and end with }");
+      const retryRaw = await callAI(GEMINI_API_KEY, topicPrompt + "\n\nIMPORTANT: Respond with ONLY raw JSON. No markdown. No backticks. No explanation. Start with { and end with }");
       const retryClean = retryRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
       try {
         topic = JSON.parse(retryClean);
@@ -245,7 +244,7 @@ ESTRUTURA OBRIGATÓRIA DO ARTIGO (use tags HTML):
 
 IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem explicações extras. Comece direto com <h1>.`;
 
-    const content_raw = await callAI(LOVABLE_API_KEY, articlePrompt);
+    const content_raw = await callAI(GEMINI_API_KEY, articlePrompt);
     const content = content_raw.replace(/```html\s*/g, "").replace(/```\s*/g, "").trim();
 
     // 6. Get admin user for author_id
