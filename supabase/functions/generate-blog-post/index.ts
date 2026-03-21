@@ -12,17 +12,18 @@ const LEGAL_AREAS = [
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
 async function callAI(apiKey: string, prompt: string) {
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
+  // gemini-1.5-flash-latest: free tier 1.500 req/dia, 15 RPM, sem billing
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 8192 },
+      }),
+    }
+  );
 
   if (!response.ok) {
     const errText = await response.text();
@@ -30,7 +31,7 @@ async function callAI(apiKey: string, prompt: string) {
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 }
 
 serve(async (req) => {
