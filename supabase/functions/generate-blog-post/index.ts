@@ -244,7 +244,7 @@ ESTRUTURA OBRIGATÓRIA DO ARTIGO (use tags HTML):
 
 IMPORTANTE: Escreva APENAS o HTML do artigo, sem markdown, sem code blocks, sem explicações extras. Comece direto com <h1>.`;
 
-    const content_raw = await callAI(LOVABLE_API_KEY, articlePrompt);
+    const content_raw = await callAI(GEMINI_API_KEY, articlePrompt);
     const content = content_raw.replace(/```html\s*/g, "").replace(/```\s*/g, "").trim();
 
     // 6. Get admin user for author_id
