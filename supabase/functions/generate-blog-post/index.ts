@@ -122,7 +122,7 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
   ]
 }`;
 
-    const trendingRaw = await callAI(LOVABLE_API_KEY, trendingPrompt);
+    const trendingRaw = await callAI(GEMINI_API_KEY, trendingPrompt);
     const cleanedTrending = trendingRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
     
     let trendingData;
