@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { supabase } from "@/integrations/supabase/client";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { buildBreadcrumbSchema, buildArticleSchema, buildFaqSchema, extractFaqsFromHtml } from "@/lib/seoSchemas";
@@ -129,7 +130,7 @@ export default function BlogPost() {
       const wppMsg = encodeURIComponent(
         `Olá! Me chamo ${validatedData.name}, li o artigo "${post?.title}" e gostaria de uma análise gratuita do meu caso.`
       );
-      window.open(`https://wa.me/5541995808145?text=${wppMsg}`, "_blank");
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${wppMsg}`, "_blank");
       setLeadSent(true);
       toast({ title: "Solicitação enviada!", description: "Você será redirecionado para o WhatsApp." });
     } catch (error) {

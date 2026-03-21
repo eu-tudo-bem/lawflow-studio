@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { X, MessageCircle, Shield } from "lucide-react";
 import { trackConversion } from "@/lib/trackConversion";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 // Map route paths to city labels (extracted from slug) or service context
 const getCityFromPath = (pathname: string): string => {
@@ -54,7 +55,7 @@ const ExitIntentPopup = () => {
   const handleWhatsApp = () => {
     trackConversion("whatsapp_click", "exit_intent");
     window.open(
-      `https://wa.me/5541995808145?text=Olá! Gostaria de uma análise gratuita do meu caso em ${city}.`,
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá! Gostaria de uma análise gratuita do meu caso em ${city}.`)}`,
       "_blank",
       "noopener,noreferrer",
     );

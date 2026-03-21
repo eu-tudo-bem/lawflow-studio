@@ -1,3 +1,4 @@
+import { whatsappUrl } from "@/lib/constants";
 import {
   MessageCircle,
   ShieldCheck,
@@ -27,7 +28,7 @@ const RecuperacaoVeiculos = () => {
   });
 
   const whatsappLink =
-    "https://wa.me/5541995808145?text=Olá, tive meu veículo apreendido pela Receita/Polícia e preciso de ajuda com urgência para evitar o perdimento.";
+    whatsappUrl("Olá, tive meu veículo apreendido pela Receita/Polícia e preciso de ajuda com urgência para evitar o perdimento.");
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-yellow-500/30">

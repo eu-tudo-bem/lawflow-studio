@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { trackConversion as trackConversionUtil } from "@/lib/trackConversion";
+import { whatsappUrl, PHONE_NUMBER as WA_PHONE } from "@/lib/constants";
 import { usePageSEO } from "@/hooks/usePageSEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,8 +27,8 @@ import {
 } from "lucide-react";
 
 const WHATSAPP_URL =
-  "https://wa.me/5541995808145?text=Olá! Gostaria de informações sobre divórcio consensual.";
-const PHONE_NUMBER = "tel:+5541995808145";
+  whatsappUrl("Olá! Gostaria de informações sobre divórcio consensual.");
+const PHONE_NUMBER = WA_PHONE;
 
 const formSchema = z.object({
   nome: z.string().trim().min(1, "Nome é obrigatório").max(100),

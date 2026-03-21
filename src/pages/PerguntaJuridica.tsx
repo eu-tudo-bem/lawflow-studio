@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import {
   MessageCircle, Scale, Phone, ChevronRight, ArrowLeft,
   BookOpen, Gavel, HelpCircle, Users, AlertCircle
@@ -58,7 +59,7 @@ const AREA_TOOL_LINKS: Record<string, { label: string; href: string; cta: string
   ],
 };
 
-const WHATSAPP = "5541995808145";
+const WHATSAPP = WHATSAPP_NUMBER;
 
 const PerguntaJuridica = () => {
   const { slug } = useParams<{ slug: string }>();
