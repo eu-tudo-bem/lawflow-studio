@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { whatsappUrl } from "@/lib/constants";
+import { trackGoogleAdsConversion } from "@/lib/trackConversion";
 
 const WhatsAppButton = () => {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -50,7 +51,10 @@ const WhatsAppButton = () => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Fale conosco pelo WhatsApp"
-        onClick={() => setShowTooltip(false)}
+        onClick={() => {
+            trackGoogleAdsConversion("WHATSAPP_LEAD");
+            setShowTooltip(false);
+          }}
         className="relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300"
       >
         {/* Pulse ring */}

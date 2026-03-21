@@ -1,23 +1,15 @@
 /**
  * Centralised conversion tracking for Google Ads, GA4, GTM and Facebook Pixel.
  *
- * Google Ads conversion labels per landing page (to be updated once actual
- * conversion actions are created in the Google Ads account):
+ * Google Ads ID: AW-17373132555
+ * Generic conversion label: TboiCNnqlP0bEIvuk9xA
  *
- *   LP                       | Label placeholder
- *   -------------------------|--------------------------
- *   pensao_alimenticia       | AW-17373132555/pensao
- *   divorcio_consensual      | AW-17373132555/divorcio
- *   cobranca_aluguel         | AW-17373132555/aluguel
- *   direito_agrario          | AW-17373132555/agrario
- *   transferencia_veiculos   | AW-17373132555/veiculos
+ * Landing-page-specific labels can be added to ADS_CONVERSION_LABELS below once
+ * distinct conversion actions are created inside the Google Ads account.
  */
 
 const AW_ID = "AW-17373132555";
 
-// Map each landing page label to its Google Ads conversion label.
-// Replace the values below with the real conversion labels generated in
-// Google Ads → Tools → Conversions once you create each conversion action.
 const ADS_CONVERSION_LABELS: Record<string, string> = {
   pensao_alimenticia: "TboiCNnqlP0bEIvuk9xA",
   divorcio_consensual: "TboiCNnqlP0bEIvuk9xA",
@@ -29,17 +21,17 @@ const ADS_CONVERSION_LABELS: Record<string, string> = {
 
 type ConversionEvent = "form_submit" | "whatsapp_click" | "phone_click";
 
+// ─── Generic page-level conversion ───────────────────────────────────────────
+
 export const trackConversion = (
   event: ConversionEvent,
   landingPage: string,
 ) => {
   if (typeof window === "undefined") return;
 
-  const gtag = (window as any).gtag;
-  const fbq = (window as any).fbq;
-  const dataLayer = (window as any).dataLayer;
+  const { gtag, fbq, dataLayer } = window;
 
-  // --- GA4 custom event ---
+  // GA4 custom event
   if (gtag) {
     gtag("event", event, {
       event_category: "conversao",
@@ -47,7 +39,7 @@ export const trackConversion = (
     });
   }
 
-  // --- Google Ads conversion ---
+  // Google Ads – labelled conversion
   if (gtag) {
     const label = ADS_CONVERSION_LABELS[landingPage];
     if (label) {
@@ -55,7 +47,7 @@ export const trackConversion = (
         send_to: `${AW_ID}/${label}`,
       });
     }
-    // Always fire a generic ads conversion event for GTM to pick up
+    // Generic fallback picked up by GTM
     gtag("event", "conversion", {
       send_to: AW_ID,
       event_category: "conversao",
@@ -64,7 +56,7 @@ export const trackConversion = (
     });
   }
 
-  // --- GTM dataLayer push ---
+  // GTM dataLayer
   if (dataLayer) {
     dataLayer.push({
       event: "lp_conversion",
@@ -73,8 +65,41 @@ export const trackConversion = (
     });
   }
 
-  // --- Facebook Pixel ---
+  // Facebook Pixel
   if (fbq) {
     fbq("track", event === "form_submit" ? "Lead" : "Contact");
+  }
+};
+
+// ─── Targeted Google Ads conversion (for specific conversion labels) ──────────
+
+/**
+ * Fire a Google Ads conversion event using a specific conversion label.
+ *
+ * @param conversionLabel - The conversion label from Google Ads (e.g. 'WHATSAPP_LEAD')
+ * @param value           - Optional monetary value of the conversion in BRL
+ */
+export const trackGoogleAdsConversion = (
+  conversionLabel: string,
+  value?: number,
+) => {
+  if (typeof window === "undefined") return;
+
+  const { gtag, dataLayer } = window;
+
+  if (gtag) {
+    gtag("event", "conversion", {
+      send_to: `${AW_ID}/${conversionLabel}`,
+      ...(value !== undefined && { value, currency: "BRL" }),
+    });
+  }
+
+  // Also push to GTM dataLayer so Tag Manager rules can react
+  if (dataLayer) {
+    dataLayer.push({
+      event: "ads_conversion",
+      conversion_label: conversionLabel,
+      ...(value !== undefined && { conversion_value: value, conversion_currency: "BRL" }),
+    });
   }
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { whatsappUrlRaw } from "@/lib/constants";
+import { trackGoogleAdsConversion } from "@/lib/trackConversion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -140,6 +141,7 @@ const AlimonySimulator = () => {
       `Gostaria de uma análise detalhada do meu caso.`
     );
     window.open(whatsappUrlRaw(message), "_blank");
+    trackGoogleAdsConversion("SIMULADOR_CONCLUIDO");
     setSubmitted(true);
   };
 

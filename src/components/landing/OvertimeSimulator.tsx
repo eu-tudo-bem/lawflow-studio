@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calculator, RefreshCw, MessageSquare, Loader2, Clock, Moon, AlertTriangle, TrendingUp } from "lucide-react";
 import { whatsappUrlRaw } from "@/lib/constants";
+import { trackGoogleAdsConversion } from "@/lib/trackConversion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -490,6 +491,7 @@ const OvertimeSimulator = () => {
                         `Olá! Meu nome é ${leadForm.nome}. Fiz a simulação de horas extras no site.\n\nDiferença mensal estimada: ${diferenca}\nProjeção 5 anos: ${projecao}\n\nGostaria de uma análise gratuita do meu caso.\n\nTag: Interesse Trabalhista – Horas Extras`
                       );
                       window.open(whatsappUrlRaw(msg), "_blank");
+                      trackGoogleAdsConversion("SIMULADOR_CONCLUIDO");
                     }}
                   >
                     Enviar e falar com advogado
