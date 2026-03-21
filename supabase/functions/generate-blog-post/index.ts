@@ -169,7 +169,7 @@ Responda APENAS com JSON válido (sem markdown, sem code blocks):
   "slug": "slug-otimizado-sem-acentos"
 }`;
 
-    const topicRaw = await callAI(LOVABLE_API_KEY, topicPrompt);
+    const topicRaw = await callAI(GEMINI_API_KEY, topicPrompt);
     const cleanedTopic = topicRaw.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
 
     let topic;
