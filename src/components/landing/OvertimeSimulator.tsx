@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calculator, RefreshCw, MessageSquare, Loader2, Clock, Moon, AlertTriangle, TrendingUp } from "lucide-react";
 import { whatsappUrlRaw } from "@/lib/constants";
+import { trackGoogleAdsConversion } from "@/lib/trackConversion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
