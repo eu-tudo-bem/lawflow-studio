@@ -141,6 +141,7 @@ const AlimonySimulator = () => {
       `Gostaria de uma análise detalhada do meu caso.`
     );
     window.open(whatsappUrlRaw(message), "_blank");
+    trackGoogleAdsConversion("SIMULADOR_CONCLUIDO");
     setSubmitted(true);
   };
 
