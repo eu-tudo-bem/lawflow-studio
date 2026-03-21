@@ -4,7 +4,37 @@ import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY")!;
+const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")!;
+
+async function callAI(prompt: string): Promise<string> {
+  // gemini-1.5-flash-latest: free tier 1.500 req/dia, 15 RPM, sem billing
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `Você é um especialista em direito brasileiro e SEO.
+Escreva conteúdo jurídico claro, informativo e preciso em português do Brasil.
+Siga rigorosamente o Provimento 205/2021 da OAB: caráter informativo, sem promessa de resultados, sem sensacionalismo.
+Responda APENAS com o JSON ou HTML solicitado, sem markdown, sem texto extra.\n\n` + prompt
+          }]
+        }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 8192 },
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`AI error ${response.status}: ${err}`);
+  }
+
+  const data = await response.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+}
 
 const PARANA_CITIES = [
   "curitiba","londrina","maringa","cascavel","foz-do-iguacu","ponta-grossa",
@@ -113,37 +143,6 @@ function slugify(text: string): string {
     .substring(0, 80);
 }
 
-async function callAI(prompt: string): Promise<string> {
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      messages: [
-        {
-          role: "system",
-          content: `Você é um especialista em direito brasileiro e SEO. 
-Escreva conteúdo jurídico claro, informativo e preciso em português do Brasil.
-Siga rigorosamente o Provimento 205/2021 da OAB: caráter informativo, sem promessa de resultados, sem sensacionalismo.
-Responda APENAS com o JSON solicitado, sem markdown, sem texto extra.`,
-        },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.7,
-    }),
-  });
-
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`AI error ${response.status}: ${err}`);
-  }
-
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
-}
 
 async function generatePageContent(
   question: string,
