@@ -205,7 +205,7 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const {
       areas = Object.keys(QUESTION_SEEDS),
-      max_questions_per_area = 3,
+      max_questions_per_area = 1,
       generate_hyperlocal = false,
       hyperlocal_cities = ["curitiba", "londrina", "maringa"],
       dry_run = false,
