@@ -315,7 +315,7 @@ const GeradorDocumentoPage = ({ docTypeSlug }: Props) => {
                   <MessageCircle className="h-5 w-5" /> Falar com Advogado
                 </a>
                 <a
-                  href={"https://wa.me/5541995808145?text=" + encodeURIComponent("Gostaria de solicitar análise jurídica do documento que gerei no site.")}
+                  href={whatsappUrl("Gostaria de solicitar análise jurídica do documento que gerei no site.")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 border-2 border-border text-foreground font-semibold px-5 py-3 rounded-xl hover:border-accent transition-all text-sm"

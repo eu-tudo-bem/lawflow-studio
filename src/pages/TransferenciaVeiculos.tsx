@@ -31,8 +31,8 @@ import {
 } from "lucide-react";
 
 const WHATSAPP_URL =
-  "https://wa.me/5541995808145?text=Olá! Preciso de assessoria jurídica para transferência de veículo.";
-const PHONE_NUMBER = "tel:+5541995808145";
+  whatsappUrl("Olá! Preciso de assessoria jurídica para transferência de veículo.");
+const PHONE_NUMBER = WA_PHONE;
 
 const formSchema = z.object({
   nome: z.string().trim().min(1, "Nome é obrigatório").max(100),

@@ -393,7 +393,7 @@ const TerminationCalculator = () => {
                       const msg = encodeURIComponent(
                         `Olá! Meu nome é ${contactForm.nome}, da cidade de ${contactForm.cidade}. Fiz uma simulação de rescisão no site e gostaria de uma consulta. Resumo: ${contactForm.resumo}`
                       );
-                      window.open(`https://wa.me/5541995808145?text=${msg}`, "_blank");
+                      window.open(whatsappUrlRaw(msg), "_blank");
                     }}
                   >
                     Enviar pelo WhatsApp

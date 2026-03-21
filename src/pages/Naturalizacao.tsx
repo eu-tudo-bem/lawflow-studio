@@ -24,7 +24,7 @@ const Naturalizacao = () => {
     description: "Conquiste o seu Passaporte Brasileiro sem burocracia. Assessoria jurídica completa para naturalização ordinária, extraordinária e por casamento.",
   });
 
-  const whatsappLink = "https://wa.me/5541995808145?text=Olá, sou estrangeiro e quero dar início ao meu processo de naturalização brasileira. Podem ajudar-me?";
+  const whatsappLink = whatsappUrl("Olá, sou estrangeiro e quero dar início ao meu processo de naturalização brasileira. Podem ajudar-me?");
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-blue-500/30">

@@ -489,7 +489,7 @@ const OvertimeSimulator = () => {
                       const msg = encodeURIComponent(
                         `Olá! Meu nome é ${leadForm.nome}. Fiz a simulação de horas extras no site.\n\nDiferença mensal estimada: ${diferenca}\nProjeção 5 anos: ${projecao}\n\nGostaria de uma análise gratuita do meu caso.\n\nTag: Interesse Trabalhista – Horas Extras`
                       );
-                      window.open(`https://wa.me/5541995808145?text=${msg}`, "_blank");
+                      window.open(whatsappUrlRaw(msg), "_blank");
                     }}
                   >
                     Enviar e falar com advogado
