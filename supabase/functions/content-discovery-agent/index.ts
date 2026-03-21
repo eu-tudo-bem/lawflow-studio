@@ -143,37 +143,6 @@ function slugify(text: string): string {
     .substring(0, 80);
 }
 
-async function callAI(prompt: string): Promise<string> {
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      messages: [
-        {
-          role: "system",
-          content: `Você é um especialista em direito brasileiro e SEO. 
-Escreva conteúdo jurídico claro, informativo e preciso em português do Brasil.
-Siga rigorosamente o Provimento 205/2021 da OAB: caráter informativo, sem promessa de resultados, sem sensacionalismo.
-Responda APENAS com o JSON solicitado, sem markdown, sem texto extra.`,
-        },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.7,
-    }),
-  });
-
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`AI error ${response.status}: ${err}`);
-  }
-
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
-}
 
 async function generatePageContent(
   question: string,
