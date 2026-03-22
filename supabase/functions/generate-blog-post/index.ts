@@ -12,9 +12,9 @@ const LEGAL_AREAS = [
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
 async function callAI(apiKey: string, prompt: string) {
-  // gemini-1.5-flash-latest: free tier 1.500 req/dia, 15 RPM, sem billing
+  // gemini-2.0-flash: gratuito via v1beta — 1.500 req/dia, 15 RPM, sem billing obrigatório
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
