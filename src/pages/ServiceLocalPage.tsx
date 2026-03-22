@@ -400,6 +400,11 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           </h2>
           <div className="bg-[hsl(220_30%_97%)] rounded-2xl p-6 md:p-8 border border-border">
             <p className="text-muted-foreground leading-relaxed text-lg">{howItWorks}</p>
+            <p className="text-muted-foreground leading-relaxed text-sm mt-4 pt-4 border-t border-border">
+              📍 Os processos de {service.name.toLowerCase()} relativos a clientes de {cityName} tramitam perante o{" "}
+              <strong className="text-foreground">{getForumMention(citySlug, cityName)}</strong>, vinculado ao Tribunal de Justiça do Paraná (TJPR).
+              Nosso escritório acompanha todas as fases processuais nessa comarca.
+            </p>
           </div>
         </div>
       </section>

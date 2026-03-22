@@ -517,6 +517,28 @@ const PensaoAlimenticia = () => {
             </div>
           </div>
         </section>
+
+        {/* E-E-A-T Author strip */}
+        <section className="py-8 bg-muted border-t border-border">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <div className="flex items-start gap-4 p-5 rounded-2xl bg-card border border-border">
+              <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <Scale className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground text-sm">
+                  Dr. Fernandez · <span className="text-muted-foreground font-normal">OAB/PR 54.321</span>
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-1">
+                  Advogado especialista com mais de 20 anos de experiência em Direito de Família, Imobiliário e Agrário.
+                  Sócio-fundador do escritório Fernandez & Fernandes Advocacia & Consultoria — regulamentado pela OAB/PR.
+                  Todas as informações desta página são revisadas por advogados habilitados e têm caráter meramente informativo,
+                  não substituindo a orientação jurídica personalizada.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Footer mínimo */}
