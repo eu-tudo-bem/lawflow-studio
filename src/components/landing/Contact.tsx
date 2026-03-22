@@ -103,9 +103,9 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Endereço</h3>
-                  <p className="text-muted-foreground">Rua Franz J. Hoch 283
-​CURITIBA-PR
-fernandezfernandes.adv.br<br />
+                  <p className="text-muted-foreground">Rua Franz J. Hoch 283 ​CURITIBA-PR fernandezfernandes.adv.br
+CEP: 01310-100
+                    <br />
                     Bela Vista, São Paulo - SP<br />
                     CEP: 01310-100
                   </p>
