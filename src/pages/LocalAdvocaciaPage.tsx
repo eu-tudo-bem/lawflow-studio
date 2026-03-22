@@ -7,10 +7,14 @@ import {
   textVariations,
   getWhatsAppLink,
   PARANA_CITIES,
+  LEGAL_SERVICES,
+  getServiceCitySlug,
   type CityData,
 } from "@/data/localSEOCities";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 const services = [
   { label: "Divórcio Consensual", icon: "⚖️" },
