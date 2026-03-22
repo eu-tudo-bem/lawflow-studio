@@ -10,6 +10,7 @@ import {
   getServiceBySlug,
   serviceTextVariations,
   getWhatsAppLink,
+  getForumMention,
   PARANA_CITIES,
   LEGAL_SERVICES,
   getServiceCitySlug,
