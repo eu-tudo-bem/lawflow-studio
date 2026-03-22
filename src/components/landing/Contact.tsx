@@ -10,7 +10,7 @@ const contactSchema = z.object({
   full_name: z.string().trim().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
   email: z.string().trim().email("Email inválido").max(255, "Email muito longo"),
   phone: z.string().trim().min(1, "Telefone é obrigatório").max(20, "Telefone inválido"),
-  message: z.string().trim().min(1, "Mensagem é obrigatória").max(1000, "Mensagem muito longa"),
+  message: z.string().trim().min(1, "Mensagem é obrigatória").max(1000, "Mensagem muito longa")
 });
 
 const Contact = () => {
@@ -18,7 +18,7 @@ const Contact = () => {
     full_name: "",
     email: "",
     phone: "",
-    message: "",
+    message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -27,7 +27,7 @@ const Contact = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     }));
   };
 
@@ -42,36 +42,36 @@ const Contact = () => {
       // keeping it out of the initial JS parse on page load.
       const { supabase } = await import("@/integrations/supabase/client");
 
-      const { error } = await supabase
-        .from("contact_submissions")
-        .insert({
-          full_name: validatedData.full_name,
-          email: validatedData.email,
-          phone: validatedData.phone,
-          message: validatedData.message,
-        });
+      const { error } = await supabase.
+      from("contact_submissions").
+      insert({
+        full_name: validatedData.full_name,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        message: validatedData.message
+      });
 
       if (error) throw error;
 
       setIsSubmitted(true);
       setFormData({ full_name: "", email: "", phone: "", message: "" });
-      
+
       toast({
         title: "Mensagem enviada!",
-        description: "Entraremos em contato em breve.",
+        description: "Entraremos em contato em breve."
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
           title: "Erro de validação",
           description: error.errors[0].message,
-          variant: "destructive",
+          variant: "destructive"
         });
       } else {
         toast({
           title: "Erro ao enviar",
           description: "Por favor, tente novamente.",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } finally {
@@ -103,8 +103,9 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Endereço</h3>
-                  <p className="text-muted-foreground">
-                    Av. Paulista, 1000 - Sala 1501<br />
+                  <p className="text-muted-foreground">Rua Franz J. Hoch 283
+​CURITIBA-PR
+fernandezfernandes.adv.br<br />
                     Bela Vista, São Paulo - SP<br />
                     CEP: 01310-100
                   </p>
@@ -153,8 +154,7 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="bg-card rounded-2xl p-8 shadow-card">
-            {isSubmitted ? (
-              <div className="flex flex-col items-center justify-center h-full text-center py-12">
+            {isSubmitted ? <div className="flex flex-col items-center justify-center h-full text-center py-12">
                 <div className="p-4 bg-green-100 rounded-full mb-6">
                   <CheckCircle className="h-12 w-12 text-green-600" />
                 </div>
@@ -165,84 +165,84 @@ const Contact = () => {
                   Obrigado pelo contato. Nossa equipe entrará em contato em breve.
                 </p>
                 <Button
-                  variant="outline"
-                  onClick={() => setIsSubmitted(false)}
-                >
+                variant="outline"
+                onClick={() => setIsSubmitted(false)}>
+                
                   Enviar nova mensagem
                 </Button>
-              </div>
-            ) : (
-              <>
+              </div> :
+
+            <>
                 <h3 className="font-serif text-xl font-bold text-foreground mb-6">
                   Envie sua mensagem
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <Input
-                      name="full_name"
-                      placeholder="Nome completo"
-                      value={formData.full_name}
-                      onChange={handleChange}
-                      required
-                      className="h-12"
-                    />
+                    name="full_name"
+                    placeholder="Nome completo"
+                    value={formData.full_name}
+                    onChange={handleChange}
+                    required
+                    className="h-12" />
+                  
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <Input
-                      name="email"
-                      type="email"
-                      placeholder="E-mail"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="h-12"
-                    />
+                    name="email"
+                    type="email"
+                    placeholder="E-mail"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="h-12" />
+                  
                     <Input
-                      name="phone"
-                      placeholder="Telefone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="h-12"
-                    />
+                    name="phone"
+                    placeholder="Telefone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="h-12" />
+                  
                   </div>
                   <div>
                     <Textarea
-                      name="message"
-                      placeholder="Descreva brevemente sua situação ou dúvida..."
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={5}
-                      className="resize-none"
-                    />
+                    name="message"
+                    placeholder="Descreva brevemente sua situação ou dúvida..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={5}
+                    className="resize-none" />
+                  
                   </div>
                   <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      "Enviando..."
-                    ) : (
-                      <>
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                  disabled={isSubmitting}>
+                  
+                    {isSubmitting ?
+                  "Enviando..." :
+
+                  <>
                         Enviar Mensagem
                         <Send className="ml-2 h-4 w-4" />
                       </>
-                    )}
+                  }
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">
                     Suas informações estão protegidas e serão tratadas com sigilo.
                   </p>
                 </form>
               </>
-            )}
+            }
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default Contact;
