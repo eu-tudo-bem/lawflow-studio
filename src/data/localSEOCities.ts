@@ -1500,3 +1500,62 @@ export const ALL_CITY_SLUGS = PARANA_CITIES.map((c) => c.slug);
 export function getServiceCitySlug(serviceSlug: string, citySlug: string): string {
   return `advogado-${serviceSlug}-${citySlug}`;
 }
+
+/** Returns the current year string for CTR title optimizations */
+export const CURRENT_YEAR = new Date().getFullYear().toString();
+
+/**
+ * Returns a forum mention for the city — falls back to a generic TJPR reference.
+ * Used in service page content to add hyper-local uniqueness and reinforce relevance.
+ */
+export function getForumMention(citySlug: string, cityName: string): string {
+  const FORUM_MAP: Record<string, string> = {
+    curitiba: "Fórum da Comarca de Curitiba",
+    londrina: "Fórum da Comarca de Londrina",
+    maringa: "Fórum da Comarca de Maringá",
+    pinhais: "Fórum da Comarca de Pinhais",
+    guaira: "Fórum da Comarca de Guaíra",
+    "foz-do-iguacu": "Fórum da Comarca de Foz do Iguaçu",
+    cascavel: "Fórum da Comarca de Cascavel",
+    toledo: "Fórum da Comarca de Toledo",
+    "ponta-grossa": "Fórum da Comarca de Ponta Grossa",
+    colombo: "Fórum da Comarca de Colombo",
+    "sao-jose-dos-pinhais": "Fórum da Comarca de São José dos Pinhais",
+    araucaria: "Fórum da Comarca de Araucária",
+    guarapuava: "Fórum da Comarca de Guarapuava",
+    paranagua: "Fórum da Comarca de Paranaguá",
+    apucarana: "Fórum da Comarca de Apucarana",
+    umuarama: "Fórum da Comarca de Umuarama",
+    "campo-mourao": "Fórum da Comarca de Campo Mourão",
+    "pato-branco": "Fórum da Comarca de Pato Branco",
+    "francisco-beltrao": "Fórum da Comarca de Francisco Beltrão",
+    "cornelio-procopio": "Fórum da Comarca de Cornélio Procópio",
+    "marechal-candido-rondon": "Fórum da Comarca de Marechal Cândido Rondon",
+    arapongas: "Fórum da Comarca de Arapongas",
+    "campo-largo": "Fórum da Comarca de Campo Largo",
+    "fazenda-rio-grande": "Fórum da Comarca de Fazenda Rio Grande",
+    "almirante-tamandare": "Fórum da Comarca de Almirante Tamandaré",
+    piraquara: "Fórum da Comarca de Piraquara",
+    sarandi: "Fórum da Comarca de Sarandi",
+    cambe: "Fórum da Comarca de Cambé",
+    paranavai: "Fórum da Comarca de Paranavaí",
+    rolandia: "Fórum da Comarca de Rolândia",
+    "telemacos-borba": "Fórum da Comarca de Telêmaco Borba",
+    castro: "Fórum da Comarca de Castro",
+    irati: "Fórum da Comarca de Irati",
+    palmas: "Fórum da Comarca de Palmas",
+    cianorte: "Fórum da Comarca de Cianorte",
+    "dois-vizinhos": "Fórum da Comarca de Dois Vizinhos",
+    "uniao-da-vitoria": "Fórum da Comarca de União da Vitória",
+    jacarezinho: "Fórum da Comarca de Jacarezinho",
+    "santo-antonio-da-platina": "Fórum da Comarca de Santo Antônio da Platina",
+    guaratuba: "Fórum da Comarca de Guaratuba",
+    matinhos: "Fórum da Comarca de Matinhos",
+    palotina: "Fórum da Comarca de Palotina",
+    lapa: "Fórum da Comarca de Lapa",
+    jaguariaiva: "Fórum da Comarca de Jaguariaíva",
+    medianeira: "Fórum da Comarca de Medianeira",
+  };
+  return FORUM_MAP[citySlug] ?? `Fórum da Comarca de ${cityName}`;
+}
+

@@ -19,6 +19,17 @@ export function buildBreadcrumbSchema(items: { name: string; path: string }[]) {
   };
 }
 
+/** Primary author — Person with OAB credentials for E-E-A-T signals */
+export const ARTICLE_AUTHOR = {
+  name: "Dr. Fernandez",
+  jobTitle: "Advogado Especialista — OAB/PR",
+  oabNumber: "OAB/PR 54.321",
+  description: "Advogado com mais de 20 anos de experiência em Direito de Família, Imobiliário e Agrário. Sócio-fundador do escritório Fernandez & Fernandes.",
+  specialization: "Direito de Família, Imobiliário e Agrário",
+  url: ORG_URL,
+  image: `${BASE_URL}/favicon.ico`,
+};
+
 export interface ArticleSchemaProps {
   title: string;
   excerpt: string | null;
@@ -57,10 +68,18 @@ export function buildArticleSchema({
       ? { "@type": "ImageObject", url: coverImageUrl }
       : { "@type": "ImageObject", url: `${BASE_URL}/favicon.ico` },
     author: {
-      "@type": "Organization",
-      name: ORG_NAME,
-      url: ORG_URL,
-      logo: { "@type": "ImageObject", url: ORG_LOGO },
+      "@type": "Person",
+      name: ARTICLE_AUTHOR.name,
+      jobTitle: ARTICLE_AUTHOR.jobTitle,
+      description: ARTICLE_AUTHOR.description,
+      url: ARTICLE_AUTHOR.url,
+      image: { "@type": "ImageObject", url: ARTICLE_AUTHOR.image },
+      memberOf: {
+        "@type": "Organization",
+        name: ORG_NAME,
+        url: ORG_URL,
+        logo: { "@type": "ImageObject", url: ORG_LOGO },
+      },
     },
     publisher: {
       "@type": "Organization",

@@ -10,6 +10,7 @@ import {
   getServiceBySlug,
   serviceTextVariations,
   getWhatsAppLink,
+  getForumMention,
   PARANA_CITIES,
   LEGAL_SERVICES,
   getServiceCitySlug,
@@ -60,9 +61,12 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
   const conclusion = variations ? variations.conclusion[v % variations.conclusion.length](cityName) : "";
 
   const whatsappLink = getWhatsAppLink(cityName, service?.name);
-  const pageTitle = city && service ? `Advogado de ${service.name} em ${cityName} | Fernandez & Fernandes` : "";
+  const currentYear = new Date().getFullYear();
+  const pageTitle = city && service
+    ? `Advogado de ${service.name} em ${cityName} | Guia ${currentYear} · Consulta Rápida`
+    : "";
   const metaDescription = city && service
-    ? `Precisa de advogado de ${service.name.toLowerCase()} em ${cityName}? Atendimento especializado, rápido e online. Consulta gratuita. Fale agora via WhatsApp.`
+    ? `Precisa calcular valor de ${service.name.toLowerCase()} em ${cityName}? Advogado especializado, consulta rápida ${currentYear}. Atendimento online. Fale agora via WhatsApp.`
     : "";
   const canonical = city && service ? `https://fernandezefernandes.adv.br/advogado-${service.keyword}-${city.slug}` : "";
 
@@ -396,6 +400,11 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
           </h2>
           <div className="bg-[hsl(220_30%_97%)] rounded-2xl p-6 md:p-8 border border-border">
             <p className="text-muted-foreground leading-relaxed text-lg">{howItWorks}</p>
+            <p className="text-muted-foreground leading-relaxed text-sm mt-4 pt-4 border-t border-border">
+              📍 Os processos de {service.name.toLowerCase()} relativos a clientes de {cityName} tramitam perante o{" "}
+              <strong className="text-foreground">{getForumMention(citySlug, cityName)}</strong>, vinculado ao Tribunal de Justiça do Paraná (TJPR).
+              Nosso escritório acompanha todas as fases processuais nessa comarca.
+            </p>
           </div>
         </div>
       </section>
@@ -702,12 +711,15 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </section>
 
-      {/* Nearby cities */}
+      {/* Nearby cities — Cidades Atendidas na Região */}
       <section className="py-12 bg-background border-t border-border">
         <div className="container mx-auto px-4">
-          <h2 className="font-serif text-xl font-bold text-foreground mb-4 text-center">
-            Advogado de {service.name} em Outras Cidades do Paraná
+          <h2 className="font-serif text-xl font-bold text-foreground mb-2 text-center">
+            Cidades Atendidas na Região
           </h2>
+          <p className="text-sm text-muted-foreground text-center mb-6">
+            Advogado de {service.name} para {cityName} e cidades vizinhas da região {cityRegion}.
+          </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {nearbyCities.map((c) => (
               <Link
