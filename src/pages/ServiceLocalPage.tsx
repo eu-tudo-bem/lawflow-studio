@@ -60,9 +60,12 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
   const conclusion = variations ? variations.conclusion[v % variations.conclusion.length](cityName) : "";
 
   const whatsappLink = getWhatsAppLink(cityName, service?.name);
-  const pageTitle = city && service ? `Advogado de ${service.name} em ${cityName} | Fernandez & Fernandes` : "";
+  const currentYear = new Date().getFullYear();
+  const pageTitle = city && service
+    ? `Advogado de ${service.name} em ${cityName} | Guia ${currentYear} · Consulta Rápida`
+    : "";
   const metaDescription = city && service
-    ? `Precisa de advogado de ${service.name.toLowerCase()} em ${cityName}? Atendimento especializado, rápido e online. Consulta gratuita. Fale agora via WhatsApp.`
+    ? `Precisa calcular valor de ${service.name.toLowerCase()} em ${cityName}? Advogado especializado, consulta rápida ${currentYear}. Atendimento online. Fale agora via WhatsApp.`
     : "";
   const canonical = city && service ? `https://fernandezefernandes.adv.br/advogado-${service.keyword}-${city.slug}` : "";
 
