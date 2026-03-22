@@ -705,12 +705,15 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </section>
 
-      {/* Nearby cities */}
+      {/* Nearby cities — Cidades Atendidas na Região */}
       <section className="py-12 bg-background border-t border-border">
         <div className="container mx-auto px-4">
-          <h2 className="font-serif text-xl font-bold text-foreground mb-4 text-center">
-            Advogado de {service.name} em Outras Cidades do Paraná
+          <h2 className="font-serif text-xl font-bold text-foreground mb-2 text-center">
+            Cidades Atendidas na Região
           </h2>
+          <p className="text-sm text-muted-foreground text-center mb-6">
+            Advogado de {service.name} para {cityName} e cidades vizinhas da região {cityRegion}.
+          </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {nearbyCities.map((c) => (
               <Link

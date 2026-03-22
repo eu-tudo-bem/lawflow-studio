@@ -144,6 +144,12 @@ const PensaoAlimenticia = () => {
       <main>
         {/* HERO */}
         <section className="bg-hero py-16 md:py-24 relative overflow-hidden">
+          {/* Hero background preloaded for LCP — explicit dimensions help browser reserve space */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url('/hero-bg.webp')" }}
+            aria-hidden="true"
+          />
           <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-5" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
