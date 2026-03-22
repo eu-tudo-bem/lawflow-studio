@@ -352,17 +352,32 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
         </div>
       </section>
 
-      {/* Other Cities */}
+      {/* Other Cities — Cidades Atendidas na Região */}
       <section className="py-12 bg-[hsl(220_30%_97%)] border-t border-border">
         <div className="container mx-auto px-4">
-          <h2 className="font-serif text-xl font-bold text-foreground mb-6 text-center">
-            Também Atendemos em Outras Cidades do Paraná
+          <h2 className="font-serif text-xl font-bold text-foreground mb-2 text-center">
+            Cidades Atendidas na Região
           </h2>
+          <p className="text-sm text-muted-foreground text-center mb-6">
+            Atendemos também as cidades vizinhas de {cityName} em toda a região de {cityRegion}.
+          </p>
+          <div className="flex flex-wrap gap-2 justify-center mb-6">
+            {nearbyCities.map((c) => (
+              <Link
+                key={c.slug}
+                to={`/escritorio-advocacia-${c.slug}`}
+                className="px-3 py-1.5 text-sm bg-background border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-[hsl(45_60%_55%)] transition-colors"
+              >
+                {c.name}
+              </Link>
+            ))}
+          </div>
+          {/* All Paraná cities secondary list */}
           <div className="flex flex-wrap gap-2 justify-center">
-            {PARANA_CITIES.filter((c) => c.slug !== citySlug)
-              .slice(0, 12)
+            {PARANA_CITIES.filter((c) => c.slug !== citySlug && !nearbyCities.find((n) => n.slug === c.slug))
+              .slice(0, 8)
               .map((c) => (
-            <Link
+                <Link
                   key={c.slug}
                   to={`/escritorio-advocacia-${c.slug}`}
                   className="px-3 py-1.5 text-sm bg-background border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-[hsl(45_60%_55%)] transition-colors"
@@ -370,6 +385,26 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
                   {c.name}
                 </Link>
               ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services links cluster for this city */}
+      <section className="py-12 bg-background border-t border-border">
+        <div className="container mx-auto px-4">
+          <h2 className="font-serif text-xl font-bold text-foreground mb-6 text-center">
+            Serviços Jurídicos em {cityName} — Guia {CURRENT_YEAR}
+          </h2>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {LEGAL_SERVICES.map((s) => (
+              <Link
+                key={s.slug}
+                to={`/${getServiceCitySlug(s.slug, citySlug)}`}
+                className="px-3 py-1.5 text-sm bg-card border border-border rounded-full text-muted-foreground hover:text-foreground hover:border-[hsl(45_60%_55%)] transition-colors"
+              >
+                {s.icon} {s.shortName}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
