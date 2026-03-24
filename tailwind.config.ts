@@ -58,13 +58,12 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         gold: {
-          DEFAULT: "hsl(var(--gold))",          /* Champagne Matte #C5A059 */
+          DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",
         },
         navy: {
           DEFAULT: "hsl(var(--navy))",
-          dark: "hsl(var(--navy-dark))",         /* Midnight Black #0A0C10 */
-          mid: "hsl(var(--navy-mid))",
+          dark: "hsl(var(--navy-dark))",
           light: "hsl(var(--navy-light))",
         },
       },
@@ -98,10 +97,6 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0" },
         },
-        "float": {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-12px)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -109,10 +104,6 @@ export default {
         "fade-up": "fade-up 0.6s ease-out forwards",
         "fade-in": "fade-in 0.6s ease-out forwards",
         "blink": "blink 1s step-end infinite",
-        "float": "float 6s ease-in-out infinite",
-      },
-      backdropBlur: {
-        xs: "2px",
       },
     },
   },

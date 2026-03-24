@@ -9,110 +9,83 @@ const values = [
   "Agilidade no atendimento",
 ];
 
-const stats = [
-  { value: "20+",    label: "Anos de Experiência" },
-  { value: "15",     label: "Advogados Especializados" },
-  { value: "2.500+", label: "Clientes Satisfeitos" },
-  { value: "95%",    label: "Taxa de Sucesso" },
-];
-
 const About = () => {
   return (
-    <section id="about" className="py-36 bg-background">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-24 items-start">
-
-          {/* LEFT — Content */}
+    <section id="about" className="py-24 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Content */}
           <div>
-            {/* Label */}
-            <span className="label-track text-accent/70 flex items-center gap-3 mb-8">
-              <span className="inline-block w-8 h-px bg-accent/50" />
-              Sobre o Escritório
+            <span className="inline-block px-4 py-1.5 mb-4 text-sm font-medium bg-accent/10 text-accent rounded-full">
+              Sobre Nós
             </span>
-
-            {/* Title */}
-            <h2
-              className="font-serif font-bold text-foreground leading-tight mb-8"
-              style={{ fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.02em" }}
-            >
-              Tradição e modernidade
-              <br />
-              a serviço da{" "}
-              <em className="not-italic text-accent">Justiça</em>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-6">
+              Tradição e modernidade a serviço da{" "}
+              <span className="text-accent">Justiça</span>
             </h2>
-
-            {/* Divider */}
-            <div className="w-16 h-px bg-accent/30 mb-8" />
-
-            <p className="font-sans text-muted-foreground leading-relaxed mb-5 text-[15px]">
+            <p className="text-muted-foreground mb-6 leading-relaxed">
               Fundado em 2004, o escritório Fernandez & Fernandes nasceu com a missão 
               de oferecer serviços jurídicos de excelência, combinando a tradição 
               do Direito com soluções inovadoras para os desafios contemporâneos.
             </p>
-            <p className="font-sans text-muted-foreground leading-relaxed mb-12 text-[15px]">
+            <p className="text-muted-foreground mb-8 leading-relaxed">
               Nossa equipe é formada por advogados especialistas em diversas áreas, 
               comprometidos com a defesa intransigente dos interesses de nossos 
               clientes e com a busca incessante pela justiça.
             </p>
 
             {/* Values */}
-            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
+            <div className="grid sm:grid-cols-2 gap-4">
               {values.map((value) => (
                 <div key={value} className="flex items-start gap-3">
-                  <CheckCircle className="h-4 w-4 text-accent flex-shrink-0 mt-0.5" />
-                  <span className="font-sans text-sm text-foreground/70 leading-snug">{value}</span>
+                  <CheckCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground">{value}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* RIGHT — Stats wall */}
-          <div className="lg:pt-8">
-            {/* Horizontal rule label */}
-            <div className="flex items-center gap-4 mb-10">
-              <span className="label-track text-muted-foreground/50 text-[10px]">Nossos Números</span>
-              <div className="flex-1 h-px bg-border" />
-            </div>
-
-            {/* 2×2 stats grid */}
-            <div className="grid grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden shadow-card">
-              {stats.map(({ value, label }, i) => (
-                <div
-                  key={label}
-                  className={`
-                    relative p-10 flex flex-col justify-end
-                    ${i % 2 === 0 ? "bg-primary" : "bg-primary/90"}
-                    group transition-colors duration-300
-                    hover:bg-primary/95
-                  `}
-                >
-                  {/* Subtle top line accent */}
-                  <div className="absolute top-0 left-8 right-8 h-px bg-gold/20 group-hover:bg-gold/40 transition-colors duration-300" />
-
-                  <p className="font-serif text-4xl lg:text-5xl font-bold text-gold mb-2 leading-none">
-                    {value}
+          {/* Stats Card */}
+          <div className="relative">
+            <div className="bg-primary rounded-2xl p-8 md:p-12">
+              <div className="grid grid-cols-2 gap-8">
+                <div className="text-center">
+                  <p className="font-serif text-4xl md:text-5xl font-bold text-gold mb-2">
+                    20+
                   </p>
-                  <p className="label-track text-primary-foreground/40 text-[10px]">
-                    {label}
+                  <p className="text-primary-foreground/80 text-sm">
+                    Anos de experiência
                   </p>
                 </div>
-              ))}
-            </div>
-
-            {/* OAB Badge */}
-            <div className="mt-6 flex items-center gap-4 px-5 py-4 rounded-2xl border border-border bg-muted/40">
-              <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="h-4 w-4 text-accent" />
+                <div className="text-center">
+                  <p className="font-serif text-4xl md:text-5xl font-bold text-gold mb-2">
+                    15
+                  </p>
+                  <p className="text-primary-foreground/80 text-sm">
+                    Advogados especializados
+                  </p>
+                </div>
+                <div className="text-center">
+                  <p className="font-serif text-4xl md:text-5xl font-bold text-gold mb-2">
+                    2.500+
+                  </p>
+                  <p className="text-primary-foreground/80 text-sm">
+                    Clientes satisfeitos
+                  </p>
+                </div>
+                <div className="text-center">
+                  <p className="font-serif text-4xl md:text-5xl font-bold text-gold mb-2">
+                    95%
+                  </p>
+                  <p className="text-primary-foreground/80 text-sm">
+                    Taxa de sucesso
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="label-track text-foreground/50 text-[10px]">Registro OAB</p>
-                <p className="font-sans text-sm text-foreground/80 mt-0.5">
-                  Inscritos na OAB/PR — Atuação em todo o território nacional
-                </p>
-              </div>
             </div>
+            {/* Decorative element */}
+            <div className="absolute -bottom-4 -right-4 w-full h-full bg-accent/20 rounded-2xl -z-10" />
           </div>
-
         </div>
       </div>
     </section>
