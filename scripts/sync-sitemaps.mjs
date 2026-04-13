@@ -94,14 +94,13 @@ async function main() {
 
   // 2) Discover all parts dynamically
   const parts = await fetchJson(`${functionUrl}?list-parts=true`, headers);
-  console.log(`Discovered ${parts.length} sitemap parts: ${parts.join(", ")}`);
+  // Filter out orphan numeric-only service parts (e.g. services-1)
+  const validParts = parts.filter((p) => !/^services-\d+$/.test(p));
+  console.log(`Discovered ${validParts.length} valid sitemap parts: ${validParts.join(", ")}`);
 
-  // 3) Remove old sitemap-services.xml if present (replaced by per-service files)
-  try {
-    await unlink(path.join(PUBLIC_DIR, "sitemap-services.xml"));
-    console.log("Removed old sitemap-services.xml");
-  } catch {
-    // fine if not exists
+  // 3) Remove old/orphan files
+  for (const old of ["sitemap-services.xml", ...parts.filter((p) => /^services-\d+$/.test(p)).map((p) => `sitemap-${p}.xml`)]) {
+    try { await unlink(path.join(PUBLIC_DIR, old)); } catch { /* ok */ }
   }
 
   // 4) Download each part
