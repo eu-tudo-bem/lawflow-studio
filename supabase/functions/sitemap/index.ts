@@ -2,6 +2,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
+const XML_HEADERS = { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" };
+
+const VALID_PARTS = ["static", "cities", "services", "blog"] as const;
+type SitemapPart = typeof VALID_PARTS[number];
 
 function sanitizeSlug(slug: string): string {
   return slug
@@ -62,11 +66,11 @@ function buildUrlset(entries: UrlEntry[]): string {
   return xml;
 }
 
-function buildSitemapIndex(storageBaseUrl: string, filenames: string[]): string {
+function buildSitemapIndex(): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  for (const name of filenames) {
-    xml += `  <sitemap>\n    <loc>${storageBaseUrl}/${name}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+  for (const part of VALID_PARTS) {
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap.xml?part=${part}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
@@ -80,12 +84,20 @@ async function uploadToStorage(
   const blob = new Blob([content], { type: "application/xml" });
   const { error } = await supabase.storage
     .from("sitemap")
-    .upload(filename, blob, {
-      contentType: "application/xml",
-      upsert: true,
-      cacheControl: "3600",
-    });
+    .upload(filename, blob, { contentType: "application/xml", upsert: true, cacheControl: "3600" });
   if (error) console.error(`[sitemap] Failed to upload ${filename}:`, error.message);
+}
+
+async function fetchFromStorage(
+  supabase: ReturnType<typeof createClient>,
+  filename: string,
+): Promise<string | null> {
+  const { data, error } = await supabase.storage.from("sitemap").download(filename);
+  if (error || !data) {
+    console.error(`[sitemap] Failed to download ${filename}:`, error?.message);
+    return null;
+  }
+  return await data.text();
 }
 
 Deno.serve(async (req) => {
@@ -94,12 +106,33 @@ Deno.serve(async (req) => {
   const corsHeaders = getCorsHeaders(req);
 
   try {
+    const url = new URL(req.url);
+    const part = url.searchParams.get("part") as SitemapPart | null;
+    const regenerate = url.searchParams.get("regenerate") === "true";
+
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const storageBaseUrl = `${supabaseUrl}/storage/v1/object/public/sitemap`;
+    // If part is requested and we're not regenerating, proxy from storage
+    if (part && !regenerate) {
+      if (!VALID_PARTS.includes(part)) {
+        return new Response("Invalid part", { status: 400, headers: corsHeaders });
+      }
+      const content = await fetchFromStorage(supabase, `sitemap-${part}.xml`);
+      if (!content) {
+        return new Response("Sitemap not found", { status: 404, headers: corsHeaders });
+      }
+      return new Response(content, { headers: { ...corsHeaders, ...XML_HEADERS } });
+    }
 
+    // If no part and not regenerating, return the index
+    if (!regenerate && !part) {
+      const indexXml = buildSitemapIndex();
+      return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
+    }
+
+    // ── Regenerate all sitemaps ────────────────────────────────────────
     const [
       { data: cities, error: citiesError },
       { data: services, error: servicesError },
@@ -108,16 +141,8 @@ Deno.serve(async (req) => {
     ] = await Promise.all([
       supabase.from("seo_cities").select("slug").eq("active", true),
       supabase.from("seo_services").select("slug").eq("active", true),
-      supabase
-        .from("blog_posts")
-        .select("slug, updated_at, published_at")
-        .eq("status", "published")
-        .order("published_at", { ascending: false }),
-      supabase
-        .from("legal_questions")
-        .select("slug, updated_at, published_at")
-        .eq("status", "published")
-        .order("published_at", { ascending: false }),
+      supabase.from("blog_posts").select("slug, updated_at, published_at").eq("status", "published").order("published_at", { ascending: false }),
+      supabase.from("legal_questions").select("slug, updated_at, published_at").eq("status", "published").order("published_at", { ascending: false }),
     ]);
 
     if (citiesError) console.error("[sitemap] seo_cities:", citiesError.message);
@@ -128,12 +153,11 @@ Deno.serve(async (req) => {
     const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
     const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
-    const subSitemaps: string[] = [];
     const uploads: Promise<void>[] = [];
 
     // 1) sitemap-static.xml
-    subSitemaps.push("sitemap-static.xml");
-    uploads.push(uploadToStorage(supabase, "sitemap-static.xml", buildUrlset(staticPages)));
+    const staticXml = buildUrlset(staticPages);
+    uploads.push(uploadToStorage(supabase, "sitemap-static.xml", staticXml));
 
     // 2) sitemap-cities.xml
     const cityEntries = citySlugs.map((slug) => ({
@@ -141,10 +165,9 @@ Deno.serve(async (req) => {
       changefreq: "monthly",
       priority: "0.9",
     }));
-    subSitemaps.push("sitemap-cities.xml");
     uploads.push(uploadToStorage(supabase, "sitemap-cities.xml", buildUrlset(cityEntries)));
 
-    // 3) sitemap-services.xml (all service+city combinations)
+    // 3) sitemap-services.xml
     const serviceEntries: UrlEntry[] = [];
     for (const svc of serviceSlugs) {
       for (const city of citySlugs) {
@@ -155,10 +178,9 @@ Deno.serve(async (req) => {
         });
       }
     }
-    subSitemaps.push("sitemap-services.xml");
     uploads.push(uploadToStorage(supabase, "sitemap-services.xml", buildUrlset(serviceEntries)));
 
-    // 4) sitemap-blog.xml (blog posts + legal questions)
+    // 4) sitemap-blog.xml (blog + perguntas)
     const blogEntries: UrlEntry[] = [];
     if (posts) {
       for (const p of posts) {
@@ -180,30 +202,22 @@ Deno.serve(async (req) => {
         });
       }
     }
-    subSitemaps.push("sitemap-blog.xml");
     uploads.push(uploadToStorage(supabase, "sitemap-blog.xml", buildUrlset(blogEntries)));
 
-    // 5) sitemap.xml (index)
-    const indexXml = buildSitemapIndex(storageBaseUrl, subSitemaps);
+    // 5) sitemap.xml index (stored for reference)
+    const indexXml = buildSitemapIndex();
     uploads.push(uploadToStorage(supabase, "sitemap.xml", indexXml));
 
     await Promise.all(uploads);
 
-    const total =
-      staticPages.length + cityEntries.length + serviceEntries.length + blogEntries.length;
+    const total = staticPages.length + cityEntries.length + serviceEntries.length + blogEntries.length;
     console.log(
-      `Sitemap index updated: ${subSitemaps.length} sub-sitemaps | ${staticPages.length} static | ${cityEntries.length} cities | ${serviceEntries.length} services | ${blogEntries.length} blog+perguntas | total: ${total} URLs`,
+      `Sitemap regenerated: 4 sub-sitemaps | ${staticPages.length} static | ${cityEntries.length} cities | ${serviceEntries.length} services | ${blogEntries.length} blog+perguntas | total: ${total} URLs`,
     );
 
-    return new Response(indexXml, {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "public, max-age=3600",
-      },
-    });
+    return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
   } catch (error) {
     console.error("Sitemap error:", error);
-    return new Response("Error generating sitemap", { status: 500 });
+    return new Response("Error generating sitemap", { status: 500, headers: getCorsHeaders(req) });
   }
 });
