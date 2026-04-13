@@ -58,11 +58,11 @@ function buildUrlset(entries: UrlEntry[]): string {
   return xml;
 }
 
-function buildSitemapIndex(sitemapNames: string[]): string {
+function buildSitemapIndex(sitemapNames: string[], storageBaseUrl: string): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const name of sitemapNames) {
-    xml += `  <sitemap>\n    <loc>${BASE_URL}/${name}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+    xml += `  <sitemap>\n    <loc>${storageBaseUrl}/${name}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
