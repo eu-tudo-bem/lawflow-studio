@@ -1,99 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-static.xml</loc>
+    <loc>https://eojgjfefbjhslyeodcls.supabase.co/storage/v1/object/public/sitemap/sitemap-static.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-cities.xml</loc>
+    <loc>https://eojgjfefbjhslyeodcls.supabase.co/storage/v1/object/public/sitemap/sitemap-cities.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-acordo-prenupcial.xml</loc>
+    <loc>https://eojgjfefbjhslyeodcls.supabase.co/storage/v1/object/public/sitemap/sitemap-services.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-aposentadoria-inss.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-arrendamento-de-terra.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-arrendamento-rural.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-atraso-voo.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-certidao-negativa.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-cobranca-aluguel.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-contrato-aluguel-comercial.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-contrato-arrendamento-rural.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-contrato-comodato-rural.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-contrato-de-locacao.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-contrato-doacao-terreno.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-direito-agrario.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-direito-imobiliario.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-divorcio-consensual.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-extravio-bagagem.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-gestao-agronegocio.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-indenizacao-energia.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-inventario-e-partilha.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-pensao-alimenticia.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-regularizacao-rural.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-reintegracao-de-posse.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-reintegracao-posse.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-revisional-juros.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-transferencia-veiculo.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-uniao-estavel.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-usucapiao.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-usucapiao-extrajudicial.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-blog.xml</loc>
-  </sitemap>
-  <sitemap>
-    <loc>https://fernandezefernandes.adv.br/sitemap-perguntas.xml</loc>
+    <loc>https://eojgjfefbjhslyeodcls.supabase.co/storage/v1/object/public/sitemap/sitemap-blog.xml</loc>
   </sitemap>
 </sitemapindex>
