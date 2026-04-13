@@ -2,7 +2,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
-const MAX_URLS_PER_SITEMAP = 1000;
 
 function sanitizeSlug(slug: string): string {
   return slug
@@ -68,15 +67,6 @@ function buildSitemapIndex(sitemapNames: string[], storageBaseUrl: string): stri
   return xml;
 }
 
-/** Split array into chunks of given size */
-function chunk<T>(arr: T[], size: number): T[][] {
-  const result: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) {
-    result.push(arr.slice(i, i + size));
-  }
-  return result;
-}
-
 async function uploadToStorage(supabase: ReturnType<typeof createClient>, filename: string, content: string) {
   const blob = new Blob([content], { type: "application/xml" });
   const { error } = await supabase.storage
@@ -115,8 +105,14 @@ Deno.serve(async (req) => {
     const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
     const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
+    const storageBaseUrl = `${supabaseUrl}/storage/v1/object/public/sitemap`;
+    const allFilenames: string[] = [];
+    const uploads: Promise<void>[] = [];
+
     // ── 1) sitemap-static.xml ─────────────────────────────────────────
     const staticXml = buildUrlset(staticPages);
+    allFilenames.push("sitemap-static.xml");
+    uploads.push(uploadToStorage(supabase, "sitemap-static.xml", staticXml));
 
     // ── 2) sitemap-cities.xml ─────────────────────────────────────────
     const cityEntries = citySlugs.map((slug) => ({
@@ -125,22 +121,19 @@ Deno.serve(async (req) => {
       priority: "0.9",
     }));
     const citiesXml = buildUrlset(cityEntries);
+    allFilenames.push("sitemap-cities.xml");
+    uploads.push(uploadToStorage(supabase, "sitemap-cities.xml", citiesXml));
 
-    // ── 3) sitemap-services-N.xml (chunked at 1000 URLs each) ─────────
-    const serviceEntries = serviceSlugs.flatMap((svc) =>
-      citySlugs.map((city) => ({
+    // ── 3) One sitemap per service (all cities for that service) ──────
+    for (const svc of serviceSlugs) {
+      const entries = citySlugs.map((city) => ({
         loc: `/advogado-${svc}-${city}`,
         changefreq: "monthly",
         priority: "0.85",
-      }))
-    );
-    const serviceChunks = chunk(serviceEntries, MAX_URLS_PER_SITEMAP);
-    const serviceFilenames: string[] = [];
-    const serviceUploads: Promise<void>[] = [];
-    for (let i = 0; i < serviceChunks.length; i++) {
-      const filename = `sitemap-services-${i + 1}.xml`;
-      serviceFilenames.push(filename);
-      serviceUploads.push(uploadToStorage(supabase, filename, buildUrlset(serviceChunks[i])));
+      }));
+      const filename = `sitemap-${svc}.xml`;
+      allFilenames.push(filename);
+      uploads.push(uploadToStorage(supabase, filename, buildUrlset(entries)));
     }
 
     // ── 4) sitemap-blog.xml ───────────────────────────────────────────
@@ -155,9 +148,14 @@ Deno.serve(async (req) => {
         });
       }
     }
+    allFilenames.push("sitemap-blog.xml");
+    uploads.push(uploadToStorage(supabase, "sitemap-blog.xml", buildUrlset(blogEntries)));
+
+    // ── 5) sitemap-perguntas.xml ──────────────────────────────────────
+    const questionEntries: UrlEntry[] = [];
     if (questions) {
       for (const q of questions) {
-        blogEntries.push({
+        questionEntries.push({
           loc: `/pergunta/${q.slug}`,
           lastmod: (q.updated_at || q.published_at || "").split("T")[0],
           changefreq: "monthly",
@@ -165,30 +163,20 @@ Deno.serve(async (req) => {
         });
       }
     }
-    const blogXml = buildUrlset(blogEntries);
+    allFilenames.push("sitemap-perguntas.xml");
+    uploads.push(uploadToStorage(supabase, "sitemap-perguntas.xml", buildUrlset(questionEntries)));
 
-    // ── 5) sitemap.xml (index) ────────────────────────────────────────
-    const allSubSitemaps = [
-      "sitemap-static.xml",
-      "sitemap-cities.xml",
-      ...serviceFilenames,
-      "sitemap-blog.xml",
-    ];
-    const storageBaseUrl = `${supabaseUrl}/storage/v1/object/public/sitemap`;
-    const indexXml = buildSitemapIndex(allSubSitemaps, storageBaseUrl);
+    // ── 6) sitemap.xml (index) ────────────────────────────────────────
+    const indexXml = buildSitemapIndex(allFilenames, storageBaseUrl);
+    uploads.push(uploadToStorage(supabase, "sitemap.xml", indexXml));
 
     // Upload everything in parallel
-    await Promise.all([
-      uploadToStorage(supabase, "sitemap-static.xml", staticXml),
-      uploadToStorage(supabase, "sitemap-cities.xml", citiesXml),
-      ...serviceUploads,
-      uploadToStorage(supabase, "sitemap-blog.xml", blogXml),
-      uploadToStorage(supabase, "sitemap.xml", indexXml),
-    ]);
+    await Promise.all(uploads);
 
-    const total = staticPages.length + cityEntries.length + serviceEntries.length + blogEntries.length;
+    const totalServiceUrls = serviceSlugs.length * citySlugs.length;
+    const total = staticPages.length + cityEntries.length + totalServiceUrls + blogEntries.length + questionEntries.length;
     console.log(
-      `Sitemap index updated: ${staticPages.length} static | ${cityEntries.length} cities | ${serviceEntries.length} services (${serviceChunks.length} files) | ${blogEntries.length} blog+questions | total: ${total} URLs`
+      `Sitemap index updated: ${allFilenames.length} sub-sitemaps | ${staticPages.length} static | ${cityEntries.length} cities | ${serviceSlugs.length} services × ${citySlugs.length} cities = ${totalServiceUrls} | ${blogEntries.length} blog | ${questionEntries.length} perguntas | total: ${total} URLs`
     );
 
     return new Response(indexXml, {
