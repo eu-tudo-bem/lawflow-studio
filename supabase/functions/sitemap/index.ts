@@ -174,7 +174,8 @@ Deno.serve(async (req) => {
       ...serviceFilenames,
       "sitemap-blog.xml",
     ];
-    const indexXml = buildSitemapIndex(allSubSitemaps);
+    const storageBaseUrl = `${supabaseUrl}/storage/v1/object/public/sitemap`;
+    const indexXml = buildSitemapIndex(allSubSitemaps, storageBaseUrl);
 
     // Upload everything in parallel
     await Promise.all([
