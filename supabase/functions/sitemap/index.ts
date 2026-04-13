@@ -167,7 +167,7 @@ Deno.serve(async (req) => {
     uploads.push(uploadToStorage(supabase, "sitemap-perguntas.xml", buildUrlset(questionEntries)));
 
     // ── 6) sitemap.xml (index) ────────────────────────────────────────
-    const indexXml = buildSitemapIndex(allFilenames, storageBaseUrl);
+    const indexXml = buildSitemapIndex(allFilenames);
     uploads.push(uploadToStorage(supabase, "sitemap.xml", indexXml));
 
     // Upload everything in parallel
