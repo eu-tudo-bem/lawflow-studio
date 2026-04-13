@@ -2,10 +2,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
-const XML_HEADERS = { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" };
+const XML_HEADERS = {
+  "Content-Type": "application/xml; charset=utf-8",
+  "Cache-Control": "public, max-age=3600",
+};
 
-const VALID_PARTS = ["static", "cities", "services", "blog"] as const;
-type SitemapPart = typeof VALID_PARTS[number];
+const FIXED_PARTS = ["static", "cities", "blog"] as const;
 
 function sanitizeSlug(slug: string): string {
   return slug
@@ -66,12 +68,20 @@ function buildUrlset(entries: UrlEntry[]): string {
   return xml;
 }
 
-function buildSitemapIndex(): string {
+function buildSitemapIndex(serviceSlugs: string[]): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  for (const part of VALID_PARTS) {
+
+  // Fixed parts: static, cities, blog
+  for (const part of FIXED_PARTS) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
+
+  // Per-service parts
+  for (const svc of serviceSlugs) {
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-services-${svc}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+  }
+
   xml += `</sitemapindex>`;
   return xml;
 }
@@ -100,6 +110,27 @@ async function fetchFromStorage(
   return await data.text();
 }
 
+/** List all service slugs stored in the sitemap bucket (for building the index without regenerating). */
+async function listServiceSlugsFromStorage(
+  supabase: ReturnType<typeof createClient>,
+): Promise<string[]> {
+  const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
+  if (error || !data) return [];
+  const prefix = "sitemap-services-";
+  return data
+    .map((f) => f.name)
+    .filter((n) => n.startsWith(prefix) && n.endsWith(".xml"))
+    .map((n) => n.slice(prefix.length, -4))
+    .sort();
+}
+
+function isValidName(name: string): boolean {
+  // Fixed parts or services-* pattern
+  if ((FIXED_PARTS as readonly string[]).includes(name)) return true;
+  if (name.startsWith("services-") && /^services-[\w-]+$/.test(name)) return true;
+  return false;
+}
+
 Deno.serve(async (req) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
@@ -107,32 +138,49 @@ Deno.serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const name = url.searchParams.get("name") as SitemapPart | null;
+    const name = url.searchParams.get("name");
     const regenerate = url.searchParams.get("regenerate") === "true";
+    const listParts = url.searchParams.get("list-parts") === "true";
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // If name is requested and we're not regenerating, proxy from storage
+    // ── list-parts: returns JSON array of all sitemap part names ──
+    if (listParts) {
+      const svcSlugs = await listServiceSlugsFromStorage(supabase);
+      const allParts = [
+        ...FIXED_PARTS,
+        ...svcSlugs.map((s) => `services-${s}`),
+      ];
+      return new Response(JSON.stringify(allParts), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ── Proxy a specific part from storage ──
     if (name && !regenerate) {
-      if (!VALID_PARTS.includes(name)) {
+      if (!isValidName(name)) {
         return new Response("Invalid name", { status: 400, headers: corsHeaders });
       }
-      const content = await fetchFromStorage(supabase, `sitemap-${name}.xml`);
+      const filename = name.startsWith("services-")
+        ? `sitemap-${name}.xml`
+        : `sitemap-${name}.xml`;
+      const content = await fetchFromStorage(supabase, filename);
       if (!content) {
         return new Response("Sitemap not found", { status: 404, headers: corsHeaders });
       }
       return new Response(content, { headers: { ...corsHeaders, ...XML_HEADERS } });
     }
 
-    // If no name and not regenerating, return the index
+    // ── Return index without regenerating ──
     if (!regenerate && !name) {
-      const indexXml = buildSitemapIndex();
+      const svcSlugs = await listServiceSlugsFromStorage(supabase);
+      const indexXml = buildSitemapIndex(svcSlugs);
       return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
     }
 
-    // ── Regenerate all sitemaps ────────────────────────────────────────
+    // ── Regenerate all sitemaps ──────────────────────────────────────
     const [
       { data: cities, error: citiesError },
       { data: services, error: servicesError },
@@ -153,11 +201,8 @@ Deno.serve(async (req) => {
     const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
     const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
-    const uploads: Promise<void>[] = [];
-
     // 1) sitemap-static.xml
-    const staticXml = buildUrlset(staticPages);
-    uploads.push(uploadToStorage(supabase, "sitemap-static.xml", staticXml));
+    await uploadToStorage(supabase, "sitemap-static.xml", buildUrlset(staticPages));
 
     // 2) sitemap-cities.xml
     const cityEntries = citySlugs.map((slug) => ({
@@ -165,22 +210,21 @@ Deno.serve(async (req) => {
       changefreq: "monthly",
       priority: "0.9",
     }));
-    uploads.push(uploadToStorage(supabase, "sitemap-cities.xml", buildUrlset(cityEntries)));
+    await uploadToStorage(supabase, "sitemap-cities.xml", buildUrlset(cityEntries));
 
-    // 3) sitemap-services.xml
-    const serviceEntries: UrlEntry[] = [];
+    // 3) Per-service sitemaps (one at a time to save memory)
+    let totalServiceUrls = 0;
     for (const svc of serviceSlugs) {
-      for (const city of citySlugs) {
-        serviceEntries.push({
-          loc: `/advogado-${svc}-${city}`,
-          changefreq: "monthly",
-          priority: "0.85",
-        });
-      }
+      const entries: UrlEntry[] = citySlugs.map((city) => ({
+        loc: `/advogado-${svc}-${city}`,
+        changefreq: "monthly",
+        priority: "0.85",
+      }));
+      totalServiceUrls += entries.length;
+      await uploadToStorage(supabase, `sitemap-services-${svc}.xml`, buildUrlset(entries));
     }
-    uploads.push(uploadToStorage(supabase, "sitemap-services.xml", buildUrlset(serviceEntries)));
 
-    // 4) sitemap-blog.xml (blog + perguntas)
+    // 4) sitemap-blog.xml
     const blogEntries: UrlEntry[] = [];
     if (posts) {
       for (const p of posts) {
@@ -202,17 +246,18 @@ Deno.serve(async (req) => {
         });
       }
     }
-    uploads.push(uploadToStorage(supabase, "sitemap-blog.xml", buildUrlset(blogEntries)));
+    await uploadToStorage(supabase, "sitemap-blog.xml", buildUrlset(blogEntries));
 
-    // 5) sitemap.xml index (stored for reference)
-    const indexXml = buildSitemapIndex();
-    uploads.push(uploadToStorage(supabase, "sitemap.xml", indexXml));
+    // 5) Index
+    const indexXml = buildSitemapIndex(serviceSlugs);
+    await uploadToStorage(supabase, "sitemap.xml", indexXml);
 
-    await Promise.all(uploads);
+    // Clean up old monolithic sitemap-services.xml if it exists
+    await supabase.storage.from("sitemap").remove(["sitemap-services.xml"]);
 
-    const total = staticPages.length + cityEntries.length + serviceEntries.length + blogEntries.length;
+    const total = staticPages.length + cityEntries.length + totalServiceUrls + blogEntries.length;
     console.log(
-      `Sitemap regenerated: 4 sub-sitemaps | ${staticPages.length} static | ${cityEntries.length} cities | ${serviceEntries.length} services | ${blogEntries.length} blog+perguntas | total: ${total} URLs`,
+      `Sitemap regenerated: ${3 + serviceSlugs.length} sub-sitemaps | ${staticPages.length} static | ${cityEntries.length} cities | ${serviceSlugs.length} service files (${totalServiceUrls} URLs) | ${blogEntries.length} blog+perguntas | total: ${total} URLs`,
     );
 
     return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
