@@ -117,6 +117,10 @@ function buildEmptyUrlset(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>`;
 }
 
+function buildErrorXml(message: string): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<error><message>${message}</message></error>`;
+}
+
 function buildSitemapIndex(serviceSlugs: string[]): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
@@ -132,10 +136,10 @@ function buildSitemapIndex(serviceSlugs: string[]): string {
 
 /* ── Storage helpers ── */
 async function uploadToStorage(supabase: any, filename: string, content: string) {
-  const blob = new Blob([content], { type: "application/xml" });
+  const blob = new Blob([content], { type: "application/xml; charset=utf-8" });
   const { error } = await supabase.storage
     .from("sitemap")
-    .upload(filename, blob, { contentType: "application/xml", upsert: true, cacheControl: "3600" });
+    .upload(filename, blob, { contentType: "application/xml; charset=utf-8", upsert: true, cacheControl: "3600" });
   if (error) console.error(`[sitemap] upload ${filename}:`, error.message);
 }
 
@@ -198,8 +202,22 @@ Deno.serve(async (req) => {
     /* ── Serve from storage (no regeneration) ── */
     if (!regen) {
       if (part && part !== INDEX_SENTINEL && part !== INVALID_SENTINEL) {
-        const content = await fetchFromStorage(supabase, `sitemap-${part}.xml`);
-        return new Response(content ?? buildEmptyUrlset(), { headers: { ...cors, ...XML_HEADERS } });
+        const filename = `sitemap-${part}.xml`;
+        const content = await fetchFromStorage(supabase, filename);
+
+        if (!content) {
+          if (part === "perguntas") {
+            console.error("[sitemap] sitemap-perguntas.xml not found in storage");
+            return new Response(buildErrorXml("sitemap-perguntas.xml not found in storage"), {
+              status: 404,
+              headers: { ...cors, ...XML_HEADERS },
+            });
+          }
+
+          return new Response(buildEmptyUrlset(), { headers: { ...cors, ...XML_HEADERS } });
+        }
+
+        return new Response(content, { headers: { ...cors, ...XML_HEADERS } });
       }
       if (part === INVALID_SENTINEL) {
         return new Response(buildEmptyUrlset(), { headers: { ...cors, ...XML_HEADERS } });
@@ -220,7 +238,7 @@ Deno.serve(async (req) => {
       supabase.from("seo_cities").select("slug").eq("active", true),
       supabase.from("seo_services").select("slug").eq("active", true),
       supabase.from("blog_posts").select("slug, updated_at, published_at").eq("status", "published").order("published_at", { ascending: false }),
-      supabase.from("legal_questions").select("slug, updated_at, published_at").eq("status", "published").order("published_at", { ascending: false }),
+      supabase.from("legal_questions").select("slug, updated_at, published_at").eq("status", "published").not("slug", "is", null).neq("slug", "").order("published_at", { ascending: false }),
     ]);
     if (e1) console.error("[sitemap] seo_cities:", e1.message);
     if (e2) console.error("[sitemap] seo_services:", e2.message);
@@ -255,13 +273,36 @@ Deno.serve(async (req) => {
     await uploadToStorage(supabase, "sitemap-blog.xml", buildUrlset(blogEntries));
 
     /* 5) perguntas (questions only — separate file) */
-    const perguntaEntries: UrlEntry[] = (questions || []).map((q: any) => ({
-      loc: `/pergunta/${sanitizeSlug(q.slug)}`,
-      lastmod: (q.updated_at || q.published_at || "").split("T")[0],
-      changefreq: "monthly",
-      priority: "0.75",
-    }));
+    const publishedQuestions = (questions || []).filter((q: any) => typeof q.slug === "string" && sanitizeSlug(q.slug).length > 0);
+    const discardedQuestionCount = (questions || []).length - publishedQuestions.length;
+
+    console.log(`[sitemap] legal_questions published rows: ${(questions || []).length}`);
+    if (!publishedQuestions.length) {
+      console.error("[sitemap] legal_questions returned 0 published rows while generating sitemap-perguntas.xml");
+    }
+    if (discardedQuestionCount > 0) {
+      console.warn(`[sitemap] discarded ${discardedQuestionCount} legal_questions rows with invalid slugs`);
+    }
+
+    const perguntaEntries: UrlEntry[] = Array.from(
+      new Map(
+        publishedQuestions.map((q: any) => {
+          const slug = sanitizeSlug(q.slug);
+          return [
+            slug,
+            {
+              loc: `/pergunta/${slug}`,
+              lastmod: (q.updated_at || q.published_at || "").split("T")[0],
+              changefreq: "monthly",
+              priority: "0.75",
+            },
+          ];
+        }),
+      ).values(),
+    );
+
     await uploadToStorage(supabase, "sitemap-perguntas.xml", buildUrlset(perguntaEntries));
+    console.log(`[sitemap] generated sitemap-perguntas.xml with ${perguntaEntries.length} URLs`);
 
     /* 6) index */
     const indexXml = buildSitemapIndex(serviceSlugs);
