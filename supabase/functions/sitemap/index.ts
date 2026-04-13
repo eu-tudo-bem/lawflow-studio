@@ -139,7 +139,7 @@ function getStorageFilename(partName: string): string {
 }
 
 async function uploadToStorage(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   filename: string,
   content: string,
 ) {
@@ -154,7 +154,7 @@ async function uploadToStorage(
 }
 
 async function fetchFromStorage(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   filename: string,
 ): Promise<string | null> {
   const { data, error } = await supabase.storage.from("sitemap").download(filename);
@@ -169,7 +169,7 @@ async function fetchFromStorage(
 }
 
 async function listServiceSlugsFromStorage(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
 ): Promise<string[]> {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
   if (error || !data) return [];
@@ -182,7 +182,7 @@ async function listServiceSlugsFromStorage(
 }
 
 async function cleanupStaleServiceFiles(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   activeServiceSlugs: string[],
 ) {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
