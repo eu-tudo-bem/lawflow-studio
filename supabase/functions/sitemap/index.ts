@@ -57,11 +57,11 @@ function buildUrlset(entries: UrlEntry[]): string {
   return xml;
 }
 
-function buildSitemapIndex(sitemapNames: string[], storageBaseUrl: string): string {
+function buildSitemapIndex(sitemapNames: string[]): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const name of sitemapNames) {
-    xml += `  <sitemap>\n    <loc>${storageBaseUrl}/${name}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/${name}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
@@ -105,7 +105,7 @@ Deno.serve(async (req) => {
     const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
     const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
-    const storageBaseUrl = `${supabaseUrl}/storage/v1/object/public/sitemap`;
+    
     const allFilenames: string[] = [];
     const uploads: Promise<void>[] = [];
 
@@ -167,7 +167,7 @@ Deno.serve(async (req) => {
     uploads.push(uploadToStorage(supabase, "sitemap-perguntas.xml", buildUrlset(questionEntries)));
 
     // ── 6) sitemap.xml (index) ────────────────────────────────────────
-    const indexXml = buildSitemapIndex(allFilenames, storageBaseUrl);
+    const indexXml = buildSitemapIndex(allFilenames);
     uploads.push(uploadToStorage(supabase, "sitemap.xml", indexXml));
 
     // Upload everything in parallel
