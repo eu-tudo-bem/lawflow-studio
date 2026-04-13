@@ -3,12 +3,11 @@ import { getCorsHeaders, handleOptions } from "../_shared/cors.ts";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
 
-/** Remove accents/diacritics and ensure a clean ASCII slug */
 function sanitizeSlug(slug: string): string {
   return slug
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // strip combining diacritical marks
-    .replace(/[^\w-]/g, "")           // remove any remaining non-ASCII
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\w-]/g, "")
     .toLowerCase();
 }
 
@@ -43,6 +42,37 @@ const staticPages = [
   })),
 ];
 
+function buildUrlset(entries: { loc: string; changefreq?: string; priority?: string; lastmod?: string }[]): string {
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  for (const e of entries) {
+    xml += `  <url>\n    <loc>${BASE_URL}${e.loc}</loc>\n`;
+    if (e.lastmod) xml += `    <lastmod>${e.lastmod}</lastmod>\n`;
+    if (e.changefreq) xml += `    <changefreq>${e.changefreq}</changefreq>\n`;
+    if (e.priority) xml += `    <priority>${e.priority}</priority>\n`;
+    xml += `  </url>\n`;
+  }
+  xml += `</urlset>`;
+  return xml;
+}
+
+function buildSitemapIndex(sitemapNames: string[]): string {
+  const now = new Date().toISOString().split("T")[0];
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  for (const name of sitemapNames) {
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/${name}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+  }
+  xml += `</sitemapindex>`;
+  return xml;
+}
+
+async function uploadToStorage(supabase: ReturnType<typeof createClient>, filename: string, content: string) {
+  const blob = new Blob([content], { type: "application/xml" });
+  const { error } = await supabase.storage
+    .from("sitemap")
+    .upload(filename, blob, { contentType: "application/xml", upsert: true, cacheControl: "3600" });
+  if (error) console.error(`[sitemap] Failed to upload ${filename}:`, error.message);
+}
+
 Deno.serve(async (req) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
@@ -53,7 +83,6 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // ── Fetch cities and services from DB (dynamic) ───────────────────
     const [
       { data: cities, error: citiesError },
       { data: services, error: servicesError },
@@ -62,109 +91,82 @@ Deno.serve(async (req) => {
     ] = await Promise.all([
       supabase.from("seo_cities").select("slug").eq("active", true),
       supabase.from("seo_services").select("slug").eq("active", true),
-      supabase
-        .from("blog_posts")
-        .select("slug, updated_at, published_at")
-        .eq("status", "published")
-        .order("published_at", { ascending: false }),
-      supabase
-        .from("legal_questions")
-        .select("slug, updated_at, published_at")
-        .eq("status", "published")
-        .order("published_at", { ascending: false }),
+      supabase.from("blog_posts").select("slug, updated_at, published_at").eq("status", "published").order("published_at", { ascending: false }),
+      supabase.from("legal_questions").select("slug, updated_at, published_at").eq("status", "published").order("published_at", { ascending: false }),
     ]);
 
-    // ── Log data fetch errors (non-fatal: fall back to empty arrays) ───
-    if (citiesError) console.error("[sitemap] Failed to fetch seo_cities:", citiesError.message);
-    if (servicesError) console.error("[sitemap] Failed to fetch seo_services:", servicesError.message);
-    if (postsError) console.error("[sitemap] Failed to fetch blog_posts:", postsError.message);
-    if (questionsError) console.error("[sitemap] Failed to fetch legal_questions:", questionsError.message);
+    if (citiesError) console.error("[sitemap] seo_cities:", citiesError.message);
+    if (servicesError) console.error("[sitemap] seo_services:", servicesError.message);
+    if (postsError) console.error("[sitemap] blog_posts:", postsError.message);
+    if (questionsError) console.error("[sitemap] legal_questions:", questionsError.message);
 
     const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
     const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
-    // ── Hyper-local pages built from DB ───────────────────────────────
-    const hyperlocalCityPages = citySlugs.map((slug) => ({
+    // 1) sitemap-static.xml
+    const staticXml = buildUrlset(staticPages);
+
+    // 2) sitemap-cities.xml
+    const cityEntries = citySlugs.map((slug) => ({
       loc: `/escritorio-advocacia-${slug}`,
       changefreq: "monthly",
       priority: "0.9",
     }));
+    const citiesXml = buildUrlset(cityEntries);
 
-    const hyperlocalServicePages = serviceSlugs.flatMap((svc) =>
+    // 3) sitemap-services.xml
+    const serviceEntries = serviceSlugs.flatMap((svc) =>
       citySlugs.map((city) => ({
         loc: `/advogado-${svc}-${city}`,
         changefreq: "monthly",
         priority: "0.85",
       }))
     );
+    const servicesXml = buildUrlset(serviceEntries);
 
-    const allStaticPages = [
-      ...staticPages,
-      ...hyperlocalCityPages,
-      ...hyperlocalServicePages,
-    ];
-
-    // ── Build XML ─────────────────────────────────────────────────────
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-`;
-
-    for (const page of allStaticPages) {
-      xml += `  <url>
-    <loc>${BASE_URL}${page.loc}</loc>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>
-`;
-    }
-
+    // 4) sitemap-blog.xml
+    const blogEntries: { loc: string; lastmod?: string; changefreq: string; priority: string }[] = [];
     if (posts) {
-      for (const post of posts) {
-        const lastmod = (post.updated_at || post.published_at || "").split("T")[0];
-        xml += `  <url>
-    <loc>${BASE_URL}/blog/${post.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-`;
+      for (const p of posts) {
+        blogEntries.push({
+          loc: `/blog/${p.slug}`,
+          lastmod: (p.updated_at || p.published_at || "").split("T")[0],
+          changefreq: "monthly",
+          priority: "0.8",
+        });
       }
     }
-
     if (questions) {
       for (const q of questions) {
-        const lastmod = (q.updated_at || q.published_at || "").split("T")[0];
-        xml += `  <url>
-    <loc>${BASE_URL}/pergunta/${q.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-`;
+        blogEntries.push({
+          loc: `/pergunta/${q.slug}`,
+          lastmod: (q.updated_at || q.published_at || "").split("T")[0],
+          changefreq: "monthly",
+          priority: "0.75",
+        });
       }
     }
+    const blogXml = buildUrlset(blogEntries);
 
-    xml += `</urlset>`;
+    // 5) sitemap.xml (index)
+    const subSitemaps = ["sitemap-static.xml", "sitemap-cities.xml", "sitemap-services.xml", "sitemap-blog.xml"];
+    const indexXml = buildSitemapIndex(subSitemaps);
 
-    // ── Save to storage bucket ────────────────────────────────────────
-    const xmlBlob = new Blob([xml], { type: "application/xml" });
-    const { error: uploadError } = await supabase.storage
-      .from("sitemap")
-      .upload("sitemap.xml", xmlBlob, {
-        contentType: "application/xml",
-        upsert: true,
-        cacheControl: "3600",
-      });
-    if (uploadError) console.error("[sitemap] Failed to save sitemap.xml to storage:", uploadError.message);
+    // Upload all to storage
+    await Promise.all([
+      uploadToStorage(supabase, "sitemap-static.xml", staticXml),
+      uploadToStorage(supabase, "sitemap-cities.xml", citiesXml),
+      uploadToStorage(supabase, "sitemap-services.xml", servicesXml),
+      uploadToStorage(supabase, "sitemap-blog.xml", blogXml),
+      uploadToStorage(supabase, "sitemap.xml", indexXml),
+    ]);
 
-    const totalPages =
-      allStaticPages.length + (posts?.length || 0) + (questions?.length || 0);
-
+    const total = staticPages.length + cityEntries.length + serviceEntries.length + blogEntries.length;
     console.log(
-      `Sitemap updated: ${allStaticPages.length} static (${citySlugs.length} cities × ${serviceSlugs.length} services) | ${posts?.length || 0} blog posts | ${questions?.length || 0} legal questions | total: ${totalPages} URLs`
+      `Sitemap index updated: ${staticPages.length} static | ${cityEntries.length} cities | ${serviceEntries.length} services | ${blogEntries.length} blog+questions | total: ${total} URLs`
     );
 
-    return new Response(xml, {
+    return new Response(indexXml, {
       headers: {
         ...corsHeaders,
         "Content-Type": "application/xml; charset=utf-8",
