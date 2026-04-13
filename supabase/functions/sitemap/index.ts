@@ -252,8 +252,10 @@ Deno.serve(async (req) => {
     const indexXml = buildSitemapIndex(serviceSlugs);
     await uploadToStorage(supabase, "sitemap.xml", indexXml);
 
-    // Clean up old monolithic sitemap-services.xml if it exists
-    await supabase.storage.from("sitemap").remove(["sitemap-services.xml"]);
+    // Clean up old/orphan files
+    const orphans = ["sitemap-services.xml"];
+    for (let i = 1; i <= 10; i++) orphans.push(`sitemap-services-${i}.xml`);
+    await supabase.storage.from("sitemap").remove(orphans);
 
     const total = staticPages.length + cityEntries.length + totalServiceUrls + blogEntries.length;
     console.log(

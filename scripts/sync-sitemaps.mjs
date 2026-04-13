@@ -94,26 +94,25 @@ async function main() {
 
   // 2) Discover all parts dynamically
   const parts = await fetchJson(`${functionUrl}?list-parts=true`, headers);
-  console.log(`Discovered ${parts.length} sitemap parts: ${parts.join(", ")}`);
+  // Filter out orphan numeric-only service parts (e.g. services-1)
+  const validParts = parts.filter((p) => !/^services-\d+$/.test(p));
+  console.log(`Discovered ${validParts.length} valid sitemap parts: ${validParts.join(", ")}`);
 
-  // 3) Remove old sitemap-services.xml if present (replaced by per-service files)
-  try {
-    await unlink(path.join(PUBLIC_DIR, "sitemap-services.xml"));
-    console.log("Removed old sitemap-services.xml");
-  } catch {
-    // fine if not exists
+  // 3) Remove old/orphan files
+  for (const old of ["sitemap-services.xml", ...parts.filter((p) => /^services-\d+$/.test(p)).map((p) => `sitemap-${p}.xml`)]) {
+    try { await unlink(path.join(PUBLIC_DIR, old)); } catch { /* ok */ }
   }
 
   // 4) Download each part
-  for (const part of parts) {
+  for (const part of validParts) {
     const xml = await fetchXml(`${functionUrl}?name=${part}`, headers);
     validateCanonicalUrls(xml, part);
     await writeFile(path.join(PUBLIC_DIR, `sitemap-${part}.xml`), xml, "utf8");
   }
 
   // 5) Write index
-  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), buildIndexXml(parts), "utf8");
-  console.log(`Synced ${parts.length + 1} sitemap files to public/.`);
+  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), buildIndexXml(validParts), "utf8");
+  console.log(`Synced ${validParts.length + 1} sitemap files to public/.`);
 }
 
 main().catch((error) => {
