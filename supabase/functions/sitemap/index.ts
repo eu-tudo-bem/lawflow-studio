@@ -70,7 +70,7 @@ function buildSitemapIndex(): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const part of VALID_PARTS) {
-    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap.xml?name=${part}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
