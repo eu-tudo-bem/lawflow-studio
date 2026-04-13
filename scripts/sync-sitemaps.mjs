@@ -104,15 +104,15 @@ async function main() {
   }
 
   // 4) Download each part
-  for (const part of parts) {
+  for (const part of validParts) {
     const xml = await fetchXml(`${functionUrl}?name=${part}`, headers);
     validateCanonicalUrls(xml, part);
     await writeFile(path.join(PUBLIC_DIR, `sitemap-${part}.xml`), xml, "utf8");
   }
 
   // 5) Write index
-  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), buildIndexXml(parts), "utf8");
-  console.log(`Synced ${parts.length + 1} sitemap files to public/.`);
+  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), buildIndexXml(validParts), "utf8");
+  console.log(`Synced ${validParts.length + 1} sitemap files to public/.`);
 }
 
 main().catch((error) => {
