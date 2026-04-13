@@ -6,16 +6,14 @@ const XML_HEADERS = {
   "Content-Type": "application/xml; charset=utf-8",
   "Cache-Control": "public, max-age=3600",
 };
+const JSON_HEADERS = {
+  "Content-Type": "application/json; charset=utf-8",
+  "Cache-Control": "no-store",
+};
 
 const FIXED_PARTS = ["static", "cities", "blog"] as const;
-
-function sanitizeSlug(slug: string): string {
-  return slug
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^\w-]/g, "")
-    .toLowerCase();
-}
+const INDEX_SENTINEL = "__index__";
+const INVALID_SENTINEL = "__invalid__";
 
 const DOCUMENT_GENERATOR_SLUGS = [
   "notificacao-cobranca-aluguel",
@@ -55,6 +53,54 @@ interface UrlEntry {
   lastmod?: string;
 }
 
+function sanitizeSlug(slug: string): string {
+  return slug
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-");
+}
+
+function isValidServiceSlug(slug: string): boolean {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) && !/^\d+$/.test(slug);
+}
+
+function normalizePartName(name: string): string | null {
+  const decoded = decodeURIComponent(name).trim().toLowerCase();
+
+  if ((FIXED_PARTS as readonly string[]).includes(decoded)) {
+    return decoded;
+  }
+
+  if (decoded.startsWith("services-")) {
+    const serviceSlug = sanitizeSlug(decoded.slice("services-".length));
+    return isValidServiceSlug(serviceSlug) ? `services-${serviceSlug}` : null;
+  }
+
+  return null;
+}
+
+function extractRequestedPart(url: URL): string | null {
+  const queryName = url.searchParams.get("name");
+  if (queryName) {
+    return normalizePartName(queryName) ?? INVALID_SENTINEL;
+  }
+
+  const lastSegment = url.pathname.split("/").filter(Boolean).at(-1);
+  if (!lastSegment || lastSegment === "sitemap" || lastSegment === "sitemap.xml") {
+    return INDEX_SENTINEL;
+  }
+
+  const match = lastSegment.match(/^sitemap-(.+)\.xml$/i);
+  if (!match) {
+    return null;
+  }
+
+  return normalizePartName(match[1]) ?? INVALID_SENTINEL;
+}
+
 function buildUrlset(entries: UrlEntry[]): string {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const e of entries) {
@@ -68,22 +114,28 @@ function buildUrlset(entries: UrlEntry[]): string {
   return xml;
 }
 
+function buildEmptyUrlset(): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>`;
+}
+
 function buildSitemapIndex(serviceSlugs: string[]): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-  // Fixed parts: static, cities, blog
   for (const part of FIXED_PARTS) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
 
-  // Per-service parts
   for (const svc of serviceSlugs) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-services-${svc}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
 
   xml += `</sitemapindex>`;
   return xml;
+}
+
+function getStorageFilename(partName: string): string {
+  return `sitemap-${partName}.xml`;
 }
 
 async function uploadToStorage(
@@ -95,7 +147,10 @@ async function uploadToStorage(
   const { error } = await supabase.storage
     .from("sitemap")
     .upload(filename, blob, { contentType: "application/xml", upsert: true, cacheControl: "3600" });
-  if (error) console.error(`[sitemap] Failed to upload ${filename}:`, error.message);
+
+  if (error) {
+    console.error(`[sitemap] Failed to upload ${filename}:`, error.message);
+  }
 }
 
 async function fetchFromStorage(
@@ -103,84 +158,100 @@ async function fetchFromStorage(
   filename: string,
 ): Promise<string | null> {
   const { data, error } = await supabase.storage.from("sitemap").download(filename);
+
   if (error || !data) {
-    console.error(`[sitemap] Failed to download ${filename}:`, error?.message);
+    console.warn(`[sitemap] Missing file in storage: ${filename}`, error?.message ?? "not_found");
     return null;
   }
+
+  console.log(`[sitemap] Serving ${filename} from storage`);
   return await data.text();
 }
 
-/** List all service slugs stored in the sitemap bucket (for building the index without regenerating). */
 async function listServiceSlugsFromStorage(
   supabase: ReturnType<typeof createClient>,
 ): Promise<string[]> {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
   if (error || !data) return [];
-  const prefix = "sitemap-services-";
+
   return data
-    .map((f) => f.name)
-    .filter((n) => n.startsWith(prefix) && n.endsWith(".xml"))
-    .map((n) => n.slice(prefix.length, -4))
+    .map((file) => file.name.match(/^sitemap-services-(.+)\.xml$/)?.[1] ?? null)
+    .filter((slug): slug is string => Boolean(slug))
+    .filter((slug) => slug === sanitizeSlug(slug) && isValidServiceSlug(slug))
     .sort();
 }
 
-function isValidName(name: string): boolean {
-  // Fixed parts or services-* pattern
-  if ((FIXED_PARTS as readonly string[]).includes(name)) return true;
-  if (name.startsWith("services-") && /^services-[\w-]+$/.test(name)) return true;
-  return false;
+async function cleanupStaleServiceFiles(
+  supabase: ReturnType<typeof createClient>,
+  activeServiceSlugs: string[],
+) {
+  const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
+  if (error || !data) {
+    if (error) console.error("[sitemap] Failed to list storage for cleanup:", error.message);
+    return;
+  }
+
+  const validServiceFiles = new Set(activeServiceSlugs.map((slug) => `sitemap-services-${slug}.xml`));
+  const staleFiles = data
+    .map((file) => file.name)
+    .filter((name) => name === "sitemap-services.xml" || (name.startsWith("sitemap-services-") && name.endsWith(".xml") && !validServiceFiles.has(name)));
+
+  if (!staleFiles.length) return;
+
+  const { error: removeError } = await supabase.storage.from("sitemap").remove(staleFiles);
+  if (removeError) {
+    console.error("[sitemap] Failed to remove stale files:", removeError.message);
+    return;
+  }
+
+  console.log(`[sitemap] Removed stale service files: ${staleFiles.join(", ")}`);
 }
 
 Deno.serve(async (req) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
+
   const corsHeaders = getCorsHeaders(req);
 
   try {
     const url = new URL(req.url);
-    const name = url.searchParams.get("name");
-    const regenerate = url.searchParams.get("regenerate") === "true";
+    const requestedPart = extractRequestedPart(url);
+    const shouldRegenerate = req.method === "POST" || url.searchParams.get("regenerate") === "true";
     const listParts = url.searchParams.get("list-parts") === "true";
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // ── list-parts: returns JSON array of all sitemap part names ──
     if (listParts) {
       const svcSlugs = await listServiceSlugsFromStorage(supabase);
-      const allParts = [
-        ...FIXED_PARTS,
-        ...svcSlugs.map((s) => `services-${s}`),
-      ];
+      const allParts = [...FIXED_PARTS, ...svcSlugs.map((slug) => `services-${slug}`)];
       return new Response(JSON.stringify(allParts), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, ...JSON_HEADERS },
       });
     }
 
-    // ── Proxy a specific part from storage ──
-    if (name && !regenerate) {
-      if (!isValidName(name)) {
-        return new Response("Invalid name", { status: 400, headers: corsHeaders });
+    if (!shouldRegenerate) {
+      if (requestedPart && requestedPart !== INDEX_SENTINEL && requestedPart !== INVALID_SENTINEL) {
+        const filename = getStorageFilename(requestedPart);
+        const content = await fetchFromStorage(supabase, filename);
+        return new Response(content ?? buildEmptyUrlset(), {
+          headers: { ...corsHeaders, ...XML_HEADERS },
+        });
       }
-      const filename = name.startsWith("services-")
-        ? `sitemap-${name}.xml`
-        : `sitemap-${name}.xml`;
-      const content = await fetchFromStorage(supabase, filename);
-      if (!content) {
-        return new Response("Sitemap not found", { status: 404, headers: corsHeaders });
-      }
-      return new Response(content, { headers: { ...corsHeaders, ...XML_HEADERS } });
-    }
 
-    // ── Return index without regenerating ──
-    if (!regenerate && !name) {
+      if (requestedPart === INVALID_SENTINEL) {
+        return new Response(buildEmptyUrlset(), {
+          headers: { ...corsHeaders, ...XML_HEADERS },
+        });
+      }
+
       const svcSlugs = await listServiceSlugsFromStorage(supabase);
-      const indexXml = buildSitemapIndex(svcSlugs);
-      return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
+      return new Response(buildSitemapIndex(svcSlugs), {
+        headers: { ...corsHeaders, ...XML_HEADERS },
+      });
     }
 
-    // ── Regenerate all sitemaps ──────────────────────────────────────
     const [
       { data: cities, error: citiesError },
       { data: services, error: servicesError },
@@ -198,13 +269,11 @@ Deno.serve(async (req) => {
     if (postsError) console.error("[sitemap] blog_posts:", postsError.message);
     if (questionsError) console.error("[sitemap] legal_questions:", questionsError.message);
 
-    const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
-    const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
+    const citySlugs = Array.from(new Set((cities || []).map((city) => sanitizeSlug(city.slug)).filter(Boolean)));
+    const serviceSlugs = Array.from(new Set((services || []).map((service) => sanitizeSlug(service.slug)).filter(isValidServiceSlug)));
 
-    // 1) sitemap-static.xml
     await uploadToStorage(supabase, "sitemap-static.xml", buildUrlset(staticPages));
 
-    // 2) sitemap-cities.xml
     const cityEntries = citySlugs.map((slug) => ({
       loc: `/escritorio-advocacia-${slug}`,
       changefreq: "monthly",
@@ -212,59 +281,51 @@ Deno.serve(async (req) => {
     }));
     await uploadToStorage(supabase, "sitemap-cities.xml", buildUrlset(cityEntries));
 
-    // 3) Per-service sitemaps (one at a time to save memory)
     let totalServiceUrls = 0;
-    for (const svc of serviceSlugs) {
-      const entries: UrlEntry[] = citySlugs.map((city) => ({
-        loc: `/advogado-${svc}-${city}`,
+    for (const serviceSlug of serviceSlugs) {
+      const entries: UrlEntry[] = citySlugs.map((citySlug) => ({
+        loc: `/advogado-${serviceSlug}-${citySlug}`,
         changefreq: "monthly",
         priority: "0.85",
       }));
+
       totalServiceUrls += entries.length;
-      await uploadToStorage(supabase, `sitemap-services-${svc}.xml`, buildUrlset(entries));
+      await uploadToStorage(supabase, `sitemap-services-${serviceSlug}.xml`, buildUrlset(entries));
     }
 
-    // 4) sitemap-blog.xml
-    const blogEntries: UrlEntry[] = [];
-    if (posts) {
-      for (const p of posts) {
-        blogEntries.push({
-          loc: `/blog/${p.slug}`,
-          lastmod: (p.updated_at || p.published_at || "").split("T")[0],
-          changefreq: "monthly",
-          priority: "0.8",
-        });
-      }
-    }
-    if (questions) {
-      for (const q of questions) {
-        blogEntries.push({
-          loc: `/pergunta/${q.slug}`,
-          lastmod: (q.updated_at || q.published_at || "").split("T")[0],
-          changefreq: "monthly",
-          priority: "0.75",
-        });
-      }
-    }
+    const blogEntries: UrlEntry[] = [
+      ...((posts || []).map((post) => ({
+        loc: `/blog/${sanitizeSlug(post.slug)}`,
+        lastmod: (post.updated_at || post.published_at || "").split("T")[0],
+        changefreq: "monthly",
+        priority: "0.8",
+      }))),
+      ...((questions || []).map((question) => ({
+        loc: `/pergunta/${sanitizeSlug(question.slug)}`,
+        lastmod: (question.updated_at || question.published_at || "").split("T")[0],
+        changefreq: "monthly",
+        priority: "0.75",
+      }))),
+    ];
     await uploadToStorage(supabase, "sitemap-blog.xml", buildUrlset(blogEntries));
 
-    // 5) Index
     const indexXml = buildSitemapIndex(serviceSlugs);
     await uploadToStorage(supabase, "sitemap.xml", indexXml);
-
-    // Clean up old/orphan files
-    const orphans = ["sitemap-services.xml"];
-    for (let i = 1; i <= 10; i++) orphans.push(`sitemap-services-${i}.xml`);
-    await supabase.storage.from("sitemap").remove(orphans);
+    await cleanupStaleServiceFiles(supabase, serviceSlugs);
 
     const total = staticPages.length + cityEntries.length + totalServiceUrls + blogEntries.length;
     console.log(
       `Sitemap regenerated: ${3 + serviceSlugs.length} sub-sitemaps | ${staticPages.length} static | ${cityEntries.length} cities | ${serviceSlugs.length} service files (${totalServiceUrls} URLs) | ${blogEntries.length} blog+perguntas | total: ${total} URLs`,
     );
 
-    return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
+    return new Response(indexXml, {
+      headers: { ...corsHeaders, ...XML_HEADERS },
+    });
   } catch (error) {
     console.error("Sitemap error:", error);
-    return new Response("Error generating sitemap", { status: 500, headers: getCorsHeaders(req) });
+    return new Response(buildEmptyUrlset(), {
+      status: 500,
+      headers: { ...getCorsHeaders(req), ...XML_HEADERS },
+    });
   }
 });
