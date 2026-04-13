@@ -1,8 +1,8 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile, unlink } from "node:fs/promises";
+import { readdirSync } from "node:fs";
 import path from "node:path";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
-const PARTS = ["static", "cities", "services", "blog"];
 const ROOT_DIR = process.cwd();
 const PUBLIC_DIR = path.join(ROOT_DIR, "public");
 
@@ -15,17 +15,14 @@ function parseDotEnv(content) {
       .map((line) => {
         const separatorIndex = line.indexOf("=");
         if (separatorIndex === -1) return null;
-
         const key = line.slice(0, separatorIndex).trim();
         let value = line.slice(separatorIndex + 1).trim();
-
         if (
           (value.startsWith('"') && value.endsWith('"')) ||
           (value.startsWith("'") && value.endsWith("'"))
         ) {
           value = value.slice(1, -1);
         }
-
         return [key, value];
       })
       .filter(Boolean),
@@ -43,37 +40,39 @@ async function loadProjectEnv() {
 
 function getEnvValue(name, envFileValues) {
   const value = process.env[name] || envFileValues[name];
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
+  if (!value) throw new Error(`Missing required environment variable: ${name}`);
   return value;
 }
 
-async function fetchXml(url, headers) {
-  const response = await fetch(url, { headers });
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Failed to fetch ${url}: ${response.status} ${errorText}`);
-  }
+async function fetchJson(url, headers) {
+  const res = await fetch(url, { headers });
+  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+  return res.json();
+}
 
-  return await response.text();
+async function fetchXml(url, headers) {
+  const res = await fetch(url, { headers });
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${errorText}`);
+  }
+  return res.text();
 }
 
 function validateCanonicalUrls(xml, label) {
-  const locMatches = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
-  const invalidLoc = locMatches.find((loc) => !loc.startsWith(`${BASE_URL}/`));
-
-  if (invalidLoc) {
-    throw new Error(`[${label}] Invalid <loc> outside canonical domain: ${invalidLoc}`);
-  }
+  const locMatches = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
+  const invalid = locMatches.find((loc) => !loc.startsWith(`${BASE_URL}/`));
+  if (invalid) throw new Error(`[${label}] Invalid <loc> outside canonical domain: ${invalid}`);
 }
 
-function buildIndexXml() {
+function buildIndexXml(parts) {
   const lastmod = new Date().toISOString().split("T")[0];
-  const entries = PARTS.map(
-    (part) => `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`,
-  ).join("\n");
-
+  const entries = parts
+    .map(
+      (part) =>
+        `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`,
+    )
+    .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</sitemapindex>\n`;
 }
 
@@ -88,16 +87,33 @@ async function main() {
   };
 
   await mkdir(PUBLIC_DIR, { recursive: true });
+
+  // 1) Regenerate all sitemaps in storage
+  console.log("Regenerating sitemaps in storage...");
   await fetchXml(`${functionUrl}?regenerate=true`, headers);
 
-  for (const part of PARTS) {
+  // 2) Discover all parts dynamically
+  const parts = await fetchJson(`${functionUrl}?list-parts=true`, headers);
+  console.log(`Discovered ${parts.length} sitemap parts: ${parts.join(", ")}`);
+
+  // 3) Remove old sitemap-services.xml if present (replaced by per-service files)
+  try {
+    await unlink(path.join(PUBLIC_DIR, "sitemap-services.xml"));
+    console.log("Removed old sitemap-services.xml");
+  } catch {
+    // fine if not exists
+  }
+
+  // 4) Download each part
+  for (const part of parts) {
     const xml = await fetchXml(`${functionUrl}?name=${part}`, headers);
     validateCanonicalUrls(xml, part);
     await writeFile(path.join(PUBLIC_DIR, `sitemap-${part}.xml`), xml, "utf8");
   }
 
-  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), buildIndexXml(), "utf8");
-  console.log(`Synced ${PARTS.length + 1} sitemap files to public/.`);
+  // 5) Write index
+  await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), buildIndexXml(parts), "utf8");
+  console.log(`Synced ${parts.length + 1} sitemap files to public/.`);
 }
 
 main().catch((error) => {
