@@ -178,32 +178,21 @@ const LegalMonitor = () => {
 
   const regenerateSitemap = async () => {
     setRegeneratingSitemap(true);
-    toast({ title: "Gerando sitemap…", description: "Aguarde alguns segundos." });
+    toast({ title: "Gerando sitemap…", description: "Atualizando os XMLs no backend." });
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      // 1. Chama a edge function — ela já salva no storage bucket "sitemap"
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sitemap`,
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sitemap?regenerate=true`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${session?.access_token}` },
         }
       );
-      if (!response.ok) throw new Error("Erro ao gerar sitemap");
-      const xml = await response.text();
-      const urlCount = (xml.match(/<url>/g) || []).length;
-
-      // 2. Também sobrescreve o sitemap.xml público do site (domínio canônico)
-      //    para que fernandezefernandes.adv.br/sitemap.xml sirva sempre o conteúdo atualizado
-      const xmlBlob = new Blob([xml], { type: "application/xml" });
-      const xmlFile = new File([xmlBlob], "sitemap.xml", { type: "application/xml" });
-      await supabase.storage
-        .from("sitemap")
-        .upload("sitemap.xml", xmlFile, { upsert: true, cacheControl: "3600" });
+      if (!response.ok) throw new Error("Erro ao regenerar sitemap");
 
       toast({
-        title: "Sitemap atualizado ✅",
-        description: `${urlCount} URLs indexadas no sitemap canônico.`,
+        title: "Sitemaps regenerados ✅",
+        description: "Os XMLs foram atualizados no backend. Para refletir no domínio, publique a nova versão do site.",
       });
     } catch (e: any) {
       toast({ title: "Erro", description: e.message, variant: "destructive" });
