@@ -105,7 +105,7 @@ Deno.serve(async (req) => {
     const citySlugs = (cities || []).map((c) => sanitizeSlug(c.slug));
     const serviceSlugs = (services || []).map((s) => sanitizeSlug(s.slug));
 
-    const storageBaseUrl = `${supabaseUrl}/storage/v1/object/public/sitemap`;
+    
     const allFilenames: string[] = [];
     const uploads: Promise<void>[] = [];
 
