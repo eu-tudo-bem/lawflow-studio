@@ -70,7 +70,7 @@ function buildSitemapIndex(): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const part of VALID_PARTS) {
-    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap.xml?part=${part}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap.xml?name=${part}</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
@@ -107,27 +107,27 @@ Deno.serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const part = url.searchParams.get("part") as SitemapPart | null;
+    const name = url.searchParams.get("name") as SitemapPart | null;
     const regenerate = url.searchParams.get("regenerate") === "true";
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // If part is requested and we're not regenerating, proxy from storage
-    if (part && !regenerate) {
-      if (!VALID_PARTS.includes(part)) {
-        return new Response("Invalid part", { status: 400, headers: corsHeaders });
+    // If name is requested and we're not regenerating, proxy from storage
+    if (name && !regenerate) {
+      if (!VALID_PARTS.includes(name)) {
+        return new Response("Invalid name", { status: 400, headers: corsHeaders });
       }
-      const content = await fetchFromStorage(supabase, `sitemap-${part}.xml`);
+      const content = await fetchFromStorage(supabase, `sitemap-${name}.xml`);
       if (!content) {
         return new Response("Sitemap not found", { status: 404, headers: corsHeaders });
       }
       return new Response(content, { headers: { ...corsHeaders, ...XML_HEADERS } });
     }
 
-    // If no part and not regenerating, return the index
-    if (!regenerate && !part) {
+    // If no name and not regenerating, return the index
+    if (!regenerate && !name) {
       const indexXml = buildSitemapIndex();
       return new Response(indexXml, { headers: { ...corsHeaders, ...XML_HEADERS } });
     }
