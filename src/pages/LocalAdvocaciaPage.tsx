@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { generateHyperlocalLegalSchema } from "@/lib/seoSchemas";
+import DocumentReadyCasesSection from "@/components/DocumentReadyCasesSection";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
