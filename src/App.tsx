@@ -80,30 +80,34 @@ const DynamicCityRoute = () => {
 };
 
 const DynamicServiceCityRoute = () => {
+  const params = useParams<{ serviceAndCity?: string; "*"?: string }>();
   const location = useLocation();
-  // Strip the "/advogado-" or "/advogado/" prefix
-  let rest = "";
-  if (location.pathname.startsWith("/advogado-")) rest = location.pathname.slice("/advogado-".length);
-  else if (location.pathname.startsWith("/advogado/")) rest = location.pathname.slice("/advogado/".length);
+  // React Router v6 does not match params in the middle of a static segment
+  // (e.g. /advogado-:serviceAndCity), so the catch-all forwards the full path here.
+  let rest = params.serviceAndCity ?? params["*"] ?? "";
+  if (!rest) {
+    if (location.pathname.startsWith("/advogado-")) rest = location.pathname.slice("/advogado-".length);
+    else if (location.pathname.startsWith("/advogado/")) rest = location.pathname.slice("/advogado/".length);
+  }
   rest = rest.replace(/\/+$/, "");
   if (!rest) return <Navigate to="/404" replace />;
 
-  // Try to match by both keyword and slug (longest first to avoid prefix collisions)
-  const candidates = LEGAL_SERVICES.flatMap((s) => [
-    { service: s, token: s.keyword },
-    ...(s.slug !== s.keyword ? [{ service: s, token: s.slug }] : []),
-  ]).sort((a, b) => b.token.length - a.token.length);
+  // First locate the city at the end using the official Paraná city list.
+  // This avoids breaking service slugs that also contain hyphens.
+  const citiesByLongestSlug = [...PARANA_CITIES].sort((a, b) => b.slug.length - a.slug.length);
+  const cityMatch = citiesByLongestSlug.find((city) => rest.endsWith(`-${city.slug}`));
+  const serviceToken = cityMatch ? rest.slice(0, -(cityMatch.slug.length + 1)) : "";
+  const serviceMatch = serviceToken
+    ? LEGAL_SERVICES.find((service) => service.slug === serviceToken || service.keyword === serviceToken)
+    : undefined;
 
-  const match = candidates
-    .map(({ service, token }) => {
-      const prefix = token + "-";
-      return rest.startsWith(prefix) ? { service, city: rest.slice(prefix.length) } : null;
-    })
-    .find((m) => m !== null && m.city.length > 0);
+  const match = cityMatch && serviceMatch
+    ? { service: serviceMatch, city: cityMatch.slug }
+    : undefined;
+
   if (!match) return <Navigate to="/404" replace />;
   return (
     <Suspense fallback={<PageLoader />}>
-      {/* @ts-ignore */}
       <ServiceLocalPage serviceSlug={match.service.slug} citySlug={match.city} />
     </Suspense>
   );
@@ -172,13 +176,15 @@ const App = () => (
             ))}
             <Route path="/escritorio-advocacia-*" element={<DynamicCityRoute />} />
             {LEGAL_SERVICES.flatMap((svc) =>
-              PARANA_CITIES.map((city) => (
-                <Route
-                  key={`${svc.slug}-${city.slug}`}
-                  path={`/advogado-${svc.keyword}-${city.slug}`}
-                  element={<ServiceLocalPage serviceSlug={svc.slug} citySlug={city.slug} />}
-                />
-              )),
+              PARANA_CITIES.flatMap((city) =>
+                Array.from(new Set([svc.keyword, svc.slug])).map((serviceToken) => (
+                  <Route
+                    key={`${serviceToken}-${city.slug}`}
+                    path={`/advogado-${serviceToken}-${city.slug}`}
+                    element={<ServiceLocalPage serviceSlug={svc.slug} citySlug={city.slug} />}
+                  />
+                )),
+              ),
             )}
             <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
 
