@@ -54,6 +54,7 @@ const ExecucaoPensao = lazy(() => import("./pages/ExecucaoPensao"));
 const ReabilitacaoCriminal = lazy(() => import("./pages/ReabilitacaoCriminal"));
 const LocalAdvocaciaPage = lazy(() => import("./pages/LocalAdvocaciaPage"));
 const ServiceLocalPage = lazy(() => import("./pages/ServiceLocalPage"));
+const CasosDocumentosParana = lazy(() => import("./pages/CasosDocumentosParana"));
 const GeradorDocumentos = lazy(() => import("./pages/GeradorDocumentos"));
 const GeradorDocumentoPage = lazy(() => import("./pages/GeradorDocumentoPage"));
 const DocumentosAdmin = lazy(() => import("./pages/DocumentosAdmin"));
@@ -352,7 +353,10 @@ const App = () => (
               <Route path="messages" element={<ClientMessages />} />
             </Route>
 
+            <Route path="/casos-com-documentos-prontos-parana" element={<CasosDocumentosParana />} />
+
             <Route path="*" element={<CatchAllRoute />} />
+
           </Routes>
         </Suspense>
       </BrowserRouter>

@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { generateHyperlocalLegalSchema } from "@/lib/seoSchemas";
+import DocumentReadyCasesSection from "@/components/DocumentReadyCasesSection";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -339,6 +340,9 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
           </div>
         </div>
       </section>
+
+      {/* Casos com documentos prontos para análise — frente informativa */}
+      <DocumentReadyCasesSection citySlug={cidadeSlug ?? ""} cityName={cityName} />
 
       {/* Attendance / CTA Section */}
       <section className="py-16 bg-background">
