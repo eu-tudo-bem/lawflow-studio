@@ -41,9 +41,8 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
 
   const nativeCity = getCityBySlug(cidadeSlug);
   const [dynamicCity, setDynamicCity] = useState<CityData | null>(null);
-  const [notFound, setNotFound] = useState(false);
 
-  // Fetch from DB if not a native city
+  // Fetch from DB if not a native city. Missing DB record → keep Fallback Premium (index,follow).
   useEffect(() => {
     if (nativeCity || !cidadeSlug) return;
     supabase
@@ -55,13 +54,16 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
       .then(({ data }) => {
         if (data) {
           setDynamicCity({ slug: (data as any).slug, name: (data as any).name, region: (data as any).region, variationIndex: 0 });
-        } else {
-          setNotFound(true);
         }
       });
   }, [cidadeSlug, nativeCity]);
 
-  const city = nativeCity || dynamicCity;
+  // Fallback Premium: synthesize CityData from the slug so the page always renders indexable.
+  const fallbackCity: CityData | null = cidadeSlug
+    ? { slug: cidadeSlug, name: getCityDisplayName(cidadeSlug), region: "Paraná", variationIndex: 0 }
+    : null;
+  const city = nativeCity || dynamicCity || fallbackCity;
+
 
   const cityName = getCityDisplayName(city?.name ?? cidadeSlug);
   const cityRegion = city?.region ?? "Paraná";
