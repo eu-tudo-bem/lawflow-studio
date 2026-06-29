@@ -87,7 +87,10 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
   usePageSEO({ title: pageTitle, description: metaDescription, canonical, robots: "index, follow" });
 
-  const faqItems = city && service ? [
+  const docReady = service ? getDocumentReadyService(service.slug) : undefined;
+  const isDocReady = !!docReady;
+
+  const baseFaq = city && service ? [
     {
       q: `Quanto custa um advogado de ${service.name.toLowerCase()} em ${cityName}?`,
       a: `Os honorários variam conforme a complexidade do caso. Oferecemos consulta inicial gratuita para avaliar sua situação e apresentar uma proposta personalizada para clientes de ${cityName} e região.`,
@@ -105,6 +108,12 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       a: `Não. Nosso atendimento é 100% digital para clientes de ${cityName}. Toda a consulta, documentação e acompanhamento são feitos de forma online, com a mesma qualidade do atendimento presencial.`,
     },
   ] : [];
+
+  const docFaq = docReady
+    ? docReady.faqs.map((f) => ({ q: f.q(cityName), a: f.a(cityName) }))
+    : [];
+
+  const faqItems = [...docFaq, ...baseFaq];
 
   // Static geo coordinates for main Paraná cities (lat/lng for LocalBusiness schema)
   const CITY_GEO: Record<string, { lat: number; lng: number; postalCode: string }> = {
