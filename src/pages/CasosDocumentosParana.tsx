@@ -3,22 +3,20 @@ import { FileText, ArrowRight, CheckCircle, MessageCircle, MapPin, Shield } from
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { usePageSEO } from "@/hooks/usePageSEO";
-import { DOCUMENT_READY_SERVICES } from "@/data/documentReadyServices";
+import { DOCUMENT_READY_SERVICES, PILLAR_CITY_SLUGS } from "@/data/documentReadyServices";
 import { getServiceCitySlug, getWhatsAppLink } from "@/data/localSEOCities";
 import { useEffect } from "react";
 
-const PILLAR_CITIES: { slug: string; name: string }[] = [
-  { slug: "curitiba", name: "Curitiba" },
-  { slug: "londrina", name: "Londrina" },
-  { slug: "maringa", name: "Maringá" },
-  { slug: "cascavel", name: "Cascavel" },
-  { slug: "ponta-grossa", name: "Ponta Grossa" },
-  { slug: "foz-do-iguacu", name: "Foz do Iguaçu" },
+const PILLAR_CITIES = [
+  ...PILLAR_CITY_SLUGS,
   { slug: "sao-jose-dos-pinhais", name: "São José dos Pinhais" },
   { slug: "colombo", name: "Colombo" },
   { slug: "guarapuava", name: "Guarapuava" },
   { slug: "pato-branco", name: "Pato Branco" },
 ];
+
+// Cidades exibidas como atalhos rápidos dentro de cada card de serviço
+const QUICK_CITIES = PILLAR_CITY_SLUGS;
 
 const CasosDocumentosParana = () => {
   const canonical = "https://fernandezefernandes.adv.br/casos-com-documentos-prontos-parana";
@@ -123,40 +121,73 @@ const CasosDocumentosParana = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {DOCUMENT_READY_SERVICES.map((s) => (
-              <Link
-                key={s.slug}
-                to={`/${getServiceCitySlug(s.slug, "curitiba")}`}
-                className="group flex flex-col gap-3 p-5 rounded-2xl bg-card border border-border hover:border-[hsl(45_60%_55%)] hover:shadow-lg transition-all"
-                title={s.name}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-2xl" aria-hidden="true">{s.icon}</span>
-                  <span className="text-[10px] uppercase tracking-wider font-semibold text-[hsl(45_60%_55%)] bg-[hsl(45_60%_55%)]/10 px-2 py-1 rounded-full">
-                    {s.area}
-                  </span>
+            {DOCUMENT_READY_SERVICES.map((s) => {
+              const primaryHref = `/${getServiceCitySlug(s.slug, "curitiba")}`;
+              return (
+                <div
+                  key={s.slug}
+                  className="group flex flex-col gap-3 p-5 rounded-2xl bg-card border border-border hover:border-[hsl(45_60%_55%)] hover:shadow-lg transition-all"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-2xl" aria-hidden="true">{s.icon}</span>
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-[hsl(45_60%_55%)] bg-[hsl(45_60%_55%)]/10 px-2 py-1 rounded-full">
+                      {s.area}
+                    </span>
+                  </div>
+                  <Link
+                    to={primaryHref}
+                    title={`${s.name} em Curitiba`}
+                    className="block"
+                  >
+                    <h3 className="font-serif text-lg font-bold text-foreground leading-snug group-hover:text-[hsl(45_60%_55%)] transition-colors">
+                      {s.name}
+                    </h3>
+                  </Link>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.shortDescription}</p>
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-xs font-semibold text-foreground mb-2">Documentos comuns:</p>
+                    <ul className="space-y-1">
+                      {s.documents.slice(0, 4).map((d, i) => (
+                        <li key={i} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                          <CheckCircle className="h-3 w-3 text-[hsl(45_60%_55%)] shrink-0 mt-0.5" />
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Multi-cidade: distribui interlinking entre cidades-polo do Paraná */}
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-xs font-semibold text-foreground mb-2">Ver em:</p>
+                    <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs">
+                      {QUICK_CITIES.map((c, i) => (
+                        <span key={c.slug} className="flex items-center gap-2">
+                          <Link
+                            to={`/${getServiceCitySlug(s.slug, c.slug)}`}
+                            title={`${s.shortName} em ${c.name}`}
+                            className="text-[hsl(45_60%_55%)] hover:underline font-medium"
+                          >
+                            {c.name}
+                          </Link>
+                          {i < QUICK_CITIES.length - 1 && (
+                            <span className="text-muted-foreground/50" aria-hidden="true">|</span>
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Link
+                    to={primaryHref}
+                    className="flex items-center gap-1 text-xs font-semibold text-[hsl(45_60%_55%)] mt-auto pt-2 group-hover:underline"
+                  >
+                    Solicitar análise inicial <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
-                <h3 className="font-serif text-lg font-bold text-foreground leading-snug group-hover:text-[hsl(45_60%_55%)] transition-colors">
-                  {s.name}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.shortDescription}</p>
-                <div className="pt-2 border-t border-border">
-                  <p className="text-xs font-semibold text-foreground mb-2">Documentos comuns:</p>
-                  <ul className="space-y-1">
-                    {s.documents.slice(0, 4).map((d, i) => (
-                      <li key={i} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-                        <CheckCircle className="h-3 w-3 text-[hsl(45_60%_55%)] shrink-0 mt-0.5" />
-                        <span>{d}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex items-center gap-1 text-xs font-semibold text-[hsl(45_60%_55%)] mt-auto pt-2 group-hover:underline">
-                  Ver documentos necessários <ArrowRight className="h-3 w-3" />
-                </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
+
         </div>
       </section>
 

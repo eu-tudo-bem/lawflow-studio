@@ -657,3 +657,96 @@ export function isDocumentReadyService(slug: string): boolean {
 export function getDocumentReadyService(slug: string): DocumentReadyService | undefined {
   return DOC_READY.find((s) => s.slug === slug);
 }
+
+/**
+ * Cidades-polo para interlinking nas páginas pilar e documentais.
+ * Distribui autoridade interna no Paraná em vez de concentrar tudo em Curitiba.
+ */
+export const PILLAR_CITY_SLUGS: { slug: string; name: string }[] = [
+  { slug: "curitiba", name: "Curitiba" },
+  { slug: "londrina", name: "Londrina" },
+  { slug: "maringa", name: "Maringá" },
+  { slug: "cascavel", name: "Cascavel" },
+  { slug: "ponta-grossa", name: "Ponta Grossa" },
+  { slug: "foz-do-iguacu", name: "Foz do Iguaçu" },
+];
+
+/**
+ * Mapa de serviços relacionados (interlinking entre páginas documentais).
+ * Distribui sinal interno e evita páginas "gêmeas".
+ */
+export const DOCUMENT_READY_RELATED: Record<string, { slug: string; label: string }[]> = {
+  "desconto-indevido-inss": [
+    { slug: "consignado-nao-contratado", label: "Consignado Não Contratado" },
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+    { slug: "aposentadoria-inss", label: "Aposentadoria INSS" },
+  ],
+  "consignado-nao-contratado": [
+    { slug: "desconto-indevido-inss", label: "Desconto Indevido no INSS" },
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+    { slug: "negativacao-indevida", label: "Negativação Indevida" },
+  ],
+  "negativacao-indevida": [
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+    { slug: "produto-nao-entregue", label: "Produto Não Entregue" },
+    { slug: "direito-arrependimento", label: "Direito de Arrependimento" },
+  ],
+  "cobranca-indevida": [
+    { slug: "negativacao-indevida", label: "Negativação Indevida" },
+    { slug: "consignado-nao-contratado", label: "Consignado Não Contratado" },
+    { slug: "direito-arrependimento", label: "Direito de Arrependimento" },
+  ],
+  "produto-nao-entregue": [
+    { slug: "direito-arrependimento", label: "Direito de Arrependimento" },
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+    { slug: "negativacao-indevida", label: "Negativação Indevida" },
+  ],
+  "direito-arrependimento": [
+    { slug: "produto-nao-entregue", label: "Produto Não Entregue" },
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+    { slug: "negativacao-indevida", label: "Negativação Indevida" },
+  ],
+  "voo-atrasado-cancelado": [
+    { slug: "extravio-bagagem", label: "Extravio de Bagagem" },
+    { slug: "produto-nao-entregue", label: "Produto Não Entregue" },
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+  ],
+  "veiculo-nao-transferido": [
+    { slug: "transferencia-veiculo", label: "Transferência de Veículo" },
+    { slug: "cobranca-indevida", label: "Cobrança Indevida" },
+    { slug: "negativacao-indevida", label: "Negativação Indevida" },
+  ],
+  "fgts-nao-depositado": [
+    { slug: "verbas-rescisorias-nao-pagas", label: "Verbas Rescisórias Não Pagas" },
+    { slug: "simulador-horas-extras", label: "Simulador de Horas Extras" },
+    { slug: "calculadora-rescisao", label: "Calculadora de Rescisão" },
+  ],
+  "verbas-rescisorias-nao-pagas": [
+    { slug: "fgts-nao-depositado", label: "FGTS Não Depositado" },
+    { slug: "simulador-horas-extras", label: "Simulador de Horas Extras" },
+    { slug: "calculadora-rescisao", label: "Calculadora de Rescisão" },
+  ],
+};
+
+/**
+ * Meta SEO específico para serviços documentais.
+ * Padrão: "[Serviço] em [Cidade] | Análise de Documentos" (~160 chars).
+ * Sem "+20 anos", "consulta gratuita", "indenização" ou promessa de resultado.
+ */
+export function getDocumentReadyMeta(
+  serviceSlug: string,
+  cityName: string
+): { title: string; description: string } | null {
+  const s = getDocumentReadyService(serviceSlug);
+  if (!s) return null;
+  return {
+    title: `${s.name} em ${cityName} | Análise de Documentos`,
+    description: `Envie extratos, prints, contratos, comprovantes e protocolos para análise inicial de ${s.shortName.toLowerCase()} em ${cityName}. Atendimento online no Paraná.`,
+  };
+}
+
+/**
+ * Disclaimer informativo padrão (publicidade OAB-compliant).
+ */
+export const DOCUMENT_READY_DISCLAIMER =
+  "Este conteúdo é informativo e não substitui a análise individual do caso. A viabilidade de qualquer medida depende da conferência dos documentos, datas, valores e demais informações apresentadas.";
