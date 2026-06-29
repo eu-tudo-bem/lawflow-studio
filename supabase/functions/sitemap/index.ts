@@ -16,6 +16,11 @@ const FIXED_PARTS = ["static", "cities", "blog", "perguntas"] as const;
 const INDEX_SENTINEL = "__index__";
 const INVALID_SENTINEL = "__invalid__";
 
+/* Consolidation: max URLs per consolidated services sitemap chunk
+   (Google limit is 50,000 — leave headroom for future growth). */
+const MAX_URLS_PER_SITEMAP = 45000;
+
+
 const DOCUMENT_GENERATOR_SLUGS = [
   "notificacao-cobranca-aluguel",
   "notificacao-divida",
