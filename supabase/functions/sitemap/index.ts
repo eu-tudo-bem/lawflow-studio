@@ -125,14 +125,14 @@ function buildErrorXml(message: string): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<error><message>${message}</message></error>`;
 }
 
-function buildSitemapIndex(serviceSlugs: string[]): string {
+function buildSitemapIndex(serviceChunkCount: number): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const part of FIXED_PARTS) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
-  for (const svc of serviceSlugs) {
-    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-services-${svc}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+  for (let i = 1; i <= serviceChunkCount; i++) {
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-services-${i}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
@@ -157,24 +157,33 @@ async function fetchFromStorage(supabase: any, filename: string): Promise<string
   return await data.text();
 }
 
-async function listServiceSlugsFromStorage(supabase: any): Promise<string[]> {
+async function listServiceChunkCountFromStorage(supabase: any): Promise<number> {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
-  if (error || !data) return [];
-  const slugs: string[] = [];
+  if (error || !data) return 0;
+  let max = 0;
   for (const f of data) {
-    const m = f.name.match(/^sitemap-services-(.+)\.xml$/);
-    if (m && m[1] === sanitizeSlug(m[1]) && isValidServiceSlug(m[1])) slugs.push(m[1]);
+    const m = f.name.match(/^sitemap-services-(\d+)\.xml$/);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (n > max) max = n;
+    }
   }
-  return slugs.sort();
+  return max;
 }
 
-async function cleanupStaleFiles(supabase: any, activeServiceSlugs: string[]) {
+async function cleanupStaleFiles(supabase: any, activeChunkCount: number) {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
   if (error || !data) return;
-  const keep = new Set(activeServiceSlugs.map((s) => `sitemap-services-${s}.xml`));
+  const keep = new Set<string>();
+  for (let i = 1; i <= activeChunkCount; i++) keep.add(`sitemap-services-${i}.xml`);
   const stale = data
     .map((f: any) => f.name as string)
-    .filter((n: string) => n === "sitemap-services.xml" || (n.startsWith("sitemap-services-") && n.endsWith(".xml") && !keep.has(n)));
+    .filter((n: string) => {
+      if (n === "sitemap-services.xml") return true;
+      // Remove old per-service files (slug-based) — keep only numeric chunks in `keep`.
+      if (/^sitemap-services-.+\.xml$/.test(n) && !keep.has(n)) return true;
+      return false;
+    });
   if (stale.length) {
     await supabase.storage.from("sitemap").remove(stale);
     console.log(`[sitemap] removed stale: ${stale.join(", ")}`);
