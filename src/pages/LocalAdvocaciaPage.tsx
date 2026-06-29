@@ -341,6 +341,9 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
         </div>
       </section>
 
+      {/* Casos com documentos prontos para análise — frente informativa */}
+      <DocumentReadyCasesSection citySlug={cidadeSlug ?? ""} cityName={cityName} />
+
       {/* Attendance / CTA Section */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4 max-w-3xl text-center">
