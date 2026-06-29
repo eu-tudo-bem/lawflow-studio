@@ -508,6 +508,123 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
         </div>
       </section>
 
+      {/* === Document-Ready Blocks (apenas para serviços com prova documental pré-constituída) === */}
+      {isDocReady && docReady && (
+        <section className="py-16 bg-background border-t border-border">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <FileText className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+              <Badge variant="outline" className="border-[hsl(45_60%_55%)] text-[hsl(45_60%_55%)] bg-[hsl(45_60%_55%)]/10">
+                {docReady.area}
+              </Badge>
+            </div>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4">
+              {docReady.name} em {cityName}: análise a partir de documentos
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-8">
+              {docReady.intro(cityName)}
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-10">
+              {/* Quando esse problema pode acontecer */}
+              <div className="rounded-2xl border border-border bg-card p-6">
+                <h3 className="font-serif text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                  Quando esse problema pode acontecer
+                </h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  {docReady.whenItHappens(cityName).map((s, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <ChevronRight className="h-4 w-4 text-[hsl(45_60%_55%)] shrink-0 mt-0.5" />
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Quais documentos ajudam a comprovar */}
+              <div className="rounded-2xl border border-border bg-card p-6">
+                <h3 className="font-serif text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                  Quais documentos ajudam a comprovar
+                </h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  {docReady.documents.map((d, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-[hsl(45_60%_55%)] shrink-0 mt-0.5" />
+                      <span>{d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* O que pode ser analisado */}
+              <div className="rounded-2xl border border-border bg-card p-6">
+                <h3 className="font-serif text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                  O que pode ser analisado
+                </h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  {docReady.whatCanBeAnalyzed.map((d, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle className="h-4 w-4 text-[hsl(45_60%_55%)] shrink-0 mt-0.5" />
+                      <span>{d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Quando o caso exige cuidado */}
+              <div className="rounded-2xl border border-border bg-[hsl(220_30%_97%)] p-6">
+                <h3 className="font-serif text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                  Quando o caso exige cuidado
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {docReady.careNotice}
+                </p>
+              </div>
+            </div>
+
+            {/* Atendimento em [cidade] */}
+            <div className="rounded-2xl border border-border bg-card p-6 mb-8">
+              <h3 className="font-serif text-lg font-bold text-foreground mb-2 flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                Atendimento em {cityName} e no Paraná
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {docReady.attendance(cityName)}
+              </p>
+            </div>
+
+            {/* CTA documental */}
+            <div className="rounded-2xl bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] p-6 md:p-8 text-center">
+              <h3 className="font-serif text-xl md:text-2xl font-bold mb-3">
+                Envie seus documentos para uma análise inicial
+              </h3>
+              <p className="text-sm text-[hsl(45_20%_95%)]/80 mb-5 max-w-2xl mx-auto leading-relaxed">
+                Separe prints, extratos, contratos, comprovantes e protocolos. A análise jurídica
+                depende da conferência dos documentos e das informações do caso.
+              </p>
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#1ebe5d] transition-all"
+              >
+                <MessageCircle className="h-5 w-5" />
+                Falar pelo WhatsApp
+              </a>
+              <p className="mt-4 text-xs text-[hsl(45_20%_95%)]/60">
+                <Link to="/casos-com-documentos-prontos-parana" className="underline hover:text-[hsl(45_60%_55%)]">
+                  Ver todos os casos com documentos prontos no Paraná →
+                </Link>
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
       <section className="py-16 bg-[hsl(220_30%_97%)]">
         <div className="container mx-auto px-4 max-w-4xl">
