@@ -62,8 +62,8 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
 
   const city = nativeCity || dynamicCity;
 
-  const cityName = city?.name ?? "";
-  const cityRegion = city?.region ?? "";
+  const cityName = getCityDisplayName(city?.name ?? cidadeSlug);
+  const cityRegion = city?.region ?? "Paraná";
   const citySlug = city?.slug ?? "";
   const v = city?.variationIndex ?? 0;
 
@@ -74,12 +74,12 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
   const ctaText = textVariations.ctaText[v](cityName);
   const whatsappLink = getWhatsAppLink(cityName);
 
-  // CTR-optimised title with current year and mental trigger
+  // CTR-optimised title with brand and Paraná positioning
   const metaTitle = city
-    ? `Advogado em ${cityName} | Consulta Rápida ${CURRENT_YEAR} · Fernandez & Fernandes`
+    ? `Advogado em ${cityName} - PR | Consulta Rápida ${CURRENT_YEAR} · Fernandez & Fernandes`
     : "Advocacia no Paraná";
   const metaDescription = city
-    ? `Advogado em ${cityName} — atendimento rápido para divórcio, pensão, cobranças e direito civil. Calcular valor · Consulta gratuita. Fale agora via WhatsApp.`
+    ? `Advogado em ${cityName} (PR) com +20 anos de tradição: divórcio, pensão, cobranças e proteção patrimonial. Consulta gratuita 100% online via WhatsApp.`
     : "";
   const canonical = city
     ? `https://fernandezefernandes.adv.br/escritorio-advocacia-${citySlug}`
