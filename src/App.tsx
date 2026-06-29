@@ -304,7 +304,7 @@ const App = () => (
               <Route path="messages" element={<ClientMessages />} />
             </Route>
 
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<CatchAllRoute />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
