@@ -167,6 +167,8 @@ const App = () => (
               )),
             )}
             <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
+            {/* Fallback for /advogado-{slug-or-keyword}-{city} variants not matched above */}
+            <Route path="/advogado-:rest" element={<DynamicServiceCityRoute />} />
 
             {/* Gerador de Documentos */}
             <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
