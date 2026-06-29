@@ -109,6 +109,20 @@ const DynamicServiceCityRoute = () => {
   );
 };
 
+// Catch-all route: intercepts unmatched paths to detect hyphenated /advogado-... URLs
+// (React Router v6 cannot use `:param` inside a static segment, so these would otherwise 404 with noindex)
+const CatchAllRoute = () => {
+  const location = useLocation();
+  if (location.pathname.startsWith("/advogado-")) {
+    return <DynamicServiceCityRoute />;
+  }
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <NotFound />
+    </Suspense>
+  );
+};
+
 if (typeof window !== "undefined") {
   initWebVitals();
 }
