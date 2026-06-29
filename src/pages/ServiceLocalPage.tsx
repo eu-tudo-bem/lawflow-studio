@@ -606,7 +606,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
             {/* CTA documental */}
             <div className="rounded-2xl bg-[hsl(220_50%_12%)] text-[hsl(45_20%_95%)] p-6 md:p-8 text-center">
               <h3 className="font-serif text-xl md:text-2xl font-bold mb-3">
-                Envie seus documentos para uma análise inicial
+                Enviar documentos para análise inicial
               </h3>
               <p className="text-sm text-[hsl(45_20%_95%)]/80 mb-5 max-w-2xl mx-auto leading-relaxed">
                 Separe prints, extratos, contratos, comprovantes e protocolos. A análise jurídica
@@ -619,14 +619,44 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
                 className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#1ebe5d] transition-all"
               >
                 <MessageCircle className="h-5 w-5" />
-                Falar pelo WhatsApp
+                Enviar documentos pelo WhatsApp
               </a>
+              <p className="mt-5 text-[11px] text-[hsl(45_20%_95%)]/70 max-w-2xl mx-auto leading-relaxed italic">
+                {DOCUMENT_READY_DISCLAIMER}
+              </p>
               <p className="mt-4 text-xs text-[hsl(45_20%_95%)]/60">
                 <Link to="/casos-com-documentos-prontos-parana" className="underline hover:text-[hsl(45_60%_55%)]">
                   Ver todos os casos com documentos prontos no Paraná →
                 </Link>
               </p>
             </div>
+
+            {/* Serviços relacionados — interlinking para evitar páginas "gêmeas" */}
+            {(DOCUMENT_READY_RELATED[service.slug] ?? []).length > 0 && (
+              <div className="mt-8 rounded-2xl border border-border bg-[hsl(220_30%_97%)] p-6">
+                <h3 className="font-serif text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <ArrowRight className="h-5 w-5 text-[hsl(45_60%_55%)]" />
+                  Casos relacionados em {cityName}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Outras situações em que a análise documental também é o ponto de partida.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {DOCUMENT_READY_RELATED[service.slug].map((r) => (
+                    <Link
+                      key={r.slug}
+                      to={`/${getServiceCitySlug(r.slug, citySlug)}`}
+                      title={`${r.label} em ${cityName}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border bg-card hover:border-[hsl(45_60%_55%)] hover:shadow-sm transition-all text-xs font-medium text-foreground"
+                    >
+                      {r.label} em {cityName}
+                      <ArrowRight className="h-3 w-3 text-[hsl(45_60%_55%)]" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         </section>
       )}
