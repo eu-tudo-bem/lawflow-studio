@@ -98,6 +98,59 @@ export interface FaqItem {
   answer: string;
 }
 
+/**
+ * Generates a hyperlocal LegalService JSON-LD schema, signalling to Google
+ * that the firm explicitly serves a given city within Paraná.
+ *
+ * Used on hyperlocal SEO pages (e.g. /advogado-<servico>-<cidade>) to reinforce
+ * geo-relevance for Rich Results and local pack rankings.
+ */
+export function generateHyperlocalLegalSchema(
+  serviceName: string,
+  cityName: string,
+  pageUrl: string,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LegalService",
+    name: "Fernandez e Fernandes - Advocacia Estratégica",
+    description: `${serviceName} em ${cityName} - PR. Atendimento jurídico especializado com mais de 20 anos de tradição.`,
+    url: pageUrl,
+    image: ORG_LOGO,
+    logo: ORG_LOGO,
+    priceRange: "$$",
+    telephone: "+554130000000",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Rua Franz Josef Hoch, 283",
+      addressLocality: "Curitiba",
+      addressRegion: "PR",
+      postalCode: "82510-460",
+      addressCountry: "BR",
+    },
+    areaServed: [
+      {
+        "@type": "State",
+        name: "Paraná",
+      },
+      {
+        "@type": "City",
+        name: cityName,
+        containedInPlace: {
+          "@type": "State",
+          name: "Paraná",
+        },
+      },
+    ],
+    serviceType: serviceName,
+    provider: {
+      "@type": "LegalService",
+      name: ORG_NAME,
+      url: ORG_URL,
+    },
+  };
+}
+
 export function buildFaqSchema(faqs: FaqItem[]) {
   if (!faqs || faqs.length === 0) return null;
   return {
