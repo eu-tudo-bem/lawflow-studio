@@ -112,6 +112,35 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Áreas de Atendimento — interlinking para cidades-polo do Paraná (SEO hiperlocal) */}
+        <div className="mt-12 pt-8 border-t border-[hsl(220_30%_20%)]">
+          <h4 className="font-semibold mb-4">Áreas de Atendimento no Paraná</h4>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-[hsl(45_20%_95%)]/70">
+            {[
+              { slug: "curitiba", name: "Curitiba" },
+              { slug: "londrina", name: "Londrina" },
+              { slug: "maringa", name: "Maringá" },
+              { slug: "cascavel", name: "Cascavel" },
+              { slug: "toledo", name: "Toledo" },
+              { slug: "sao-jose-dos-pinhais", name: "São José dos Pinhais" },
+              { slug: "colombo", name: "Colombo" },
+              { slug: "ponta-grossa", name: "Ponta Grossa" },
+              { slug: "foz-do-iguacu", name: "Foz do Iguaçu" },
+            ].map((city) => (
+              <li key={city.slug}>
+                <Link
+                  to={`/escritorio-advocacia-${city.slug}`}
+                  className="hover:text-[hsl(45_20%_95%)] transition-colors"
+                  title={`Advocacia em ${city.name} - PR`}
+                >
+                  Advocacia em {city.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+
         {/* Bottom */}
         <div className="border-t border-[hsl(220_30%_20%)] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-[hsl(45_20%_95%)]/50">
