@@ -15,6 +15,7 @@ import {
   PARANA_CITIES,
   LEGAL_SERVICES,
   getServiceCitySlug,
+  getNearbyCitySlugs,
   type CityData,
 } from "@/data/localSEOCities";
 import { useEffect, useState } from "react";
