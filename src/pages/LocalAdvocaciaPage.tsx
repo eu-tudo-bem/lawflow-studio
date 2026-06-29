@@ -167,9 +167,20 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
     script.text = JSON.stringify(schema);
     document.head.appendChild(script);
 
+    // Hyperlocal geo-targeted LegalService schema (areaServed: State + City)
+    const hyperlocalId = "hyperlocal-legal-schema";
+    document.getElementById(hyperlocalId)?.remove();
+    const hyperlocalScript = document.createElement("script");
+    hyperlocalScript.id = hyperlocalId;
+    hyperlocalScript.type = "application/ld+json";
+    hyperlocalScript.text = JSON.stringify(
+      generateHyperlocalLegalSchema("Advocacia Estratégica", cityName, canonical),
+    );
+    document.head.appendChild(hyperlocalScript);
+
     return () => {
-      const el = document.getElementById(schemaId);
-      if (el) el.remove();
+      document.getElementById(schemaId)?.remove();
+      document.getElementById(hyperlocalId)?.remove();
     };
   }, [citySlug]);
 
