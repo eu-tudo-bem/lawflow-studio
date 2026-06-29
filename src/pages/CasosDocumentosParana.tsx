@@ -3,22 +3,20 @@ import { FileText, ArrowRight, CheckCircle, MessageCircle, MapPin, Shield } from
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { usePageSEO } from "@/hooks/usePageSEO";
-import { DOCUMENT_READY_SERVICES } from "@/data/documentReadyServices";
+import { DOCUMENT_READY_SERVICES, PILLAR_CITY_SLUGS } from "@/data/documentReadyServices";
 import { getServiceCitySlug, getWhatsAppLink } from "@/data/localSEOCities";
 import { useEffect } from "react";
 
-const PILLAR_CITIES: { slug: string; name: string }[] = [
-  { slug: "curitiba", name: "Curitiba" },
-  { slug: "londrina", name: "Londrina" },
-  { slug: "maringa", name: "Maringá" },
-  { slug: "cascavel", name: "Cascavel" },
-  { slug: "ponta-grossa", name: "Ponta Grossa" },
-  { slug: "foz-do-iguacu", name: "Foz do Iguaçu" },
+const PILLAR_CITIES = [
+  ...PILLAR_CITY_SLUGS,
   { slug: "sao-jose-dos-pinhais", name: "São José dos Pinhais" },
   { slug: "colombo", name: "Colombo" },
   { slug: "guarapuava", name: "Guarapuava" },
   { slug: "pato-branco", name: "Pato Branco" },
 ];
+
+// Cidades exibidas como atalhos rápidos dentro de cada card de serviço
+const QUICK_CITIES = PILLAR_CITY_SLUGS;
 
 const CasosDocumentosParana = () => {
   const canonical = "https://fernandezefernandes.adv.br/casos-com-documentos-prontos-parana";
