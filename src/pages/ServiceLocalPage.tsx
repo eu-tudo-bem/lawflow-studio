@@ -82,18 +82,19 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
 
   const whatsappLink = getWhatsAppLink(cityName, service?.name);
   const currentYear = new Date().getFullYear();
+  const docReady = service ? getDocumentReadyService(service.slug) : undefined;
+  const isDocReady = !!docReady;
+  const docMeta = service ? getDocumentReadyMeta(service.slug, cityName) : null;
+
   const pageTitle = city && service
-    ? `Advogado Especialista em ${service.name} em ${cityName} - PR | Fernandez & Fernandes`
+    ? (docMeta?.title ?? `Advogado Especialista em ${service.name} em ${cityName} - PR | Fernandez & Fernandes`)
     : "";
   const metaDescription = city && service
-    ? `Advogado especialista em ${service.name.toLowerCase()} em ${cityName} (PR). +20 anos de tradição em proteção patrimonial. Consulta rápida ${currentYear}, 100% online via WhatsApp.`
+    ? (docMeta?.description ?? `Advogado especialista em ${service.name.toLowerCase()} em ${cityName} (PR). +20 anos de tradição em proteção patrimonial. Consulta rápida ${currentYear}, 100% online via WhatsApp.`)
     : "";
   const canonical = city && service ? `https://fernandezefernandes.adv.br/advogado-${service.keyword}-${city.slug}` : "";
 
   usePageSEO({ title: pageTitle, description: metaDescription, canonical, robots: "index, follow" });
-
-  const docReady = service ? getDocumentReadyService(service.slug) : undefined;
-  const isDocReady = !!docReady;
 
   const baseFaq = city && service ? [
     {
