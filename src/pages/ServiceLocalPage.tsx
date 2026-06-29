@@ -230,9 +230,8 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     );
   }
 
-  const nearbyCities = city.nearbySlug
-    ? city.nearbySlug.map((s) => PARANA_CITIES.find((c) => c.slug === s)).filter(Boolean).slice(0, 5) as typeof PARANA_CITIES
-    : PARANA_CITIES.filter((c) => c.slug !== citySlug).slice(0, 5);
+  const nearbyCities = getNearbyCitySlugs(citySlug, 5);
+
 
   return (
     <div className="min-h-screen bg-background font-sans">
