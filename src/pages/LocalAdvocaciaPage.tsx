@@ -15,6 +15,7 @@ import {
 } from "@/data/localSEOCities";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { generateHyperlocalLegalSchema } from "@/lib/seoSchemas";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
