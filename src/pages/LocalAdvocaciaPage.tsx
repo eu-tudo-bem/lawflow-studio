@@ -10,6 +10,7 @@ import {
   LEGAL_SERVICES,
   getServiceCitySlug,
   getCityDisplayName,
+  getNearbyCitySlugs,
   type CityData,
 } from "@/data/localSEOCities";
 import { useEffect, useState } from "react";
