@@ -109,6 +109,8 @@ const DynamicServiceCityRoute = () => {
     if (location.pathname.startsWith("/advogado-")) rest = location.pathname.slice("/advogado-".length);
     else if (location.pathname.startsWith("/advogado/")) rest = location.pathname.slice("/advogado/".length);
   }
+  if (rest.startsWith("advogado-")) rest = rest.slice("advogado-".length);
+  if (rest.startsWith("advogado/")) rest = rest.slice("advogado/".length);
   const normalizedRest = normalizeRouteSlug(rest.replace(/\/+$/, ""));
   if (!normalizedRest) return <Navigate to="/404" replace />;
 
