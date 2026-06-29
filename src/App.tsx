@@ -353,7 +353,10 @@ const App = () => (
               <Route path="messages" element={<ClientMessages />} />
             </Route>
 
+            <Route path="/casos-com-documentos-prontos-parana" element={<CasosDocumentosParana />} />
+
             <Route path="*" element={<CatchAllRoute />} />
+
           </Routes>
         </Suspense>
       </BrowserRouter>
