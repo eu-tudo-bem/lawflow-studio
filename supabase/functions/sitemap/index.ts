@@ -206,8 +206,9 @@ Deno.serve(async (req) => {
 
     /* ── list-parts (JSON) ── */
     if (listParts) {
-      const svc = await listServiceSlugsFromStorage(supabase);
-      return new Response(JSON.stringify([...FIXED_PARTS, ...svc.map((s) => `services-${s}`)]), {
+      const chunks = await listServiceChunkCountFromStorage(supabase);
+      const parts = [...FIXED_PARTS, ...Array.from({ length: chunks }, (_, i) => `services-${i + 1}`)];
+      return new Response(JSON.stringify(parts), {
         headers: { ...cors, ...JSON_HEADERS },
       });
     }
@@ -235,8 +236,8 @@ Deno.serve(async (req) => {
       if (part === INVALID_SENTINEL) {
         return new Response(buildEmptyUrlset(), { headers: { ...cors, ...XML_HEADERS } });
       }
-      const svc = await listServiceSlugsFromStorage(supabase);
-      return new Response(buildSitemapIndex(svc), { headers: { ...cors, ...XML_HEADERS } });
+      const chunks = await listServiceChunkCountFromStorage(supabase);
+      return new Response(buildSitemapIndex(chunks), { headers: { ...cors, ...XML_HEADERS } });
     }
 
     /* ══════════════════════════════════════════════════════════════════
