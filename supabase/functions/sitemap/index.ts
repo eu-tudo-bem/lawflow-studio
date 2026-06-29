@@ -86,10 +86,9 @@ function normalizePartName(name: string): string | null {
   const decoded = decodeURIComponent(name).trim().toLowerCase();
 
   if ((FIXED_PARTS as readonly string[]).includes(decoded)) return decoded;
-  if (decoded.startsWith("services-")) {
-    const svc = sanitizeSlug(decoded.slice("services-".length));
-    return isValidServiceSlug(svc) ? `services-${svc}` : null;
-  }
+  // Consolidated service chunks: services-1, services-2, ...
+  const chunkMatch = decoded.match(/^services-(\d+)$/);
+  if (chunkMatch) return `services-${parseInt(chunkMatch[1], 10)}`;
   return null;
 }
 
