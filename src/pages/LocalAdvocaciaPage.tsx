@@ -9,6 +9,7 @@ import {
   PARANA_CITIES,
   LEGAL_SERVICES,
   getServiceCitySlug,
+  getCityDisplayName,
   type CityData,
 } from "@/data/localSEOCities";
 import { useEffect, useState } from "react";
