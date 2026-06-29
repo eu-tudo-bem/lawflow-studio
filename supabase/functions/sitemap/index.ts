@@ -51,6 +51,7 @@ const staticPages = [
   { loc: "/naturalizacao", changefreq: "monthly", priority: "0.8" },
   { loc: "/reabilitacao-criminal", changefreq: "monthly", priority: "0.8" },
   { loc: "/execucao-pensao", changefreq: "monthly", priority: "0.8" },
+  { loc: "/casos-com-documentos-prontos-parana", changefreq: "weekly", priority: "0.9" },
   { loc: "/gerador-documentos", changefreq: "monthly", priority: "0.8" },
   ...DOCUMENT_GENERATOR_SLUGS.map((slug) => ({
     loc: `/gerador-${slug}`,
