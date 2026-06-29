@@ -87,9 +87,10 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
     : "";
 
   // Nearby cities for internal linking cluster
-  const nearbyCities = city?.nearbySlug
-    ? city.nearbySlug.map((s) => PARANA_CITIES.find((c) => c.slug === s)).filter(Boolean) as typeof PARANA_CITIES
-    : PARANA_CITIES.filter((c) => c.slug !== citySlug).slice(0, 6);
+  const nearbyCities = citySlug
+    ? getNearbyCitySlugs(citySlug, 6)
+    : PARANA_CITIES.slice(0, 6);
+
 
   usePageSEO({
     title: metaTitle,
