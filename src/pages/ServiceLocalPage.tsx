@@ -8,7 +8,8 @@ import LocalProof from "@/components/LocalProof";
 import {
   getCityBySlug,
   getServiceBySlug,
-  serviceTextVariations,
+  getServiceVariations,
+  getCityDisplayName,
   getWhatsAppLink,
   getForumMention,
   PARANA_CITIES,
