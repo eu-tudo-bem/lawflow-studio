@@ -269,13 +269,23 @@ Deno.serve(async (req) => {
     const cityEntries = citySlugs.map((slug) => ({ loc: `/escritorio-advocacia-${slug}`, changefreq: "monthly", priority: "0.9" }));
     await uploadToStorage(supabase, "sitemap-cities.xml", buildUrlset(cityEntries));
 
-    /* 3) per-service (one at a time for memory) */
-    let totalSvcUrls = 0;
+    /* 3) services — CONSOLIDATED into chunked sitemaps (≤ MAX_URLS_PER_SITEMAP each) */
+    const allServiceEntries: UrlEntry[] = [];
     for (const svc of serviceSlugs) {
-      const entries: UrlEntry[] = citySlugs.map((city) => ({ loc: `/advogado-${svc}-${city}`, changefreq: "monthly", priority: "0.85" }));
-      totalSvcUrls += entries.length;
-      await uploadToStorage(supabase, `sitemap-services-${svc}.xml`, buildUrlset(entries));
+      for (const city of citySlugs) {
+        allServiceEntries.push({
+          loc: `/advogado-${svc}-${city}`,
+          changefreq: "monthly",
+          priority: "0.85",
+        });
+      }
     }
+    const chunkCount = Math.max(1, Math.ceil(allServiceEntries.length / MAX_URLS_PER_SITEMAP));
+    for (let i = 0; i < chunkCount; i++) {
+      const slice = allServiceEntries.slice(i * MAX_URLS_PER_SITEMAP, (i + 1) * MAX_URLS_PER_SITEMAP);
+      await uploadToStorage(supabase, `sitemap-services-${i + 1}.xml`, buildUrlset(slice));
+    }
+    const totalSvcUrls = allServiceEntries.length;
 
     /* 4) blog (posts only) */
     const blogEntries: UrlEntry[] = (posts || []).map((p: any) => ({
@@ -319,17 +329,17 @@ Deno.serve(async (req) => {
     console.log(`[sitemap] generated sitemap-perguntas.xml with ${perguntaEntries.length} URLs`);
 
     /* 6) index */
-    const indexXml = buildSitemapIndex(serviceSlugs);
+    const indexXml = buildSitemapIndex(chunkCount);
     await uploadToStorage(supabase, "sitemap.xml", indexXml);
 
-    /* 7) cleanup */
-    await cleanupStaleFiles(supabase, serviceSlugs);
+    /* 7) cleanup — remove legacy per-service files and any extra numeric chunks */
+    await cleanupStaleFiles(supabase, chunkCount);
 
     const total = staticPages.length + cityEntries.length + totalSvcUrls + blogEntries.length + perguntaEntries.length;
     console.log(
-      `Sitemap regenerated: ${FIXED_PARTS.length + serviceSlugs.length} sub-sitemaps | ` +
+      `Sitemap regenerated: ${FIXED_PARTS.length + chunkCount} sub-sitemaps | ` +
       `${staticPages.length} static | ${cityEntries.length} cities | ` +
-      `${serviceSlugs.length} service files (${totalSvcUrls} URLs) | ` +
+      `${chunkCount} consolidated service chunks (${totalSvcUrls} URLs) | ` +
       `${blogEntries.length} blog | ${perguntaEntries.length} perguntas | total: ${total} URLs`,
     );
 
