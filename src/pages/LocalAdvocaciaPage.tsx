@@ -172,18 +172,16 @@ const LocalAdvocaciaPage = ({ citySlugOverride }: { citySlugOverride?: string } 
     };
   }, [citySlug]);
 
-  if (!city && notFound) {
-    return <Navigate to="/404" replace />;
-  }
-
+  // Fallback Premium guarantees `city` is always set when cidadeSlug exists.
+  // Only render the spinner if there is literally no slug to work with.
   if (!city) {
-    // Loading dynamic city from DB
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
+
 
   return (
 
