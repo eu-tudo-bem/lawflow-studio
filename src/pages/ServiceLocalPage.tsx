@@ -21,6 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { generateHyperlocalLegalSchema } from "@/lib/seoSchemas";
+import { getDocumentReadyService, isDocumentReadyService } from "@/data/documentReadyServices";
 
 interface Props {
   citySlug: string;
