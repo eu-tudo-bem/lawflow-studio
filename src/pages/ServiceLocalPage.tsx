@@ -146,7 +146,8 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     const schemaId = "service-local-schema";
     const faqSchemaId = "service-local-faq-schema";
     const breadcrumbSchemaId = "service-local-breadcrumb-schema";
-    [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove());
+    const hyperlocalSchemaId = "service-local-hyperlocal-schema";
+    [schemaId, faqSchemaId, breadcrumbSchemaId, hyperlocalSchemaId].forEach((id) => document.getElementById(id)?.remove());
 
     if (!city || !service) return;
 
