@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile, unlink } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
@@ -80,17 +80,24 @@ async function main() {
   await fetchXml(functionUrl, headers, { method: "POST" });
 
   const parts = await fetchJson(`${functionUrl}?list-parts=true`, headers);
-  const validParts = parts.filter((part) => !/^services-\d+$/.test(part));
+  // After consolidation, valid parts are FIXED (static/cities/blog/perguntas) + numeric chunks (services-1, services-2, ...).
+  const validParts = parts.filter((part) => /^(static|cities|blog|perguntas|services-\d+)$/.test(part));
   console.log(`Discovered ${validParts.length} valid sitemap parts: ${validParts.join(", ")}`);
 
-  for (const oldFile of [
-    "sitemap-services.xml",
-    ...parts.filter((part) => /^services-\d+$/.test(part)).map((part) => `sitemap-${part}.xml`),
-  ]) {
-    try {
-      await unlink(path.join(PUBLIC_DIR, oldFile));
-    } catch {
-      // fine if not exists
+  // Clean up obsolete sitemap files in public/: anything matching sitemap-*.xml that is not in the new valid set.
+  const keepFiles = new Set([
+    "sitemap.xml",
+    ...validParts.map((p) => `sitemap-${p}.xml`),
+  ]);
+  const publicFiles = await readdir(PUBLIC_DIR);
+  for (const f of publicFiles) {
+    if (/^sitemap[-.].*\.xml$/.test(f) && !keepFiles.has(f)) {
+      try {
+        await unlink(path.join(PUBLIC_DIR, f));
+        console.log(`Removed stale ${f}`);
+      } catch {
+        // ignore
+      }
     }
   }
 
@@ -105,6 +112,15 @@ async function main() {
   await writeFile(path.join(PUBLIC_DIR, "sitemap.xml"), indexXml, "utf8");
 
   console.log(`Synced ${validParts.length + 1} sitemap files to public/.`);
+
+  // Ping Google to notify of sitemap update (best-effort; failure does not break the build).
+  const pingUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(`${BASE_URL}/sitemap.xml`)}`;
+  try {
+    const res = await fetch(pingUrl);
+    console.log(`Google sitemap ping → ${res.status}`);
+  } catch (err) {
+    console.warn(`Google sitemap ping failed:`, err?.message ?? err);
+  }
 }
 
 main().catch((error) => {

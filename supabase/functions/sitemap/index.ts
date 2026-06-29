@@ -16,6 +16,11 @@ const FIXED_PARTS = ["static", "cities", "blog", "perguntas"] as const;
 const INDEX_SENTINEL = "__index__";
 const INVALID_SENTINEL = "__invalid__";
 
+/* Consolidation: max URLs per consolidated services sitemap chunk
+   (Google limit is 50,000 — leave headroom for future growth). */
+const MAX_URLS_PER_SITEMAP = 45000;
+
+
 const DOCUMENT_GENERATOR_SLUGS = [
   "notificacao-cobranca-aluguel",
   "notificacao-divida",
@@ -81,10 +86,9 @@ function normalizePartName(name: string): string | null {
   const decoded = decodeURIComponent(name).trim().toLowerCase();
 
   if ((FIXED_PARTS as readonly string[]).includes(decoded)) return decoded;
-  if (decoded.startsWith("services-")) {
-    const svc = sanitizeSlug(decoded.slice("services-".length));
-    return isValidServiceSlug(svc) ? `services-${svc}` : null;
-  }
+  // Consolidated service chunks: services-1, services-2, ...
+  const chunkMatch = decoded.match(/^services-(\d+)$/);
+  if (chunkMatch) return `services-${parseInt(chunkMatch[1], 10)}`;
   return null;
 }
 
@@ -121,14 +125,14 @@ function buildErrorXml(message: string): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<error><message>${message}</message></error>`;
 }
 
-function buildSitemapIndex(serviceSlugs: string[]): string {
+function buildSitemapIndex(serviceChunkCount: number): string {
   const now = new Date().toISOString().split("T")[0];
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const part of FIXED_PARTS) {
     xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-${part}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
-  for (const svc of serviceSlugs) {
-    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-services-${svc}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
+  for (let i = 1; i <= serviceChunkCount; i++) {
+    xml += `  <sitemap>\n    <loc>${BASE_URL}/sitemap-services-${i}.xml</loc>\n    <lastmod>${now}</lastmod>\n  </sitemap>\n`;
   }
   xml += `</sitemapindex>`;
   return xml;
@@ -153,24 +157,33 @@ async function fetchFromStorage(supabase: any, filename: string): Promise<string
   return await data.text();
 }
 
-async function listServiceSlugsFromStorage(supabase: any): Promise<string[]> {
+async function listServiceChunkCountFromStorage(supabase: any): Promise<number> {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
-  if (error || !data) return [];
-  const slugs: string[] = [];
+  if (error || !data) return 0;
+  let max = 0;
   for (const f of data) {
-    const m = f.name.match(/^sitemap-services-(.+)\.xml$/);
-    if (m && m[1] === sanitizeSlug(m[1]) && isValidServiceSlug(m[1])) slugs.push(m[1]);
+    const m = f.name.match(/^sitemap-services-(\d+)\.xml$/);
+    if (m) {
+      const n = parseInt(m[1], 10);
+      if (n > max) max = n;
+    }
   }
-  return slugs.sort();
+  return max;
 }
 
-async function cleanupStaleFiles(supabase: any, activeServiceSlugs: string[]) {
+async function cleanupStaleFiles(supabase: any, activeChunkCount: number) {
   const { data, error } = await supabase.storage.from("sitemap").list("", { limit: 500 });
   if (error || !data) return;
-  const keep = new Set(activeServiceSlugs.map((s) => `sitemap-services-${s}.xml`));
+  const keep = new Set<string>();
+  for (let i = 1; i <= activeChunkCount; i++) keep.add(`sitemap-services-${i}.xml`);
   const stale = data
     .map((f: any) => f.name as string)
-    .filter((n: string) => n === "sitemap-services.xml" || (n.startsWith("sitemap-services-") && n.endsWith(".xml") && !keep.has(n)));
+    .filter((n: string) => {
+      if (n === "sitemap-services.xml") return true;
+      // Remove old per-service files (slug-based) — keep only numeric chunks in `keep`.
+      if (/^sitemap-services-.+\.xml$/.test(n) && !keep.has(n)) return true;
+      return false;
+    });
   if (stale.length) {
     await supabase.storage.from("sitemap").remove(stale);
     console.log(`[sitemap] removed stale: ${stale.join(", ")}`);
@@ -193,8 +206,9 @@ Deno.serve(async (req) => {
 
     /* ── list-parts (JSON) ── */
     if (listParts) {
-      const svc = await listServiceSlugsFromStorage(supabase);
-      return new Response(JSON.stringify([...FIXED_PARTS, ...svc.map((s) => `services-${s}`)]), {
+      const chunks = await listServiceChunkCountFromStorage(supabase);
+      const parts = [...FIXED_PARTS, ...Array.from({ length: chunks }, (_, i) => `services-${i + 1}`)];
+      return new Response(JSON.stringify(parts), {
         headers: { ...cors, ...JSON_HEADERS },
       });
     }
@@ -222,8 +236,8 @@ Deno.serve(async (req) => {
       if (part === INVALID_SENTINEL) {
         return new Response(buildEmptyUrlset(), { headers: { ...cors, ...XML_HEADERS } });
       }
-      const svc = await listServiceSlugsFromStorage(supabase);
-      return new Response(buildSitemapIndex(svc), { headers: { ...cors, ...XML_HEADERS } });
+      const chunks = await listServiceChunkCountFromStorage(supabase);
+      return new Response(buildSitemapIndex(chunks), { headers: { ...cors, ...XML_HEADERS } });
     }
 
     /* ══════════════════════════════════════════════════════════════════
@@ -255,13 +269,23 @@ Deno.serve(async (req) => {
     const cityEntries = citySlugs.map((slug) => ({ loc: `/escritorio-advocacia-${slug}`, changefreq: "monthly", priority: "0.9" }));
     await uploadToStorage(supabase, "sitemap-cities.xml", buildUrlset(cityEntries));
 
-    /* 3) per-service (one at a time for memory) */
-    let totalSvcUrls = 0;
+    /* 3) services — CONSOLIDATED into chunked sitemaps (≤ MAX_URLS_PER_SITEMAP each) */
+    const allServiceEntries: UrlEntry[] = [];
     for (const svc of serviceSlugs) {
-      const entries: UrlEntry[] = citySlugs.map((city) => ({ loc: `/advogado-${svc}-${city}`, changefreq: "monthly", priority: "0.85" }));
-      totalSvcUrls += entries.length;
-      await uploadToStorage(supabase, `sitemap-services-${svc}.xml`, buildUrlset(entries));
+      for (const city of citySlugs) {
+        allServiceEntries.push({
+          loc: `/advogado-${svc}-${city}`,
+          changefreq: "monthly",
+          priority: "0.85",
+        });
+      }
     }
+    const chunkCount = Math.max(1, Math.ceil(allServiceEntries.length / MAX_URLS_PER_SITEMAP));
+    for (let i = 0; i < chunkCount; i++) {
+      const slice = allServiceEntries.slice(i * MAX_URLS_PER_SITEMAP, (i + 1) * MAX_URLS_PER_SITEMAP);
+      await uploadToStorage(supabase, `sitemap-services-${i + 1}.xml`, buildUrlset(slice));
+    }
+    const totalSvcUrls = allServiceEntries.length;
 
     /* 4) blog (posts only) */
     const blogEntries: UrlEntry[] = (posts || []).map((p: any) => ({
@@ -305,17 +329,17 @@ Deno.serve(async (req) => {
     console.log(`[sitemap] generated sitemap-perguntas.xml with ${perguntaEntries.length} URLs`);
 
     /* 6) index */
-    const indexXml = buildSitemapIndex(serviceSlugs);
+    const indexXml = buildSitemapIndex(chunkCount);
     await uploadToStorage(supabase, "sitemap.xml", indexXml);
 
-    /* 7) cleanup */
-    await cleanupStaleFiles(supabase, serviceSlugs);
+    /* 7) cleanup — remove legacy per-service files and any extra numeric chunks */
+    await cleanupStaleFiles(supabase, chunkCount);
 
     const total = staticPages.length + cityEntries.length + totalSvcUrls + blogEntries.length + perguntaEntries.length;
     console.log(
-      `Sitemap regenerated: ${FIXED_PARTS.length + serviceSlugs.length} sub-sitemaps | ` +
+      `Sitemap regenerated: ${FIXED_PARTS.length + chunkCount} sub-sitemaps | ` +
       `${staticPages.length} static | ${cityEntries.length} cities | ` +
-      `${serviceSlugs.length} service files (${totalSvcUrls} URLs) | ` +
+      `${chunkCount} consolidated service chunks (${totalSvcUrls} URLs) | ` +
       `${blogEntries.length} blog | ${perguntaEntries.length} perguntas | total: ${total} URLs`,
     );
 
