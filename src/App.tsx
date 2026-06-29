@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useParams, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useParams, Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import { LEGAL_SERVICES, PARANA_CITIES } from "@/data/localSEOCities";
@@ -80,13 +80,24 @@ const DynamicCityRoute = () => {
 };
 
 const DynamicServiceCityRoute = () => {
-  const { "*": rest } = useParams<{ "*": string }>();
+  const location = useLocation();
+  // Strip the "/advogado-" or "/advogado/" prefix
+  let rest = "";
+  if (location.pathname.startsWith("/advogado-")) rest = location.pathname.slice("/advogado-".length);
+  else if (location.pathname.startsWith("/advogado/")) rest = location.pathname.slice("/advogado/".length);
+  rest = rest.replace(/\/+$/, "");
   if (!rest) return <Navigate to="/404" replace />;
-  const sortedServices = [...LEGAL_SERVICES].sort((a, b) => b.keyword.length - a.keyword.length);
-  const match = sortedServices
-    .map((s) => {
-      const prefix = s.keyword + "-";
-      return rest.startsWith(prefix) ? { service: s, city: rest.slice(prefix.length) } : null;
+
+  // Try to match by both keyword and slug (longest first to avoid prefix collisions)
+  const candidates = LEGAL_SERVICES.flatMap((s) => [
+    { service: s, token: s.keyword },
+    ...(s.slug !== s.keyword ? [{ service: s, token: s.slug }] : []),
+  ]).sort((a, b) => b.token.length - a.token.length);
+
+  const match = candidates
+    .map(({ service, token }) => {
+      const prefix = token + "-";
+      return rest.startsWith(prefix) ? { service, city: rest.slice(prefix.length) } : null;
     })
     .find((m) => m !== null && m.city.length > 0);
   if (!match) return <Navigate to="/404" replace />;
@@ -156,6 +167,8 @@ const App = () => (
               )),
             )}
             <Route path="/advogado/*" element={<DynamicServiceCityRoute />} />
+            {/* Fallback for /advogado-{slug-or-keyword}-{city} variants not matched above */}
+            <Route path="/advogado-:rest" element={<DynamicServiceCityRoute />} />
 
             {/* Gerador de Documentos */}
             <Route path="/gerador-documentos" element={<GeradorDocumentos />} />
