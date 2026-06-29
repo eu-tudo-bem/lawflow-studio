@@ -68,6 +68,26 @@ const PageLoader = () => (
   </div>
 );
 
+const normalizeRouteSlug = (value: string) => {
+  let decoded = value;
+  try {
+    decoded = decodeURIComponent(value);
+  } catch {
+    decoded = value;
+  }
+
+  return decoded
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[’']/g, "")
+    .replace(/\/+/, "-")
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
 const DynamicCityRoute = () => {
   const { "*": rest } = useParams<{ "*": string }>();
   const citySlug = rest ?? "";
@@ -89,20 +109,26 @@ const DynamicServiceCityRoute = () => {
     if (location.pathname.startsWith("/advogado-")) rest = location.pathname.slice("/advogado-".length);
     else if (location.pathname.startsWith("/advogado/")) rest = location.pathname.slice("/advogado/".length);
   }
-  rest = rest.replace(/\/+$/, "");
-  if (!rest) return <Navigate to="/404" replace />;
+  const normalizedRest = normalizeRouteSlug(rest.replace(/\/+$/, ""));
+  if (!normalizedRest) return <Navigate to="/404" replace />;
 
   // First locate the city at the end using the official Paraná city list.
   // This avoids breaking service slugs that also contain hyphens.
-  const citiesByLongestSlug = [...PARANA_CITIES].sort((a, b) => b.slug.length - a.slug.length);
-  const cityMatch = citiesByLongestSlug.find((city) => rest.endsWith(`-${city.slug}`));
-  const serviceToken = cityMatch ? rest.slice(0, -(cityMatch.slug.length + 1)) : "";
+  const citiesByLongestSlug = PARANA_CITIES
+    .map((city) => ({ city, normalizedSlug: normalizeRouteSlug(city.slug || city.name) }))
+    .sort((a, b) => b.normalizedSlug.length - a.normalizedSlug.length);
+  const cityMatch = citiesByLongestSlug.find(({ normalizedSlug }) =>
+    normalizedRest === normalizedSlug || normalizedRest.endsWith(`-${normalizedSlug}`),
+  );
+  const serviceToken = cityMatch ? normalizedRest.slice(0, -(cityMatch.normalizedSlug.length + 1)) : "";
   const serviceMatch = serviceToken
-    ? LEGAL_SERVICES.find((service) => service.slug === serviceToken || service.keyword === serviceToken)
+    ? LEGAL_SERVICES.find(
+        (service) => normalizeRouteSlug(service.slug) === serviceToken || normalizeRouteSlug(service.keyword) === serviceToken,
+      )
     : undefined;
 
   const match = cityMatch && serviceMatch
-    ? { service: serviceMatch, city: cityMatch.slug }
+    ? { service: serviceMatch, city: cityMatch.city.slug }
     : undefined;
 
   if (!match) return <Navigate to="/404" replace />;
