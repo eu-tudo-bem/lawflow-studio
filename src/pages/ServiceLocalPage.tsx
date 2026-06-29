@@ -8,7 +8,8 @@ import LocalProof from "@/components/LocalProof";
 import {
   getCityBySlug,
   getServiceBySlug,
-  serviceTextVariations,
+  getServiceVariations,
+  getCityDisplayName,
   getWhatsAppLink,
   getForumMention,
   PARANA_CITIES,
@@ -50,23 +51,26 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
   const service = getServiceBySlug(serviceSlug);
 
   const v = city?.variationIndex ?? 0;
-  const cityName = city?.name ?? "";
-  const cityRegion = city?.region ?? "";
-  const variations = service ? serviceTextVariations[serviceSlug] : null;
+  const cityName = getCityDisplayName(city?.name ?? citySlug);
+  const cityRegion = city?.region ?? "Paraná";
+  const variations = service ? getServiceVariations(serviceSlug, service) : null;
 
-  const intro = variations ? variations.intro[v % variations.intro.length](cityName) : "";
-  const situations = variations ? variations.situations[v % variations.situations.length](cityName) : [];
-  const howItWorks = variations ? variations.howItWorks[v % variations.howItWorks.length](cityName) : "";
-  const whenToLook = variations ? variations.whenToLook[v % variations.whenToLook.length](cityName) : "";
-  const conclusion = variations ? variations.conclusion[v % variations.conclusion.length](cityName) : "";
+  const pick = <T,>(arr: T[] | undefined, fallback: T): T =>
+    arr && arr.length > 0 ? arr[v % arr.length] : fallback;
+
+  const intro = variations ? pick(variations.intro, () => "")(cityName) : "";
+  const situations = variations ? pick(variations.situations, () => [] as string[])(cityName) : [];
+  const howItWorks = variations ? pick(variations.howItWorks, () => "")(cityName) : "";
+  const whenToLook = variations ? pick(variations.whenToLook, () => "")(cityName) : "";
+  const conclusion = variations ? pick(variations.conclusion, () => "")(cityName) : "";
 
   const whatsappLink = getWhatsAppLink(cityName, service?.name);
   const currentYear = new Date().getFullYear();
   const pageTitle = city && service
-    ? `Advogado de ${service.name} em ${cityName} | Guia ${currentYear} · Consulta Rápida`
+    ? `Advogado Especialista em ${service.name} em ${cityName} - PR | Fernandez & Fernandes`
     : "";
   const metaDescription = city && service
-    ? `Precisa calcular valor de ${service.name.toLowerCase()} em ${cityName}? Advogado especializado, consulta rápida ${currentYear}. Atendimento online. Fale agora via WhatsApp.`
+    ? `Advogado especialista em ${service.name.toLowerCase()} em ${cityName} (PR). +20 anos de tradição em proteção patrimonial. Consulta rápida ${currentYear}, 100% online via WhatsApp.`
     : "";
   const canonical = city && service ? `https://fernandezefernandes.adv.br/advogado-${service.keyword}-${city.slug}` : "";
 

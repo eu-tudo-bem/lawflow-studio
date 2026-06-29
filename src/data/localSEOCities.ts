@@ -940,6 +940,97 @@ export function getServiceBySlug(slug: string): ServiceData | undefined {
   return LEGAL_SERVICES.find((s) => s.slug === slug);
 }
 
+/**
+ * Sanitiza um slug ("sao-jose-dos-pinhais") em nome legível ("São José dos Pinhais").
+ * Usado como fallback quando o nome da cidade não vem do banco/lista oficial.
+ */
+const PT_LOWER = new Set(["de", "do", "da", "dos", "das", "e"]);
+export function slugToDisplayName(slug: string): string {
+  if (!slug) return "";
+  return slug
+    .split("-")
+    .map((part, i) => {
+      if (i > 0 && PT_LOWER.has(part)) return part;
+      // Reaproveita acentuação básica para casos comuns
+      const map: Record<string, string> = {
+        sao: "São",
+        joao: "João",
+        jose: "José",
+        guaira: "Guaíra",
+        parana: "Paraná",
+        maringa: "Maringá",
+        cascavel: "Cascavel",
+        iguacu: "Iguaçu",
+      };
+      const lower = part.toLowerCase();
+      if (map[lower]) return map[lower];
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(" ");
+}
+
+/** Garante exibição limpa do nome da cidade, sanitizando slugs se necessário. */
+export function getCityDisplayName(slugOrName: string): string {
+  if (!slugOrName) return "";
+  // Já é nome (tem espaço ou maiúscula) → retorna como está
+  if (/[A-ZÀ-Ú\s]/.test(slugOrName)) return slugOrName;
+  return slugToDisplayName(slugOrName);
+}
+
+/**
+ * Fallback dinâmico Premium para serviços sem variações cadastradas.
+ * Mantém posicionamento (20+ anos, proteção patrimonial) e injeta cidade+serviço com fluidez.
+ */
+export function buildFallbackServiceVariations(
+  serviceName: string,
+  serviceArea: string,
+): {
+  intro: ((city: string) => string)[];
+  situations: ((city: string) => string[])[];
+  howItWorks: ((city: string) => string)[];
+  whenToLook: ((city: string) => string)[];
+  conclusion: ((city: string) => string)[];
+} {
+  const sName = serviceName;
+  const sLower = serviceName.toLowerCase();
+  return {
+    intro: [
+      (city) =>
+        `Em ${city}, questões envolvendo ${sLower} exigem assessoria jurídica especializada em ${serviceArea}. Com mais de 20 anos de tradição, o escritório Fernandez & Fernandes atua na proteção patrimonial e na defesa dos direitos de clientes em todo o Paraná, oferecendo orientação técnica e estratégica para cada caso de ${sLower}.`,
+    ],
+    situations: [
+      (city) => [
+        `Dúvidas sobre ${sLower} para moradores de ${city}`,
+        `Necessidade de análise contratual e revisão de cláusulas em ${city}`,
+        `Defesa patrimonial em processos de ${sLower}`,
+        `Negociação e elaboração de acordos extrajudiciais em ${city}`,
+        `Acompanhamento processual em ações de ${sLower} no foro de ${city}`,
+        `Consultoria preventiva para evitar litígios futuros`,
+      ],
+    ],
+    howItWorks: [
+      (city) =>
+        `O atendimento em ${sLower} para clientes de ${city} começa com uma consulta diagnóstica gratuita, na qual nossa equipe avalia documentos, riscos e oportunidades. A partir daí, traçamos uma estratégia personalizada — judicial ou extrajudicial — focada na proteção patrimonial e na resolução eficiente do caso, com acompanhamento integral até a solução final.`,
+    ],
+    whenToLook: [
+      (city) =>
+        `Procure um advogado especializado em ${sLower} em ${city} sempre que houver risco patrimonial, dúvidas contratuais, ameaça de litígio ou necessidade de regularização. A atuação preventiva, com mais de 20 anos de experiência do escritório Fernandez & Fernandes, evita prejuízos maiores e garante segurança jurídica em cada decisão.`,
+    ],
+    conclusion: [
+      (city) =>
+        `Em ${city}, o escritório Fernandez & Fernandes coloca à sua disposição mais de 20 anos de tradição em ${serviceArea}, com atendimento 100% online e foco absoluto na proteção do seu patrimônio. Fale agora pelo WhatsApp e receba uma avaliação gratuita do seu caso de ${sLower}.`,
+    ],
+  };
+}
+
+/** Retorna as variações do serviço, ou um fallback Premium quando o serviço não tem entradas cadastradas. */
+export function getServiceVariations(serviceSlug: string, service?: ServiceData) {
+  const found = serviceTextVariations[serviceSlug];
+  if (found) return found;
+  if (!service) return null;
+  return buildFallbackServiceVariations(service.name, service.area);
+}
+
 // Text variations to avoid duplicate content penalties
 export const textVariations = {
   subtitle: [
