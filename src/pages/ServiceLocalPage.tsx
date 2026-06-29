@@ -214,10 +214,13 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       })),
     };
 
+    const hyperlocalSchema = generateHyperlocalLegalSchema(service.name, cityName, canonical);
+
     [
       { id: schemaId, data: legalServiceSchema },
       { id: breadcrumbSchemaId, data: breadcrumbSchema },
       { id: faqSchemaId, data: faqSchema },
+      { id: hyperlocalSchemaId, data: hyperlocalSchema },
     ].forEach(({ id, data }) => {
       const script = document.createElement("script");
       script.id = id; script.type = "application/ld+json";
@@ -225,7 +228,7 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       document.head.appendChild(script);
     });
 
-    return () => { [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
+    return () => { [schemaId, faqSchemaId, breadcrumbSchemaId, hyperlocalSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
   // Only invalid SERVICE slugs hit 404 — unknown cities fall back to Premium content (index,follow).
