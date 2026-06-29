@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile, unlink } from "node:fs/promises";
+import { mkdir, readFile, readdir, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 
 const BASE_URL = "https://fernandezefernandes.adv.br";
