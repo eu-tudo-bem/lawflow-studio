@@ -961,6 +961,16 @@ export function slugToDisplayName(slug: string): string {
         maringa: "Maringá",
         cascavel: "Cascavel",
         iguacu: "Iguaçu",
+        cafelandia: "Cafelândia",
+        perola: "Pérola",
+        altania: "Altônia",
+        guairaca: "Guairaçá",
+        tupassi: "Tupãssi",
+        ivata: "Ivaté",
+        maripa: "Maripá",
+        jesuitas: "Jesuítas",
+        icaraima: "Icaraíma",
+        guaraniacu: "Guaraniaçu",
       };
       const lower = part.toLowerCase();
       if (map[lower]) return map[lower];
