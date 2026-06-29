@@ -72,10 +72,14 @@ export function usePageSEO({
   useEffect(() => {
     // Sanitize: strip www and skip if not yet resolved (avoids wrong "/" during async loading)
     const resolvedCanonical = canonical ? stripWww(canonical) : "";
+    const isPublicHyperlocalRoute =
+      typeof window !== "undefined" &&
+      (window.location.pathname.startsWith("/advogado-") || window.location.pathname.startsWith("/advogado/"));
+    const effectiveRobots = isPublicHyperlocalRoute ? "index, follow" : robots;
 
     document.title = title;
     setMetaTag("description", description);
-    setMetaTag("robots", robots);
+    setMetaTag("robots", effectiveRobots);
 
     if (resolvedCanonical) {
       setCanonical(resolvedCanonical);
