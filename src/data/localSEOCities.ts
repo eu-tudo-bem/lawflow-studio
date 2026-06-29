@@ -961,6 +961,16 @@ export function slugToDisplayName(slug: string): string {
         maringa: "Maringá",
         cascavel: "Cascavel",
         iguacu: "Iguaçu",
+        cafelandia: "Cafelândia",
+        perola: "Pérola",
+        altania: "Altônia",
+        guairaca: "Guairaçá",
+        tupassi: "Tupãssi",
+        ivata: "Ivaté",
+        maripa: "Maripá",
+        jesuitas: "Jesuítas",
+        icaraima: "Icaraíma",
+        guaraniacu: "Guaraniaçu",
       };
       const lower = part.toLowerCase();
       if (map[lower]) return map[lower];
@@ -1647,6 +1657,32 @@ export function getForumMention(citySlug: string, cityName: string): string {
     jaguariaiva: "Fórum da Comarca de Jaguariaíva",
     medianeira: "Fórum da Comarca de Medianeira",
   };
-  return FORUM_MAP[citySlug] ?? `Fórum da Comarca de ${cityName}`;
+  if (FORUM_MAP[citySlug]) return FORUM_MAP[citySlug];
+  return `Atendimento jurídico com abrangência na jurisdição do Tribunal de Justiça do Paraná (TJPR) para a região de ${cityName}`;
+}
+
+/**
+ * Retorna até `limit` slugs de cidades vizinhas para internal linking.
+ * Se `nearbySlug` estiver ausente/vazio, faz fallback para cidades da mesma `region`.
+ */
+export function getNearbyCitySlugs(citySlug: string, limit = 4): CityData[] {
+  const city = PARANA_CITIES.find((c) => c.slug === citySlug);
+  if (!city) return [];
+
+  const fromList = (city.nearbySlug ?? [])
+    .map((s) => PARANA_CITIES.find((c) => c.slug === s))
+    .filter((c): c is CityData => Boolean(c) && c!.slug !== citySlug);
+
+  if (fromList.length > 0) return fromList.slice(0, limit);
+
+  // Fallback: mesma região
+  const sameRegion = PARANA_CITIES.filter(
+    (c) => c.slug !== citySlug && c.region === city.region,
+  ).slice(0, limit);
+
+  if (sameRegion.length > 0) return sameRegion;
+
+  // Último recurso: qualquer cidade do Paraná
+  return PARANA_CITIES.filter((c) => c.slug !== citySlug).slice(0, limit);
 }
 
