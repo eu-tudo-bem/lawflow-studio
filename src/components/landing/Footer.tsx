@@ -138,7 +138,17 @@ const Footer = () => {
               </li>
             ))}
           </ul>
+          <div className="mt-4">
+            <Link
+              to="/casos-com-documentos-prontos-parana"
+              className="text-sm text-[hsl(45_60%_55%)] hover:underline font-medium"
+              title="Casos com documentos prontos no Paraná"
+            >
+              📄 Casos com documentos prontos para análise no Paraná →
+            </Link>
+          </div>
         </div>
+
 
 
         {/* Bottom */}
