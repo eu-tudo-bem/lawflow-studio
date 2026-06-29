@@ -29,7 +29,6 @@ interface Props {
 const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
   const nativeCity = getCityBySlug(citySlug);
   const [dynamicCity, setDynamicCity] = useState<CityData | null>(null);
-  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     if (nativeCity || !citySlug) return;
@@ -42,13 +41,22 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
       .then(({ data }) => {
         if (data) {
           setDynamicCity({ slug: (data as any).slug, name: (data as any).name, region: (data as any).region, variationIndex: 0 });
-        } else {
-          setNotFound(true);
         }
+        // No data → keep Fallback Premium (slug-derived). Never set notFound for hyperlocal SEO pages.
       });
   }, [citySlug, nativeCity]);
 
-  const city = nativeCity || dynamicCity;
+  // Fallback Premium: build a synthetic CityData from the slug so the page always renders
+  // with index,follow. Hyperlocal SEO pages must never redirect to /404 just because the
+  // city isn't yet in the DB — the fallback content is editorially valid.
+  const fallbackCity: CityData = {
+    slug: citySlug,
+    name: getCityDisplayName(citySlug),
+    region: "Paraná",
+    variationIndex: 0,
+  };
+  const city = nativeCity || dynamicCity || fallbackCity;
+
   const service = getServiceBySlug(serviceSlug);
 
   const v = city?.variationIndex ?? 0;
@@ -218,17 +226,9 @@ const ServiceLocalPage = ({ citySlug, serviceSlug }: Props) => {
     return () => { [schemaId, faqSchemaId, breadcrumbSchemaId].forEach((id) => document.getElementById(id)?.remove()); };
   }, [citySlug, serviceSlug]);
 
-  // Only redirect to 404 after the DB lookup has resolved — never during loading
+  // Only invalid SERVICE slugs hit 404 — unknown cities fall back to Premium content (index,follow).
   if (!service) return <Navigate to="/404" replace />;
-  if (!city && notFound) return <Navigate to="/404" replace />;
-  // Still loading dynamic city from DB — render skeleton content so crawlers don't see a redirect
-  if (!city && !nativeCity) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+
 
   const nearbyCities = getNearbyCitySlugs(citySlug, 5);
 
