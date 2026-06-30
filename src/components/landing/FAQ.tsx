@@ -22,10 +22,11 @@ const faqs = [
       "Oferecemos atendimento por videochamada, WhatsApp e e-mail. Você pode agendar uma consulta online diretamente pelo nosso site ou pelo WhatsApp, sem precisar se deslocar.",
   },
   {
-    question: "O escritório atende em São Paulo e região?",
+    question: "O escritório atende em Curitiba e região?",
     answer:
-      "Sim, nosso escritório está localizado na Av. Paulista, em São Paulo - SP, e atendemos clientes de toda a região metropolitana, além de atendimento remoto para todo o Brasil.",
+      "Sim, nosso escritório está localizado na Rua Franz Josef Hoch, 283, bairro Bacacheri, em Curitiba - PR, e atendemos clientes de toda a região metropolitana e do interior do Paraná (Toledo, Cascavel, Londrina, Maringá, Foz do Iguaçu, Ponta Grossa, entre outras), além de atendimento remoto para todo o Brasil.",
   },
+
   {
     question: "Quanto tempo demora um processo judicial?",
     answer:
